@@ -7,10 +7,12 @@ import com.ansv.taskmanagement.repository.ProjectRepository;
 import com.ansv.taskmanagement.service.ProjectService;
 import com.ansv.taskmanagement.util.DataUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.maven.model.profile.ProfileSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,9 +33,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDTO findById(Long id) {
-        Optional<Project> entity = repository.findById(id);
-        if(entity.isPresent()) {
-            return mapper.toDtoBean(entity.get());
+        if(DataUtils.notNull(id)) {
+            Optional<Project> entity = repository.findById(id);
+            if (entity.isPresent()) {
+                return mapper.toDtoBean(entity.get());
+            }
         }
         return null;
     }
@@ -42,8 +46,9 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDTO save(ProjectDTO item) {
         try {
             Project entity = null;
+
             ProjectDTO dto = findById(item.getId());
-            if(DataUtils.notNull(dto)) {
+            if (DataUtils.notNull(dto)) {
                 entity.setLastModifiedDate(LocalDateTime.now());
             }
             entity = mapper.toPersistenceBean(item);
@@ -57,7 +62,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDTO> findAll() {
-        return null;
+        List<Project> entities = repository.findAll();
+        return mapper.toDtoBean(entities);
     }
 
     @Override
@@ -66,12 +72,37 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void deleteById(Long id) {
-
+    public Page<ProjectDTO> findBySearchCriteria(Specification<Project> spec, Pageable page) {
+        try {
+            Page<ProjectDTO> listDTO = repository.findAll(spec, page).map(entity -> {
+                ProjectDTO dto = mapper.toDtoBean(entity);
+                return dto;
+            });
+            return listDTO;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return null;
+        }
     }
 
     @Override
-    public void deleteByListId(List<Long> id) {
+    public Integer deleteById(Long id) {
+        try {
+            repository.deleteById(id);
+            return 1;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return -1;
+        }
+    }
 
+    @Override
+    public Integer deleteByListId(List<Long> listId) {
+        try {
+            return repository.deleteByListId(listId);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return -1;
+        }
     }
 }

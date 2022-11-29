@@ -1,0 +1,271 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet author="PC (generated)" id="1669269446932-1">
+        <createTable tableName="activity">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="activityPK"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime2"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="datetime2"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="attach_file" type="varchar(2000)"/>
+            <column name="description" type="nvarchar(500)"/>
+            <column name="end_date" type="datetime2"/>
+            <column name="name" type="nvarchar(500)"/>
+            <column name="parent_id" type="bigint"/>
+            <column name="real_end_date" type="datetime2"/>
+            <column name="real_start_date" type="datetime2"/>
+            <column name="revenue" type="numeric(18, 2)"/>
+            <column name="start_date" type="datetime2"/>
+            <column name="task_id" type="bigint"/>
+            <column name="total_cost" type="numeric(18, 2)"/>
+            <column name="total_hour" type="float(53)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-2">
+        <createTable tableName="assignment">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="assignmentPK"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime2"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="datetime2"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="activity_id" type="bigint"/>
+            <column name="description" type="nvarchar(500)"/>
+            <column name="member_id" type="bigint"/>
+            <column name="task_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-3">
+        <createTable tableName="comment">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="commentPK"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime2"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="datetime2"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="activity_id" type="bigint"/>
+            <column name="attach_file" type="varchar(2000)"/>
+            <column name="content" type="nvarchar(2000)"/>
+            <column name="description" type="nvarchar(500)"/>
+            <column name="name" type="nvarchar(500)"/>
+            <column name="parent_id" type="bigint"/>
+            <column name="task_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-4">
+        <createTable tableName="member">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="memberPK"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime2"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="datetime2"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="email" type="varchar(100)"/>
+            <column name="name" type="nvarchar(100)"/>
+            <column name="phone" type="varchar(20)"/>
+            <column name="role_id" type="bigint"/>
+            <column name="username" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-5">
+        <createTable tableName="member_role_project">
+            <column name="member_id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="member_role_projectPK"/>
+            </column>
+            <column name="role_project_id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="member_role_projectPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-6">
+        <createTable tableName="permission">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="permissionPK"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime2"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="datetime2"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="code" type="varchar(20)"/>
+            <column name="description" type="nvarchar(500)"/>
+            <column name="name" type="nvarchar(500)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-7">
+        <createTable tableName="project">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="projectPK"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime2"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="datetime2"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="attach_file" type="varchar(2000)"/>
+            <column name="customer_id" type="bigint"/>
+            <column name="end_date" type="datetime2"/>
+            <column name="name" type="nvarchar(500)"/>
+            <column name="parent_id" type="bigint"/>
+            <column name="real_end_date" type="datetime2"/>
+            <column name="real_start_date" type="datetime2"/>
+            <column name="revenue" type="numeric(18, 2)"/>
+            <column name="start_date" type="datetime2"/>
+            <column name="total_cost" type="numeric(18, 2)"/>
+            <column name="total_hour" type="float(53)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-8">
+        <createTable tableName="role_of_application">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="role_of_applicationPK"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime2"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="datetime2"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="code" type="varchar(20)"/>
+            <column name="description" type="nvarchar(500)"/>
+            <column name="name" type="nvarchar(500)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-9">
+        <createTable tableName="role_of_project">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="role_of_projectPK"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime2"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="datetime2"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="code" type="varchar(20)"/>
+            <column name="description" type="nvarchar(500)"/>
+            <column name="name" type="nvarchar(500)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-10">
+        <createTable tableName="role_permission">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="role_permissionPK"/>
+            </column>
+            <column name="code" type="varchar(20)"/>
+            <column name="description" type="nvarchar(500)"/>
+            <column name="name" type="nvarchar(500)"/>
+            <column name="parent_code" type="varchar(500)"/>
+            <column name="permission_id" type="bigint"/>
+            <column name="role_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-11">
+        <createTable tableName="tag">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="tagPK"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime2"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="datetime2"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="icon" type="varchar(500)"/>
+            <column name="tag_name" type="nvarchar(1000)"/>
+            <column name="slug" type="varchar(500)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-12">
+        <createTable tableName="task">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="taskPK"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime2"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="datetime2"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="attach_file" type="varchar(2000)"/>
+            <column name="description" type="nvarchar(500)"/>
+            <column name="end_date" type="datetime2"/>
+            <column name="name" type="nvarchar(500)"/>
+            <column name="parent_id" type="bigint"/>
+            <column name="project_id" type="bigint"/>
+            <column name="real_end_date" type="datetime2"/>
+            <column name="real_start_date" type="datetime2"/>
+            <column name="revenue" type="numeric(18, 2)"/>
+            <column name="start_date" type="datetime2"/>
+            <column name="total_cost" type="numeric(18, 2)"/>
+            <column name="total_hour" type="float(53)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-13">
+        <createTable tableName="team">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="teamPK"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime2"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="datetime2"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="description" type="nvarchar(500)"/>
+            <column name="team_name" type="nvarchar(500)"/>
+            <column name="project_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-14">
+        <createTable tableName="team_member">
+            <column name="member_id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="team_memberPK"/>
+            </column>
+            <column name="team_id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="team_memberPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-15">
+        <createTable tableName="work_log">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="work_logPK"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="created_date" type="datetime2"/>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="datetime2"/>
+            <column name="status" type="varchar(20)"/>
+            <column name="assignment_id" type="bigint"/>
+            <column name="content" type="nvarchar(1000)"/>
+            <column name="end_date" type="datetime2"/>
+            <column name="name" type="nvarchar(500)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-16">
+        <addForeignKeyConstraint baseColumnNames="role_project_id" baseTableName="member_role_project" constraintName="FK6ola526bj09fn243wcmlt06je" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="role_of_application" validate="true"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-17">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="member_role_project" constraintName="FK85trkgb3mnd76wxlhcin8qrrd" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="member" validate="true"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-18">
+        <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="team_member" constraintName="FK9ubp79ei4tv4crd0r9n7u5i6e" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="team" validate="true"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-19">
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="role_permission" constraintName="FKf8yllw1ecvwqy3ehyxawqa1qp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="permission" validate="true"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-20">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="role_permission" constraintName="FKfdghin7ohdb4js29a5pvi81hf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="role_of_application" validate="true"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-21">
+        <addForeignKeyConstraint baseColumnNames="project_id" baseTableName="team" constraintName="FKp6ovpc4soflfcjbafch33w2ky" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="project" validate="true"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1669269446932-22">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="team_member" constraintName="FKt5k957ydx0vngjtsljbelmu75" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="member" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,5 +1,6 @@
 package com.ansv.taskmanagement.mapper;
 
+import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -7,6 +8,7 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class BaseMapper<Model, DTO> {
     private static final MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
 
@@ -15,7 +17,7 @@ public class BaseMapper<Model, DTO> {
     private Class<DTO> dto;
 
     public BaseMapper(Class<Model> model, Class<DTO> dto) {
-        mapperFactory.classMap(model, dto).constructorA().constructorB().register();
+        mapperFactory.classMap(model, dto).constructorA().constructorB().byDefault().register();
         mapperFacade = mapperFactory.getMapperFacade();
         this.dto = dto;
         this.model  = model;

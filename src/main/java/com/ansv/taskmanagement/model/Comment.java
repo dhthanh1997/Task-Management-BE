@@ -1,10 +1,6 @@
 package com.ansv.taskmanagement.model;
 
 
-import com.ansv.taskmanagement.util.formatdate.LocalDateTimeDeserializer;
-import com.ansv.taskmanagement.util.formatdate.LocalDateTimeSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
