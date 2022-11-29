@@ -27,7 +27,7 @@ public enum SearchOperation implements Serializable {
 
     public static final String[] SIMPLE_OPERATION_SET = {
             "cn", "nc", "eq", "ne", "bw", "bn", "ew",
-            "en", "nu", "nn", "gt", "ge", "lt", "le"
+            "en", "nu", "nn", "gt", "ge", "lt", "le", ":", ">", "<"
     };
 
     public static SearchOperation getDataOption(final String dataOption) {
@@ -54,6 +54,9 @@ public enum SearchOperation implements Serializable {
             case "ge": return GREATER_THAN_EQUAL;
             case "lt": return LESS_THAN;
             case "le": return LESS_THAN_EQUAL;
+            case ":" : return CONTAINS;
+            case ">" : return GREATER_THAN;
+            case "<" : return LESS_THAN_EQUAL;
             default: return null;
         }
     }

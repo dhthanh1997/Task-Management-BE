@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +30,7 @@ public class ProjectController extends BaseController {
     private ProjectService projectService;
 
     @GetMapping("")
-    public ResponseEntity<ResponseDataObject<ProjectDTO>> get(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") String search) {
+    public ResponseEntity<ResponseDataObject<ProjectDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search) {
         ProjectSpecificationBuilder builder = new ProjectSpecificationBuilder();
         ResponseDataObject<ProjectDTO> response = new ResponseDataObject<ProjectDTO>();
         // check chuỗi để tách các param search
@@ -42,7 +43,7 @@ public class ProjectController extends BaseController {
         }
         // specification
         Specification<Project> spec = builder.build();
-        Pageable page = pageRequest(new ArrayList<>(), pageNumber, pageSize);
+        Pageable page = pageRequest(new ArrayList<>(), pageNumber - 1, pageSize);
         Page<ProjectDTO> listDTO = projectService.findBySearchCriteria(spec, page);
         // response
         response.pagingData = listDTO;
