@@ -4,6 +4,8 @@ import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -11,7 +13,8 @@ import org.springframework.http.HttpStatus;
 public class ResponseDataObject<T> {
     public String error;
     public String message;
-    public HttpStatus stattus;
+    public HttpStatus status;
+    public LocalDateTime timestamp;
     public T data;
     public Page<T> pagingData;
 }

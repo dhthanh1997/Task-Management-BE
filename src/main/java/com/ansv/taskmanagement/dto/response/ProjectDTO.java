@@ -3,7 +3,9 @@ package com.ansv.taskmanagement.dto.response;
 
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -14,6 +16,8 @@ import java.time.LocalDateTime;
 public class ProjectDTO extends BaseDTO<String>   {
     private Long id;
 
+    @NotBlank(message = "Name is mandatory")
+    @Length(max = 500)
     private String name;
 
     private Long customerId;

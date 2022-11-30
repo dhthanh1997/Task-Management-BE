@@ -9,8 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,7 +30,8 @@ public class Project extends Auditable<String> implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", columnDefinition = "nvarchar(500)")
+//    @NotBlank(message = "name is mandatory")
+    @Column(name = "name", columnDefinition = "nvarchar(500)", nullable = false)
     private String name;
 
     @Column(name = "customer_id")
@@ -65,6 +69,7 @@ public class Project extends Auditable<String> implements Serializable {
     @Column(name = "parent_id")
     private Long parentId;
 
+    @Length(max = 2000)
     @Column(name = "attach_file", columnDefinition = "varchar(2000)")
     private String attachFile;
 

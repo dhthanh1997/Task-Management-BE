@@ -9,8 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,6 +29,7 @@ public class Activity extends Auditable<String> implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
+//    @Length(max = 500)
     @Column(name = "name", columnDefinition = "nvarchar(500)")
     private String name;
 
@@ -62,9 +65,11 @@ public class Activity extends Auditable<String> implements Serializable {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime readEndDate;
 
+//    @Length(max = 500)
     @Column(name = "description", columnDefinition = "nvarchar(500)")
     private String description;
 
+//    @Length(max = 2000)
     @Column(name = "attach_file", columnDefinition = "varchar(2000)")
     private String attachFile;
 

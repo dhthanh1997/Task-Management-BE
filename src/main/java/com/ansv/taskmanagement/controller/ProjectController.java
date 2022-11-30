@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,12 +48,12 @@ public class ProjectController extends BaseController {
         Page<ProjectDTO> listDTO = projectService.findBySearchCriteria(spec, page);
         // response
         response.pagingData = listDTO;
-        response.stattus = HttpStatus.OK;
+        response.setStatus(HttpStatus.OK);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("")
-    public ProjectDTO create(@RequestBody ProjectDTO item) {
+    public ProjectDTO create(@RequestBody @Valid ProjectDTO item) {
         ProjectDTO dto = projectService.save(item);
         return dto;
     }

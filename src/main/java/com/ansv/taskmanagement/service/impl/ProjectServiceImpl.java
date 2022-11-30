@@ -44,7 +44,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDTO save(ProjectDTO item) {
-        try {
+//        try {
             Project entity = null;
 
             ProjectDTO dto = findById(item.getId());
@@ -53,11 +53,11 @@ public class ProjectServiceImpl implements ProjectService {
             }
             entity = mapper.toPersistenceBean(item);
             return mapper.toDtoBean(repository.save(entity));
-
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return null;
-        }
+//
+//        } catch (Exception e) {
+//            logger.error(e.getMessage());
+//            return null;
+//        }
     }
 
     @Override
