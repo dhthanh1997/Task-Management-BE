@@ -10,6 +10,9 @@ COPY src /app/src
 # sets app as the directory into the app
 WORKDIR /app/
 # run mvn
+# update db with liquibase
+RUN mvn clean compile
+RUN mvn liquibase:update
 RUN mvn clean install -P staging
 
 
