@@ -1,4 +1,4 @@
-package com.ansv.taskmanagement.controller;
+package com.ansv.taskmanagement.controllers;
 
 
 import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
@@ -48,32 +48,49 @@ public class ProjectController extends BaseController {
         Page<ProjectDTO> listDTO = projectService.findBySearchCriteria(spec, page);
         // response
         response.pagingData = listDTO;
-        response.setStatus(HttpStatus.OK);
+        response.success();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("")
-    public ProjectDTO create(@RequestBody @Valid ProjectDTO item) {
+    public ResponseEntity<ResponseDataObject<ProjectDTO>> create(@RequestBody @Valid ProjectDTO item) {
+        ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
         ProjectDTO dto = projectService.save(item);
-        return dto;
+        response.initData(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ProjectDTO update(@RequestBody ProjectDTO item) {
+    public ResponseEntity<ResponseDataObject<ProjectDTO>> update(@RequestBody @Valid ProjectDTO item) {
+        ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
         ProjectDTO dto = projectService.save(item);
-        return dto;
+        response.initData(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDataObject<ProjectDTO>> getById(@PathVariable(value = "id") Long id) {
+        ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
+        ProjectDTO dto = projectService.findById(id);
+        response.initData(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public Integer deleteById(@PathVariable(value = "id") Long id) {
-        Integer delete = projectService.deleteById(id);
-        return delete;
+    public ResponseEntity<ResponseDataObject<Integer>> deleteById(@PathVariable(value = "id") Long id) {
+        ResponseDataObject<Integer> response = new ResponseDataObject<>();
+        projectService.deleteById(id);
+        response.initData(1);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/deleteByListId")
-    public Integer deleteByListId(@RequestBody List<Long> listId) {
+    public ResponseEntity<ResponseDataObject<Integer>> deleteByListId(@RequestBody List<Long> listId) {
+        ResponseDataObject<Integer> response = new ResponseDataObject<>();
         Integer delete = projectService.deleteByListId(listId);
-        return delete;
+        response.initData(delete);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
 }

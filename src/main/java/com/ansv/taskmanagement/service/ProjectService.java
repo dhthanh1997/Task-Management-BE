@@ -20,7 +20,8 @@ public interface ProjectService {
     List<ProjectDTO> search(Map<String, Object> mapParam);
 
     Page<ProjectDTO> findBySearchCriteria(Specification<Project> spec, Pageable page);
-    Integer deleteById(Long id);
+
+    void deleteById(Long id);
 
     Integer deleteByListId(List<Long> id);
 

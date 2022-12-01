@@ -64,8 +64,16 @@ public class ApiError {
         addSubErrors(new ApiValidattionError(object, field, rejectValue, message));
     }
 
-    private void addValidationError(String object, String message) {
+    protected void addValidationError(String object, String message) {
         addSubErrors(new ApiValidattionError(object, message));
+    }
+
+    /**
+     * using for SQL exception
+     * @param object
+     */
+    protected void addValidationError(String object) {
+        addSubErrors(new ApiValidattionError(object));
     }
 
     private void addValidationError(FieldError fieldError) {
@@ -84,8 +92,8 @@ public class ApiError {
         if (DataUtils.notNull(objectError)) {
             this.addValidationError(objectError.getObjectName(), objectError.getDefaultMessage());
         }
-
     }
+
 
     /**
      * Utility method for adding error of ConstraintViolation. Usually when a @Validated validation fails.

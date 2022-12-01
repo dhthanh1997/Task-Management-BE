@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.ansv</groupId>
     <artifactId>task-management</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>task-management</name>
     <description>task-management</description>
     <properties>
@@ -50,15 +50,15 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-<!--            <groupId>org.projectlombok</groupId>-->
-<!--            <artifactId>lombok</artifactId>-->
-<!--            &lt;!&ndash; <version>1.18.18</version>-->
-<!--            <scope>provided</scope> &ndash;&gt;-->
-<!--            <optional>true</optional>-->
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.24</version>
-                <scope>provided</scope>
+            <!--            <groupId>org.projectlombok</groupId>-->
+            <!--            <artifactId>lombok</artifactId>-->
+            <!--            &lt;!&ndash; <version>1.18.18</version>-->
+            <!--            <scope>provided</scope> &ndash;&gt;-->
+            <!--            <optional>true</optional>-->
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -131,6 +131,25 @@
             <artifactId>hibernate-validator</artifactId>
             <version>6.2.5.Final</version>
         </dependency>
+
+
+        <!--        swagger UI-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <!--        end swagger UI-->
     </dependencies>
 
     <build>
@@ -186,23 +205,23 @@
                 </executions>
             </plugin>
 
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <version>3.8.1</version>-->
-<!--                <configuration>-->
-<!--                    <source>1.8</source> &lt;!&ndash; depending on your project &ndash;&gt;-->
-<!--                    <target>1.8</target> &lt;!&ndash; depending on your project &ndash;&gt;-->
-<!--                    <annotationProcessorPaths>-->
-<!--                        <path>-->
-<!--                            <groupId>org.mapstruct</groupId>-->
-<!--                            <artifactId>mapstruct-processor</artifactId>-->
-<!--                            <version>${org.mapstruct.version}</version>-->
-<!--                        </path>-->
-<!--                        &lt;!&ndash; other annotation processors &ndash;&gt;-->
-<!--                    </annotationProcessorPaths>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-compiler-plugin</artifactId>-->
+            <!--                <version>3.8.1</version>-->
+            <!--                <configuration>-->
+            <!--                    <source>1.8</source> &lt;!&ndash; depending on your project &ndash;&gt;-->
+            <!--                    <target>1.8</target> &lt;!&ndash; depending on your project &ndash;&gt;-->
+            <!--                    <annotationProcessorPaths>-->
+            <!--                        <path>-->
+            <!--                            <groupId>org.mapstruct</groupId>-->
+            <!--                            <artifactId>mapstruct-processor</artifactId>-->
+            <!--                            <version>${org.mapstruct.version}</version>-->
+            <!--                        </path>-->
+            <!--                        &lt;!&ndash; other annotation processors &ndash;&gt;-->
+            <!--                    </annotationProcessorPaths>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
 
         </plugins>
     </build>

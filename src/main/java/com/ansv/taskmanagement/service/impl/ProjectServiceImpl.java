@@ -33,7 +33,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDTO findById(Long id) {
-        if(DataUtils.notNull(id)) {
+        if (DataUtils.notNull(id)) {
             Optional<Project> entity = repository.findById(id);
             if (entity.isPresent()) {
                 return mapper.toDtoBean(entity.get());
@@ -45,14 +45,14 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDTO save(ProjectDTO item) {
 //        try {
-            Project entity = null;
+        Project entity = null;
 
-            ProjectDTO dto = findById(item.getId());
-            if (DataUtils.notNull(dto)) {
-                entity.setLastModifiedDate(LocalDateTime.now());
-            }
-            entity = mapper.toPersistenceBean(item);
-            return mapper.toDtoBean(repository.save(entity));
+        ProjectDTO dto = findById(item.getId());
+        if (DataUtils.notNull(dto)) {
+            entity.setLastModifiedDate(LocalDateTime.now());
+        }
+        entity = mapper.toPersistenceBean(item);
+        return mapper.toDtoBean(repository.save(entity));
 //
 //        } catch (Exception e) {
 //            logger.error(e.getMessage());
@@ -86,23 +86,23 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Integer deleteById(Long id) {
-        try {
-            repository.deleteById(id);
-            return 1;
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return -1;
-        }
+    public void deleteById(Long id) {
+//        try {
+        repository.deleteById(id);
+//            return 1;
+//        } catch (Exception e) {
+//            logger.error(e.getMessage());
+//            return -1;
+//        }
     }
 
     @Override
     public Integer deleteByListId(List<Long> listId) {
-        try {
-            return repository.deleteByListId(listId);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return -1;
-        }
+//        try {
+        return repository.deleteByListId(listId);
+//        } catch (Exception e) {
+//            logger.error(e.getMessage());
+//            return -1;
+//        }
     }
 }

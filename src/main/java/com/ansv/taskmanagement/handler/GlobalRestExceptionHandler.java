@@ -1,9 +1,12 @@
 package com.ansv.taskmanagement.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.HibernateException;
+import org.hibernate.exception.GenericJDBCException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
 
 
 @RestControllerAdvice
@@ -133,13 +137,23 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ServletWebRequest servletWebRequest = (ServletWebRequest) request;
+//        ServletWebRequest servletWebRequest = (ServletWebRequest) request;
         String error = String.format("Could not find the %s method URL %s", ex.getHttpMethod(), ex.getRequestURL());
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        apiError.setMessage(error);
         apiError.setDebugMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+//        ServletWebRequest servletWebRequest = (ServletWebRequest) request;
+        String error = String.format("Internal Server error");
+        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
+        apiError.setMessage(error);
+        apiError.setDebugMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
 
     /**
      * entity not found
@@ -202,6 +216,32 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 //        apiError.addValidationErrors(ex.getBindingResult().getFieldErrors());
 //        return buildResponseEntity(apiError);
 //    }
+
+    @ExceptionHandler(SQLException.class)
+    protected ResponseEntity<Object> hanldSQLException(SQLException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        apiError.setMessage("SQL error");
+        apiError.addValidationError(ex.getSQLState(), ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(HibernateException.class)
+    protected ResponseEntity<Object> hanldHibernateException(HibernateException ex) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        apiError.setMessage("Hibernate error");
+        apiError.addValidationError(ex.getLocalizedMessage());
+        return buildResponseEntity(apiError);
+    }
+
+
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    protected ResponseEntity<Object> hanldEmptyResultDataAccessException(EmptyResultDataAccessException ex) {
+        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
+        apiError.setMessage("Empty result error");
+        apiError.addValidationError(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
 
 
 

@@ -1,4 +1,4 @@
-package com.ansv.taskmanagement.controller;
+package com.ansv.taskmanagement.controllers;
 
 import com.ansv.taskmanagement.util.DataUtils;
 import org.springframework.data.domain.PageRequest;

@@ -27,8 +27,4 @@ public class JwtAuthenticationConfig {
     }
 
 
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ac);
-//    }
 }
