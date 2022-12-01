@@ -10,7 +10,7 @@ COPY src /app/src
 # sets app as the directory into the app
 WORKDIR /app/
 # run mvn
-RUN mvn clean install -P dev
+RUN mvn clean install -P staging
 
 
 ### STAGE 2: DEPLOY APPLICATION
