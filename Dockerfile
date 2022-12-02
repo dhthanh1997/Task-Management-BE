@@ -11,7 +11,7 @@ COPY src /app/src
 WORKDIR /app/
 # run mvn
 # update db with liquibase
-RUN mvn clean compile
+RUN mvn clean compile -P staging
 RUN mvn liquibase:update
 RUN mvn clean install -P staging
 
