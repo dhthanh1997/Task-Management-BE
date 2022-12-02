@@ -248,7 +248,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
-                <spring.profiles.active>dev</spring.profiles.active>
+                <spring.profiles.active>staging</spring.profiles.active>
             </properties>
         </profile>
         <profile>
