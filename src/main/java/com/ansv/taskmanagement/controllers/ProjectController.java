@@ -36,10 +36,10 @@ public class ProjectController extends BaseController {
         ResponseDataObject<ProjectDTO> response = new ResponseDataObject<ProjectDTO>();
         // check chuỗi để tách các param search
         if (DataUtils.notNull(search)) {
-            Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
+            Pattern pattern = Pattern.compile("(\\w+?)(\\.)(:|<|>|(\\w+?))(\\.)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
             Matcher matcher = pattern.matcher(search + ",");
             while (matcher.find()) {
-                builder.with(new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3)));
+                builder.with(new SearchCriteria(matcher.group(1), matcher.group(3), matcher.group(6)));
             }
         }
         // specification

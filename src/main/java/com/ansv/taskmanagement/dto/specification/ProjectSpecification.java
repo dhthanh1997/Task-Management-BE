@@ -53,25 +53,25 @@ public class ProjectSpecification implements Specification<Project> {
 //                if(searchCriteria.getKey().equals("name")) {
 //                    return cb.like(cb.lower(root.get(searchCriteria.getKey())), "%" = strToSearch + "%");
 //                }
-                return cb.like(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch + "%");
+                return cb.like(cb.lower(root.get(searchCriteria.getKey())), strToSearch + "%");
             case DOES_NOT_BEGIN_WITH:
-                return cb.notLike(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch + "%");
+                return cb.notLike(cb.lower(root.get(searchCriteria.getKey())), strToSearch + "%");
             case ENDS_WITH:
-                return cb.like(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch + "%");
+                return cb.like(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch);
             case DOES_NOT_END_WITH:
-                return cb.notLike(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch + "%");
+                return cb.notLike(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch);
             case EQUAL:
-                return cb.equal(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch + "%");
+                return cb.equal(cb.lower(root.get(searchCriteria.getKey())), strToSearch);
             case NOT_EQUAL:
-                return cb.notEqual(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch + "%");
+                return cb.notEqual(cb.lower(root.get(searchCriteria.getKey())), strToSearch);
             case NUL:
                 return cb.isNull(cb.lower(root.get(searchCriteria.getKey())));
             case NOT_NULL:
                 return cb.isNotNull(cb.lower(root.get(searchCriteria.getKey())));
             case GREATER_THAN:
-                return cb.greaterThan(root.<String>get(searchCriteria.getKey()),  searchCriteria.getValue().toString());
+                return cb.greaterThan(root.<String>get(searchCriteria.getKey()), searchCriteria.getValue().toString());
             case GREATER_THAN_EQUAL:
-                return cb.greaterThanOrEqualTo(root.<String>get(searchCriteria.getKey()),  searchCriteria.getValue().toString());
+                return cb.greaterThanOrEqualTo(root.<String>get(searchCriteria.getKey()), searchCriteria.getValue().toString());
             case LESS_THAN:
                 return cb.lessThan(root.<String>get(searchCriteria.getKey()), searchCriteria.getValue().toString());
             case LESS_THAN_EQUAL:
