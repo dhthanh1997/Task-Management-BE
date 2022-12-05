@@ -3,32 +3,43 @@ package com.ansv.taskmanagement.dto.criteria;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.Serializable;
 
+@Getter
 public enum SearchOperation implements Serializable {
-    CONTAINS,
-    DOES_NOT_CONTAIN,
-    EQUAL,
-    NOT_EQUAL,
-    BEGINS_WITH,
-    DOES_NOT_BEGIN_WITH,
-    ENDS_WITH,
-    DOES_NOT_END_WITH,
-    NUL,
-    NOT_NULL,
-    GREATER_THAN,
-    GREATER_THAN_EQUAL,
-    LESS_THAN,
-    LESS_THAN_EQUAL,
-    ANY,
-    ALL;
+    CONTAINS(0,"cn"),
+    DOES_NOT_CONTAIN(1,"nc"),
+    EQUAL(2,"eq"),
+    NOT_EQUAL(3,"ne"),
+    BEGINS_WITH(4,"bw"),
+    DOES_NOT_BEGIN_WITH(5,"bn"),
+    ENDS_WITH(6,"ew"),
+    DOES_NOT_END_WITH(7,"en"),
+    NUL(8,"nu"),
+    NOT_NULL(9,"nn"),
+    GREATER_THAN(10,"gt"),
+    GREATER_THAN_EQUAL(11,"ge"),
+    LESS_THAN(12,"lt"),
+    LESS_THAN_EQUAL(13,"le"),
+    ANY(14,"any"),
+    ALL(15,"all");
+
+    private int value;
+    private String name;
 
     public static final String[] SIMPLE_OPERATION_SET = {
             "cn", "nc", "eq", "ne", "bw", "bn", "ew",
             "en", "nu", "nn", "gt", "ge", "lt", "le", ":", ">", "<"
     };
+
+    SearchOperation(int value, String name) {
+        this.value = value;
+        this.name = name;
+    }
 
     public static SearchOperation getDataOption(final String dataOption) {
         switch (dataOption) {
