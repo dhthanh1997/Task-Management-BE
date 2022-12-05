@@ -1,12 +1,12 @@
 package com.ansv.taskmanagement.service.impl;
 
 import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
-import com.ansv.taskmanagement.dto.response.ProjectDTO;
+import com.ansv.taskmanagement.dto.response.MemberDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
-import com.ansv.taskmanagement.model.Project;
-import com.ansv.taskmanagement.repository.ProjectRepository;
-import com.ansv.taskmanagement.service.ProjectService;
+import com.ansv.taskmanagement.model.Member;
+import com.ansv.taskmanagement.repository.MemberRepository;
+import com.ansv.taskmanagement.service.MemberService;
 import com.ansv.taskmanagement.util.DataUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -26,19 +26,19 @@ import java.util.regex.Pattern;
 
 @Service
 @Slf4j
-public class ProjectServiceImpl implements ProjectService {
+public class MemberServiceImpl implements MemberService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProjectServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
 
-    private static final BaseMapper<Project, ProjectDTO> mapper = new BaseMapper<>(Project.class, ProjectDTO.class);
+    private static final BaseMapper<Member, MemberDTO> mapper = new BaseMapper<>(Member.class, MemberDTO.class);
 
     @Autowired
-    private ProjectRepository repository;
+    private MemberRepository repository;
 
     @Override
-    public ProjectDTO findById(Long id) {
+    public MemberDTO findById(Long id) {
         if (DataUtils.notNull(id)) {
-            Optional<Project> entity = repository.findById(id);
+            Optional<Member> entity = repository.findById(id);
             if (entity.isPresent()) {
                 return mapper.toDtoBean(entity.get());
             }
@@ -47,11 +47,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectDTO save(ProjectDTO item) {
+    public MemberDTO save(MemberDTO item) {
 //        try {
-        Project entity = null;
+        Member entity = null;
 
-        ProjectDTO dto = findById(item.getId());
+        MemberDTO dto = findById(item.getId());
         if (DataUtils.notNull(dto)) {
             entity.setLastModifiedDate(LocalDateTime.now());
         }
@@ -65,39 +65,39 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectDTO> findAll() {
-        List<Project> entities = repository.findAll();
+    public List<MemberDTO> findAll() {
+        List<Member> entities = repository.findAll();
         return mapper.toDtoBean(entities);
     }
 
     @Override
-    public List<ProjectDTO> search(Map<String, Object> mapParam) {
+    public List<MemberDTO> search(Map<String, Object> mapParam) {
         return null;
     }
 
     @Override
-    public Page<ProjectDTO> findBySearchCriteria(Optional<String> search, Pageable page) {
-        try {
-            GenericSpecificationBuilder<Project> builder = new GenericSpecificationBuilder<>();
-            // check chuỗi để tách các param search
-            if (DataUtils.notNull(search)) {
-                Pattern pattern = Pattern.compile("(\\w+?)(\\.)(:|<|>|(\\w+?))(\\.)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
-                Matcher matcher = pattern.matcher(search + ",");
-                while (matcher.find()) {
-                    builder.with(new SearchCriteria(matcher.group(1), matcher.group(3), matcher.group(6)));
-                }
+    public Page<MemberDTO> findBySearchCriteria(Optional<String> search, Pageable page) {
+//        try {
+        GenericSpecificationBuilder<Member> builder = new GenericSpecificationBuilder<>();
+        // check chuỗi để tách các param search
+        if (DataUtils.notNull(search)) {
+            Pattern pattern = Pattern.compile("(\\w+?)(\\.)(:|<|>|(\\w+?))(\\.)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
+            Matcher matcher = pattern.matcher(search + ",");
+            while (matcher.find()) {
+                builder.with(new SearchCriteria(matcher.group(1), matcher.group(3), matcher.group(6)));
             }
-            // specification
-            Specification<Project> spec = builder.build();
-            Page<ProjectDTO> listDTO = repository.findAll(spec, page).map(entity -> {
-                ProjectDTO dto = mapper.toDtoBean(entity);
-                return dto;
-            });
-            return listDTO;
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return null;
         }
+        // specification
+        Specification<Member> spec = builder.build();
+        Page<MemberDTO> listDTO = repository.findAll(spec, page).map(entity -> {
+            MemberDTO dto = mapper.toDtoBean(entity);
+            return dto;
+        });
+        return listDTO;
+//        } catch (Exception e) {
+//            logger.error(e.getMessage());
+//            return null;
+//        }
     }
 
     @Override

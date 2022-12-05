@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface ProjectService {
 
@@ -19,7 +20,7 @@ public interface ProjectService {
 
     List<ProjectDTO> search(Map<String, Object> mapParam);
 
-    Page<ProjectDTO> findBySearchCriteria(Specification<Project> spec, Pageable page);
+    Page<ProjectDTO> findBySearchCriteria(Optional<String> search, Pageable page);
 
     void deleteById(Long id);
 

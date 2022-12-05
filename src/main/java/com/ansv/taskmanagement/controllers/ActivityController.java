@@ -2,11 +2,11 @@ package com.ansv.taskmanagement.controllers;
 
 
 import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
-import com.ansv.taskmanagement.dto.response.ProjectDTO;
+import com.ansv.taskmanagement.dto.response.ActivityDTO;
 import com.ansv.taskmanagement.dto.response.ResponseDataObject;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
-import com.ansv.taskmanagement.model.Project;
-import com.ansv.taskmanagement.service.ProjectService;
+import com.ansv.taskmanagement.model.Activity;
+import com.ansv.taskmanagement.service.ActivityService;
 import com.ansv.taskmanagement.util.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,21 +20,19 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("/api/project")
-public class ProjectController extends BaseController {
+@RequestMapping("/api/activity")
+public class ActivityController extends BaseController {
 
     @Autowired
-    private ProjectService projectService;
+    private ActivityService ActivityService;
 
     @GetMapping("")
-    public ResponseEntity<ResponseDataObject<ProjectDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search) {
-        ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
+    public ResponseEntity<ResponseDataObject<ActivityDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search) {
+        ResponseDataObject<ActivityDTO> response = new ResponseDataObject<>();
         Pageable page = pageRequest(new ArrayList<>(), pageNumber - 1, pageSize);
-        Page<ProjectDTO> listDTO = projectService.findBySearchCriteria(search, page);
+        Page<ActivityDTO> listDTO = ActivityService.findBySearchCriteria(search, page);
         // response
         response.pagingData = listDTO;
         response.success();
@@ -42,25 +40,25 @@ public class ProjectController extends BaseController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseDataObject<ProjectDTO>> create(@RequestBody @Valid ProjectDTO item) {
-        ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
-        ProjectDTO dto = projectService.save(item);
+    public ResponseEntity<ResponseDataObject<ActivityDTO>> create(@RequestBody @Valid ActivityDTO item) {
+        ResponseDataObject<ActivityDTO> response = new ResponseDataObject<>();
+        ActivityDTO dto = ActivityService.save(item);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<ProjectDTO>> update(@RequestBody @Valid ProjectDTO item) {
-        ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
-        ProjectDTO dto = projectService.save(item);
+    public ResponseEntity<ResponseDataObject<ActivityDTO>> update(@RequestBody @Valid ActivityDTO item) {
+        ResponseDataObject<ActivityDTO> response = new ResponseDataObject<>();
+        ActivityDTO dto = ActivityService.save(item);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<ProjectDTO>> getById(@PathVariable(value = "id") Long id) {
-        ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
-        ProjectDTO dto = projectService.findById(id);
+    public ResponseEntity<ResponseDataObject<ActivityDTO>> getById(@PathVariable(value = "id") Long id) {
+        ResponseDataObject<ActivityDTO> response = new ResponseDataObject<>();
+        ActivityDTO dto = ActivityService.findById(id);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -68,7 +66,7 @@ public class ProjectController extends BaseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDataObject<Integer>> deleteById(@PathVariable(value = "id") Long id) {
         ResponseDataObject<Integer> response = new ResponseDataObject<>();
-        projectService.deleteById(id);
+        ActivityService.deleteById(id);
         response.initData(1);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -76,7 +74,7 @@ public class ProjectController extends BaseController {
     @PostMapping("/deleteByListId")
     public ResponseEntity<ResponseDataObject<Integer>> deleteByListId(@RequestBody List<Long> listId) {
         ResponseDataObject<Integer> response = new ResponseDataObject<>();
-        Integer delete = projectService.deleteByListId(listId);
+        Integer delete = ActivityService.deleteByListId(listId);
         response.initData(delete);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
