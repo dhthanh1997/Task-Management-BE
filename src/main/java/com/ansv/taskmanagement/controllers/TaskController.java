@@ -2,11 +2,11 @@ package com.ansv.taskmanagement.controllers;
 
 
 import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
-import com.ansv.taskmanagement.dto.response.ProjectDTO;
+import com.ansv.taskmanagement.dto.response.TaskDTO;
 import com.ansv.taskmanagement.dto.response.ResponseDataObject;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
-import com.ansv.taskmanagement.model.Project;
-import com.ansv.taskmanagement.service.ProjectService;
+import com.ansv.taskmanagement.model.Task;
+import com.ansv.taskmanagement.service.TaskService;
 import com.ansv.taskmanagement.util.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,17 +24,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("/api/project")
-public class ProjectController extends BaseController {
+@RequestMapping("/api/task")
+public class TaskController extends BaseController {
 
     @Autowired
-    private ProjectService projectService;
+    private TaskService TaskService;
 
     @GetMapping("")
-    public ResponseEntity<ResponseDataObject<ProjectDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search) {
-        ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
+    public ResponseEntity<ResponseDataObject<TaskDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search) {
+        ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
         Pageable page = pageRequest(new ArrayList<>(), pageNumber - 1, pageSize);
-        Page<ProjectDTO> listDTO = projectService.findBySearchCriteria(search, page);
+        Page<TaskDTO> listDTO = TaskService.findBySearchCriteria(search, page);
         // response
         response.pagingData = listDTO;
         response.success();
@@ -42,25 +42,25 @@ public class ProjectController extends BaseController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseDataObject<ProjectDTO>> create(@RequestBody @Valid ProjectDTO item) {
-        ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
-        ProjectDTO dto = projectService.save(item);
+    public ResponseEntity<ResponseDataObject<TaskDTO>> create(@RequestBody @Valid TaskDTO item) {
+        ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
+        TaskDTO dto = TaskService.save(item);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<ProjectDTO>> update(@RequestBody @Valid ProjectDTO item) {
-        ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
-        ProjectDTO dto = projectService.save(item);
+    public ResponseEntity<ResponseDataObject<TaskDTO>> update(@RequestBody @Valid TaskDTO item) {
+        ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
+        TaskDTO dto = TaskService.save(item);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<ProjectDTO>> getById(@PathVariable(value = "id") Long id) {
-        ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
-        ProjectDTO dto = projectService.findById(id);
+    public ResponseEntity<ResponseDataObject<TaskDTO>> getById(@PathVariable(value = "id") Long id) {
+        ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
+        TaskDTO dto = TaskService.findById(id);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -68,7 +68,7 @@ public class ProjectController extends BaseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDataObject<Integer>> deleteById(@PathVariable(value = "id") Long id) {
         ResponseDataObject<Integer> response = new ResponseDataObject<>();
-        projectService.deleteById(id);
+        TaskService.deleteById(id);
         response.initData(1);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -76,7 +76,7 @@ public class ProjectController extends BaseController {
     @PostMapping("/deleteByListId")
     public ResponseEntity<ResponseDataObject<Integer>> deleteByListId(@RequestBody List<Long> listId) {
         ResponseDataObject<Integer> response = new ResponseDataObject<>();
-        Integer delete = projectService.deleteByListId(listId);
+        Integer delete = TaskService.deleteByListId(listId);
         response.initData(delete);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
