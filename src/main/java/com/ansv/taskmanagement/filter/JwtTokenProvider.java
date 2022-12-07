@@ -25,7 +25,8 @@ public class JwtTokenProvider {
 
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parser().setSigningKey((JWT_SECRET)).parseClaimsJws(token).getBody();
-        return claims.getSubject().toString();
+//        Claims claims = Jwts.parser().parseClaimsJws(token).getBody();
+        return claims.getSubject();
     }
 
     public String generateToken(Authentication authentication, String role, List<String> permissions) {

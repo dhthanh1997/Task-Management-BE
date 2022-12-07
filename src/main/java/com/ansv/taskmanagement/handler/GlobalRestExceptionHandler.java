@@ -1,5 +1,6 @@
 package com.ansv.taskmanagement.handler;
 
+import com.ansv.taskmanagement.handler.authentication.JwtTokenNotValidException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.exception.GenericJDBCException;
@@ -26,7 +27,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.naming.AuthenticationException;
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 
@@ -41,7 +44,7 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
      * @param apiError
      * @return
      */
-    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
+    protected ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 
@@ -218,7 +221,7 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 //    }
 
     @ExceptionHandler(SQLException.class)
-    protected ResponseEntity<Object> hanldSQLException(SQLException ex) {
+    protected ResponseEntity<Object> handleSQLException(SQLException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage("SQL error");
         apiError.addValidationError(ex.getSQLState(), ex.getMessage());
@@ -226,7 +229,7 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(HibernateException.class)
-    protected ResponseEntity<Object> hanldHibernateException(HibernateException ex) {
+    protected ResponseEntity<Object> handleHibernateException(HibernateException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage("Hibernate error");
         apiError.addValidationError(ex.getLocalizedMessage());
@@ -235,15 +238,21 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(EmptyResultDataAccessException.class)
-    protected ResponseEntity<Object> hanldEmptyResultDataAccessException(EmptyResultDataAccessException ex) {
+    protected ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex) {
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
         apiError.setMessage("Empty result error");
         apiError.addValidationError(ex.getMessage());
         return buildResponseEntity(apiError);
     }
 
-
-
+    // token is null/ not valid
+    @ExceptionHandler(JwtTokenNotValidException.class)
+    protected ResponseEntity<Object> handleTokenNotValidException(JwtTokenNotValidException ex) {
+        ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED);
+        apiError.setMessage("Unauthorized");
+        apiError.addValidationError(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
 
 
 
