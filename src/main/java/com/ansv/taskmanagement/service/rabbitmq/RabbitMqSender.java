@@ -13,27 +13,16 @@ public class RabbitMqSender {
     @Autowired
     private AmqpTemplate rabbitTemplate;
 
-//    public RabbitMqSender() {
-//        this.rabbitTemplate = new RabbitTemplate();
-//    }
-//
-//    public RabbitMqSender(RabbitTemplate rabbitTemplate) {
-//        this.rabbitTemplate = rabbitTemplate;
-//    }
 
-
-    @Value("${spring.rabbitmq.exchange:#{null}}")
+    @Value("${spring.rabbitmq.exchange-received:#{null}}")
     private String exchange;
 
-    @Value("${spring.rabbitmq.routingkey:#{null}}")
+    @Value("${spring.rabbitmq.routingkey-received:#{null}}")
     private String routingkey;
 
-//    public void sender(UserDTO user) {
-//        rabbitTemplate.convertAndSend(exchange, routingkey, user);
-//    }
 
-    public void sender(UserDTO user) {
-        rabbitTemplate.convertAndSend(exchange, routingkey, user);
+    public void sender(String username) {
+        rabbitTemplate.convertAndSend(exchange, routingkey, username);
     }
 
 }

@@ -15,10 +15,9 @@ public class RabbitMqReceiver implements RabbitListenerConfigurer {
     private static final Logger logger = LoggerFactory.getLogger(RabbitMqReceiver.class);
 
 
-
-
     @RabbitListener(queues = "${spring.rabbitmq.queue}")
     public void receivedMessage(UserDTO user){
+
         logger.info("User Details Received is.. " + user.getUsername());
     }
 

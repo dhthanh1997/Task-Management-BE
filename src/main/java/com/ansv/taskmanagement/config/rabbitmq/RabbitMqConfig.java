@@ -72,6 +72,7 @@ public class RabbitMqConfig {
     }
 
 
+    // receiver from exchange
     @Bean
     public Queue queue() {
         return new Queue(environment.getProperty("spring.rabbitmq.queue"));
@@ -86,6 +87,25 @@ public class RabbitMqConfig {
     public Binding binding() {
         return BindingBuilder.bind(queue()).to(directExchange()).with(environment.getProperty("spring.rabbitmq.routingkey"));
     }
+    // receiver
+
+
+    // sender from exchange-received
+    @Bean
+    public Queue queueReceived() {
+        return new Queue(environment.getProperty("spring.rabbitmq.queue-received"));
+    }
+
+    @Bean
+    public DirectExchange directExchangeReceived() {
+        return new DirectExchange(environment.getProperty("spring.rabbitmq.exchange-received"));
+    }
+
+    @Bean
+    public Binding bindingReceived() {
+        return BindingBuilder.bind(queueReceived()).to(directExchangeReceived()).with(environment.getProperty("spring.rabbitmq.routingkey-received"));
+    }
+    // receiver
 
 
 }
