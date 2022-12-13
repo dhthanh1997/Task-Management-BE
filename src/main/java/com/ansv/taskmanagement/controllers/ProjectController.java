@@ -1,17 +1,13 @@
 package com.ansv.taskmanagement.controllers;
 
 
-import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
 import com.ansv.taskmanagement.dto.response.ProjectDTO;
 import com.ansv.taskmanagement.dto.response.ResponseDataObject;
-import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
-import com.ansv.taskmanagement.model.Project;
 import com.ansv.taskmanagement.service.ProjectService;
 import com.ansv.taskmanagement.util.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +16,9 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("/api/project")
+@RequestMapping("/taskManagement/api/project")
 public class ProjectController extends BaseController {
 
     @Autowired
@@ -50,10 +44,12 @@ public class ProjectController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<ProjectDTO>> update(@RequestBody @Valid ProjectDTO item) {
+    public ResponseEntity<ResponseDataObject<ProjectDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid ProjectDTO item) {
         ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
+        item.setId(id);
         ProjectDTO dto = projectService.save(item);
         response.initData(dto);
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
