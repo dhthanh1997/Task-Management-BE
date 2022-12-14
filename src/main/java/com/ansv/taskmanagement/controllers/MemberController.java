@@ -26,11 +26,11 @@ public class MemberController extends BaseController {
     @Autowired
     private MemberService memberService;
 
-    @Autowired
-    private RabbitMqReceiver rabbitMqReceiver;
-
-    @Autowired
-    private RabbitMqSender rabbitMqSender;
+//    @Autowired
+//    private RabbitMqReceiver rabbitMqReceiver;
+//
+//    @Autowired
+//    private RabbitMqSender rabbitMqSender;
 
     @GetMapping("")
     public ResponseEntity<ResponseDataObject<MemberDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search) {
