@@ -72,7 +72,7 @@ public class MemberController extends BaseController {
         ResponseDataObject<UserDTO> response = new ResponseDataObject<>();
         UserDTO message = new UserDTO();
         message.setUsername(username);
-        rabbitMqSender.sender(username);
+//        rabbitMqSender.sender(username);
 //        rabbitMqReceiver.receivedMessage();
 //        response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
