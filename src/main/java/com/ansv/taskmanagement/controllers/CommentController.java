@@ -45,7 +45,7 @@ public class CommentController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<CommentDTO>> update(@RequestBody @Valid CommentDTO item) {
+    public ResponseEntity<ResponseDataObject<CommentDTO>> update(@PathVariable(value = "id") Long id,@RequestBody @Valid CommentDTO item) {
         ResponseDataObject<CommentDTO> response = new ResponseDataObject<>();
         CommentDTO dto = commentService.save(item);
         response.initData(dto);

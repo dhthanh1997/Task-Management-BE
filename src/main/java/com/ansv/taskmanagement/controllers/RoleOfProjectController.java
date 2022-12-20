@@ -43,7 +43,7 @@ public class RoleOfProjectController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<RoleOfProjectDTO>> update(@RequestBody @Valid RoleOfProjectDTO item) {
+    public ResponseEntity<ResponseDataObject<RoleOfProjectDTO>> update(@PathVariable(value = "id") Long id,@RequestBody @Valid RoleOfProjectDTO item) {
         ResponseDataObject<RoleOfProjectDTO> response = new ResponseDataObject<>();
         RoleOfProjectDTO dto = roleOfProjectService.save(item);
         response.initData(dto);

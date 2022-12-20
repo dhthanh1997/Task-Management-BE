@@ -43,7 +43,7 @@ public class WorkLogController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<WorkLogDTO>> update(@RequestBody @Valid WorkLogDTO item) {
+    public ResponseEntity<ResponseDataObject<WorkLogDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid WorkLogDTO item) {
         ResponseDataObject<WorkLogDTO> response = new ResponseDataObject<>();
         WorkLogDTO dto = workLogService.save(item);
         response.initData(dto);

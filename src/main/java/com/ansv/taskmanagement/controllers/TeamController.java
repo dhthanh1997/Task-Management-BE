@@ -43,7 +43,7 @@ public class TeamController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<TeamDTO>> update(@RequestBody @Valid TeamDTO item) {
+    public ResponseEntity<ResponseDataObject<TeamDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid TeamDTO item) {
         ResponseDataObject<TeamDTO> response = new ResponseDataObject<>();
         TeamDTO dto = teamService.save(item);
         response.initData(dto);

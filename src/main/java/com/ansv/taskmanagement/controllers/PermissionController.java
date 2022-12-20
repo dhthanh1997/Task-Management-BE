@@ -43,7 +43,7 @@ public class PermissionController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<PermissionDTO>> update(@RequestBody @Valid PermissionDTO item) {
+    public ResponseEntity<ResponseDataObject<PermissionDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid PermissionDTO item) {
         ResponseDataObject<PermissionDTO> response = new ResponseDataObject<>();
         PermissionDTO dto = permissionService.save(item);
         response.initData(dto);
