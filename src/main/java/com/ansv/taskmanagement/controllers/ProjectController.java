@@ -4,6 +4,7 @@ package com.ansv.taskmanagement.controllers;
 import com.ansv.taskmanagement.dto.response.ProjectDTO;
 import com.ansv.taskmanagement.dto.response.ResponseDataObject;
 import com.ansv.taskmanagement.service.ProjectService;
+import com.ansv.taskmanagement.util.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,10 +44,12 @@ public class ProjectController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<ProjectDTO>> update(@RequestBody @Valid ProjectDTO item) {
+    public ResponseEntity<ResponseDataObject<ProjectDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid ProjectDTO item) {
         ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
+        item.setId(id);
         ProjectDTO dto = projectService.save(item);
         response.initData(dto);
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
