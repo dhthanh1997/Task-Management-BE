@@ -1,4 +1,3 @@
-
 ### STAGE 1: MAVEN BUILD ###
 FROM maven:3.8.5-openjdk-11 AS builders
 # create app directory in images and copies pom.xml into it
