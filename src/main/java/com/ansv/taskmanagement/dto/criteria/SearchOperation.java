@@ -53,7 +53,9 @@ public enum SearchOperation implements Serializable {
         switch (input){
             case "cn": return CONTAINS;
             case "nc": return DOES_NOT_CONTAIN;
-            case "eq": return EQUAL;
+            case "eq":
+            case ":" :
+                return EQUAL;
             case "ne": return NOT_EQUAL;
             case "bw": return BEGINS_WITH;
             case "bn": return DOES_NOT_BEGIN_WITH;
@@ -61,13 +63,14 @@ public enum SearchOperation implements Serializable {
             case "en": return DOES_NOT_END_WITH;
             case "nu": return NUL;
             case "nn": return NOT_NULL;
-            case "gt": return GREATER_THAN;
+            case "gt":
+            case ">" :
+                return GREATER_THAN;
             case "ge": return GREATER_THAN_EQUAL;
             case "lt": return LESS_THAN;
-            case "le": return LESS_THAN_EQUAL;
-            case ":" : return CONTAINS;
-            case ">" : return GREATER_THAN;
-            case "<" : return LESS_THAN_EQUAL;
+            case "le":
+            case "<" :
+                return LESS_THAN_EQUAL;
             default: return null;
         }
     }
