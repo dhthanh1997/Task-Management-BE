@@ -5,8 +5,8 @@ import com.ansv.taskmanagement.dto.response.MemberDTO;
 import com.ansv.taskmanagement.dto.response.ResponseDataObject;
 import com.ansv.taskmanagement.dto.response.UserDTO;
 import com.ansv.taskmanagement.service.MemberService;
-import com.ansv.taskmanagement.service.rabbitmq.RabbitMqReceiver;
-import com.ansv.taskmanagement.service.rabbitmq.RabbitMqSender;
+//import com.ansv.taskmanagement.service.rabbitmq.RabbitMqReceiver;
+//import com.ansv.taskmanagement.service.rabbitmq.RabbitMqSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,11 +26,11 @@ public class MemberController extends BaseController {
     @Autowired
     private MemberService memberService;
 
-    @Autowired
-    private RabbitMqReceiver rabbitMqReceiver;
-
-    @Autowired
-    private RabbitMqSender rabbitMqSender;
+//    @Autowired
+//    private RabbitMqReceiver rabbitMqReceiver;
+//
+//    @Autowired
+//    private RabbitMqSender rabbitMqSender;
 
     @GetMapping("")
     public ResponseEntity<ResponseDataObject<MemberDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search) {
@@ -72,7 +72,7 @@ public class MemberController extends BaseController {
         ResponseDataObject<UserDTO> response = new ResponseDataObject<>();
         UserDTO message = new UserDTO();
         message.setUsername(username);
-        rabbitMqSender.sender(username);
+//        rabbitMqSender.sender(username);
 //        rabbitMqReceiver.receivedMessage();
 //        response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
