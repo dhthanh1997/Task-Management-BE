@@ -5,12 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
+import com.thoughtworks.xstream.core.util.Fields;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 public class DataUtils {
@@ -58,7 +62,7 @@ public class DataUtils {
 
 
     public static String parseToString(Object obj) {
-        if(isNull(obj)) {
+        if (isNull(obj)) {
             return null;
         }
         return String.valueOf(obj);
@@ -70,7 +74,7 @@ public class DataUtils {
 
     public static Integer parseToInt(Object obj, Integer value) {
         String tmp = parseToString(obj);
-        if(isNull(tmp)) {
+        if (isNull(tmp)) {
             return null;
         }
         return Integer.valueOf(tmp);
@@ -306,6 +310,61 @@ public class DataUtils {
 
         // return string
         return str;
+    }
+
+    public static Object convertToDataType(Class<?> target, String s) {
+        if (target == Object.class || target == String.class || s == null) {
+            return s;
+        }
+        if (target == Character.class || target == char.class) {
+            return s.charAt(0);
+        }
+        if (target == Byte.class || target == byte.class) {
+            return Byte.parseByte(s);
+        }
+        if (target == Short.class || target == short.class) {
+            return Short.parseShort(s);
+        }
+        if (target == Integer.class || target == int.class) {
+            return Integer.parseInt(s);
+        }
+        if (target == Long.class || target == long.class) {
+            return Long.parseLong(s);
+        }
+        if (target == Float.class || target == float.class) {
+            return Float.parseFloat(s);
+        }
+        if (target == Double.class || target == double.class) {
+            return Double.parseDouble(s);
+        }
+        if (target == Boolean.class || target == boolean.class) {
+            return Boolean.parseBoolean(s);
+        }
+        throw new IllegalArgumentException("Don't know how to convert to " + target);
+    }
+
+    public static Object instantiate(List<String> args, String className) throws Exception {
+        // Load the class.
+        Class<?> clazz = Class.forName(className);
+        // Search for an "appropriate" constructor.
+        for (Constructor<?> ctor : clazz.getConstructors()) {
+            Class<?>[] paramTypes = ctor.getParameterTypes();
+
+            // If the arity matches, let's use it.
+            if (args.size() == paramTypes.length) {
+
+                // Convert the String arguments into the parameters' types.
+                Object[] convertedArgs = new Object[args.size()];
+                for (int i = 0; i < convertedArgs.length; i++) {
+                    convertedArgs[i] = convertToDataType(paramTypes[i], args.get(i));
+                }
+
+                // Instantiate the object with the converted arguments.
+                return ctor.newInstance(convertedArgs);
+            }
+        }
+
+        throw new IllegalArgumentException("Don't know how to instantiate " + className);
     }
 
 

@@ -5,6 +5,7 @@ import com.ansv.taskmanagement.dto.response.RolePermissionDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
 import com.ansv.taskmanagement.model.RolePermission;
+import com.ansv.taskmanagement.model.TaskTag;
 import com.ansv.taskmanagement.repository.RolePermissionRepository;
 import com.ansv.taskmanagement.service.RolePermissionService;
 import com.ansv.taskmanagement.util.DataUtils;
@@ -88,6 +89,7 @@ public class RolePermissionServiceImpl implements RolePermissionService {
             }
         }
         // specification
+        builder.setClazz(RolePermission.class);
         Specification<RolePermission> spec = builder.build();
         Page<RolePermissionDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             RolePermissionDTO dto = mapper.toDtoBean(entity);
