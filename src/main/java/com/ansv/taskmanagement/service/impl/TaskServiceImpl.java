@@ -89,6 +89,7 @@ public class TaskServiceImpl implements TaskService {
             }
         }
         // specification
+        builder.setClazz(Task.class);   
         Specification<Task> spec = builder.build();
         Page<TaskDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             TaskDTO dto = mapper.toDtoBean(entity);

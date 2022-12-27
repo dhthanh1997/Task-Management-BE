@@ -267,6 +267,15 @@
             </properties>
         </profile>
         <profile>
+            <id>dev-microservice</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>dev-microservice</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
             <id>staging</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -282,6 +291,15 @@
             </activation>
             <properties>
                 <spring.profiles.active>prod</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>staging-microservice</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>staging-microservice</spring.profiles.active>
             </properties>
         </profile>
     </profiles>

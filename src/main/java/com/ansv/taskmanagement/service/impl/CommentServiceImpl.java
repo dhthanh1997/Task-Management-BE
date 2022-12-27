@@ -6,6 +6,7 @@ import com.ansv.taskmanagement.dto.response.TaskDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
 import com.ansv.taskmanagement.model.Comment;
+import com.ansv.taskmanagement.model.Member;
 import com.ansv.taskmanagement.model.Task;
 import com.ansv.taskmanagement.repository.CommentRepository;
 import com.ansv.taskmanagement.repository.TaskRepository;
@@ -93,6 +94,7 @@ public class CommentServiceImpl implements CommentService {
             }
         }
         // specification
+        builder.setClazz(Comment.class);
         Specification<Comment> spec = builder.build();
 
         Page<CommentDTO> listDTO = repository.findAll(spec, page).map(entity -> {

@@ -90,6 +90,7 @@ public class TagServiceImpl implements TagService {
             }
         }
         // specification
+        builder.setClazz(Tag.class);
         Specification<Tag> spec = builder.build();
         Page<TagDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             TagDTO dto = mapper.toDtoBean(entity);

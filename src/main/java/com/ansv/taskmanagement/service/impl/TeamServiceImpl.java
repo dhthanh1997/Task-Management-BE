@@ -4,6 +4,7 @@ import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
 import com.ansv.taskmanagement.dto.response.TeamDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
+import com.ansv.taskmanagement.model.Task;
 import com.ansv.taskmanagement.model.Team;
 import com.ansv.taskmanagement.repository.TeamRepository;
 import com.ansv.taskmanagement.service.TeamService;
@@ -89,6 +90,7 @@ public class TeamServiceImpl implements TeamService {
             }
         }
         // specification
+        builder.setClazz(Team.class);
         Specification<Team> spec = builder.build();
         Page<TeamDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             TeamDTO dto = mapper.toDtoBean(entity);

@@ -5,6 +5,7 @@ import com.ansv.taskmanagement.dto.response.RoleOfProjectDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
 import com.ansv.taskmanagement.model.RoleOfProject;
+import com.ansv.taskmanagement.model.RolePermission;
 import com.ansv.taskmanagement.repository.RoleOfProjectRepository;
 import com.ansv.taskmanagement.service.RoleOfProjectService;
 import com.ansv.taskmanagement.util.DataUtils;
@@ -88,6 +89,7 @@ public class RoleOfProjectServiceImpl implements RoleOfProjectService {
             }
         }
         // specification
+        builder.setClazz(RoleOfProject.class);
         Specification<RoleOfProject> spec = builder.build();
         Page<RoleOfProjectDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             RoleOfProjectDTO dto = mapper.toDtoBean(entity);

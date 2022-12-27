@@ -2,21 +2,70 @@ package com.ansv.taskmanagement.dto.specification;
 
 import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
 import com.ansv.taskmanagement.dto.criteria.SearchOperation;
+import com.ansv.taskmanagement.util.DataUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.lang.reflect.Field;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class GenericSpecification<T> implements Specification<T> {
 
     private final SearchCriteria searchCriteria;
 
-    public GenericSpecification(final SearchCriteria searchCriteria) {
+
+    public GenericSpecification(final SearchCriteria searchCriteria, Class<T> clazz) {
         super();
+        String dataType = findDataType(searchCriteria.getKey(), clazz);
+        if (dataType.equals("Integer")) {
+            searchCriteria.setValue(DataUtils.convertToDataType(Integer.class, searchCriteria.getValue().toString()));
+            searchCriteria.setDataType(Integer.class);
+        }
+        if (dataType.equals("Long")) {
+            searchCriteria.setValue(DataUtils.convertToDataType(Long.class, searchCriteria.getValue().toString()));
+            searchCriteria.setDataType(Long.class);
+
+        }
+        if (dataType.equals("Double")) {
+            searchCriteria.setValue(DataUtils.convertToDataType(Double.class, searchCriteria.getValue().toString()));
+            searchCriteria.setDataType(Double.class);
+
+        }
+        if (dataType.equals("String")) {
+//            searchCriteria.setValue(DataUtils.convertToDataType(String.class, searchCriteria.getValue().toString()));
+        }
+        if (dataType.equals("Float")) {
+            searchCriteria.setValue(DataUtils.convertToDataType(Float.class, searchCriteria.getValue().toString()));
+            searchCriteria.setDataType(Float.class);
+
+        }
         this.searchCriteria = searchCriteria;
+    }
+
+    /**
+     * find datatype with fieldname
+     *
+     * @param fieldName
+     * @return
+     */
+    public String findDataType(String fieldName, Class<T> clazz) {
+        String dataType = null;
+        Field[] fields = clazz.getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+            if (fieldName.equals(field.getName())) {
+                String[] str = field.getType().getTypeName().split(Pattern.quote("."));
+                // str[2] = dataType
+                dataType = str[2];
+                break;
+            }
+        }
+        return dataType;
     }
 
     @Override
@@ -32,37 +81,58 @@ public class GenericSpecification<T> implements Specification<T> {
 
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-        String strToSearch = searchCriteria.getValue().toString().toLowerCase();
+        Object strToSearch = searchCriteria.getValue();
         switch (Objects.requireNonNull(SearchOperation.getSimpleOperation(searchCriteria.getOperation()))) {
             case CONTAINS:
-                return cb.like(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch + "%");
+                return cb.like(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch.toString().toLowerCase() + "%");
             case DOES_NOT_CONTAIN:
-                return cb.notLike(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch + "%");
+                return cb.notLike(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch.toString().toLowerCase() + "%");
 
             case BEGINS_WITH:
 
-                return cb.like(cb.lower(root.get(searchCriteria.getKey())), strToSearch + "%");
+                return cb.like(cb.lower(root.get(searchCriteria.getKey())), strToSearch.toString().toLowerCase() + "%");
             case DOES_NOT_BEGIN_WITH:
-                return cb.notLike(cb.lower(root.get(searchCriteria.getKey())), strToSearch + "%");
+                return cb.notLike(cb.lower(root.get(searchCriteria.getKey())), strToSearch.toString().toLowerCase() + "%");
             case ENDS_WITH:
-                return cb.like(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch);
+                return cb.like(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch.toString().toLowerCase());
             case DOES_NOT_END_WITH:
-                return cb.notLike(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch);
+                return cb.notLike(cb.lower(root.get(searchCriteria.getKey())), "%" + strToSearch.toString().toLowerCase());
             case EQUAL:
-                return cb.equal(cb.lower(root.get(searchCriteria.getKey())), strToSearch);
+                if (strToSearch instanceof String) {
+                    return cb.equal(cb.lower(root.<String>get(searchCriteria.getKey())), strToSearch.toString().toLowerCase());
+                } else {
+                    return cb.equal(root.<Object>get(searchCriteria.getKey()), strToSearch);
+                }
+
             case NOT_EQUAL:
-                return cb.notEqual(cb.lower(root.get(searchCriteria.getKey())), strToSearch);
+                if (strToSearch instanceof String) {
+                    return cb.notEqual(cb.lower(root.get(searchCriteria.getKey())), strToSearch.toString().toLowerCase());
+                } else {
+                    return cb.notEqual(root.<Object>get(searchCriteria.getKey()), strToSearch);
+                }
             case NUL:
                 return cb.isNull(cb.lower(root.get(searchCriteria.getKey())));
             case NOT_NULL:
                 return cb.isNotNull(cb.lower(root.get(searchCriteria.getKey())));
             case GREATER_THAN:
-                return cb.greaterThan(root.<String>get(searchCriteria.getKey()), searchCriteria.getValue().toString());
+//                if (strToSearch instanceof String) {
+//                }
+//                else {
+//                    return cb.greaterThan(root.get(searchCriteria.getKey()), strToSearch);
+//                }
+                return cb.greaterThan(cb.lower(root.get(searchCriteria.getKey())), strToSearch.toString().toLowerCase());
+
             case GREATER_THAN_EQUAL:
+//                if (strToSearch instanceof String) {
+//                }
+//                else {
+//                    return cb.greaterThanOrEqualTo(root.<Object>get(searchCriteria.getKey()), strToSearch);
+//                }
                 return cb.greaterThanOrEqualTo(root.<String>get(searchCriteria.getKey()), searchCriteria.getValue().toString());
             case LESS_THAN:
                 return cb.lessThan(root.<String>get(searchCriteria.getKey()), searchCriteria.getValue().toString());
             case LESS_THAN_EQUAL:
+
                 return cb.lessThanOrEqualTo(root.<String>get(searchCriteria.getKey()), searchCriteria.getValue().toString());
         }
         return null;

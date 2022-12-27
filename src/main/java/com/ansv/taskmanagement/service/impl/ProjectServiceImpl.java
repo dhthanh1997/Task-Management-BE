@@ -5,6 +5,7 @@ import com.ansv.taskmanagement.dto.response.ProjectDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
 import com.ansv.taskmanagement.model.Project;
+import com.ansv.taskmanagement.model.RoleOfApplication;
 import com.ansv.taskmanagement.repository.ProjectRepository;
 import com.ansv.taskmanagement.service.ProjectService;
 import com.ansv.taskmanagement.util.DataUtils;
@@ -77,27 +78,28 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Page<ProjectDTO> findBySearchCriteria(Optional<String> search, Pageable page) {
-        try {
-            GenericSpecificationBuilder<Project> builder = new GenericSpecificationBuilder<>();
-            // check chuỗi để tách các param search
-            if (DataUtils.notNull(search)) {
-                Pattern pattern = Pattern.compile("(\\w+?)(\\.)(:|<|>|(\\w+?))(\\.)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
-                Matcher matcher = pattern.matcher(search + ",");
-                while (matcher.find()) {
-                    builder.with(new SearchCriteria(matcher.group(1), matcher.group(3), matcher.group(6)));
-                }
+//        try {
+        GenericSpecificationBuilder<Project> builder = new GenericSpecificationBuilder<>();
+        // check chuỗi để tách các param search
+        if (DataUtils.notNull(search)) {
+            Pattern pattern = Pattern.compile("(\\w+?)(\\.)(:|<|>|(\\w+?))(\\.)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
+            Matcher matcher = pattern.matcher(search.get());
+            while (matcher.find()) {
+                builder.with(new SearchCriteria(matcher.group(1), matcher.group(3), matcher.group(6)));
             }
-            // specification
-            Specification<Project> spec = builder.build();
-            Page<ProjectDTO> listDTO = repository.findAll(spec, page).map(entity -> {
-                ProjectDTO dto = mapper.toDtoBean(entity);
-                return dto;
-            });
-            return listDTO;
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return null;
         }
+        // specification
+        builder.setClazz(Project.class);
+        Specification<Project> spec = builder.build();
+        Page<ProjectDTO> listDTO = repository.findAll(spec, page).map(entity -> {
+            ProjectDTO dto = mapper.toDtoBean(entity);
+            return dto;
+        });
+        return listDTO;
+//        } catch (Exception e) {
+//            logger.error(e.getMessage());
+//            return null;
+//        }
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.ansv.taskmanagement.dto.response.MemberDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
 import com.ansv.taskmanagement.model.Member;
+import com.ansv.taskmanagement.model.Permission;
 import com.ansv.taskmanagement.repository.MemberRepository;
 import com.ansv.taskmanagement.service.MemberService;
 import com.ansv.taskmanagement.util.DataUtils;
@@ -88,6 +89,7 @@ public class MemberServiceImpl implements MemberService {
             }
         }
         // specification
+        builder.setClazz(Member.class);
         Specification<Member> spec = builder.build();
         Page<MemberDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             MemberDTO dto = mapper.toDtoBean(entity);
