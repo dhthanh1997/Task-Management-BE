@@ -1,19 +1,19 @@
-package com.ansv.taskmanagement.dto.response;
-
+package com.ansv.taskmanagement.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Getter
 @Setter
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-public class TaskDTO extends BaseDTO<String> {
+@AllArgsConstructor
+public class TaskImportDTO implements Serializable {
     private Long id;
 
     private String name;
@@ -35,12 +35,14 @@ public class TaskDTO extends BaseDTO<String> {
     private LocalDateTime realEndDate;
 
     private String description;
+
     private String problem;
+
     private String solution;
+
     private String note;
 
     private String attachFile;
 
     private Long parentId;
-
 }

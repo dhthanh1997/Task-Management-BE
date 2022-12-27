@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -73,6 +74,14 @@ public class TaskController extends BaseController {
         response.initData(delete);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
+    }
+
+    @PostMapping("/uploadFileExcel")
+    public ResponseEntity<ResponseDataObject<String>> uploadFileExcel(@RequestParam(name = "file") MultipartFile file) throws Exception {
+        ResponseDataObject<String> response = new ResponseDataObject<>();
+        
+        response.initData("success");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

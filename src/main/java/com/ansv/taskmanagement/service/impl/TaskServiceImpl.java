@@ -1,6 +1,7 @@
 package com.ansv.taskmanagement.service.impl;
 
 import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
+import com.ansv.taskmanagement.dto.request.TaskImportDTO;
 import com.ansv.taskmanagement.dto.response.TaskDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -121,5 +123,10 @@ public class TaskServiceImpl implements TaskService {
 //            logger.error(e.getMessage());
 //            return -1;
 //        }
+    }
+
+    @Override
+    public void importTask(List<TaskImportDTO> dtos) {
+
     }
 }
