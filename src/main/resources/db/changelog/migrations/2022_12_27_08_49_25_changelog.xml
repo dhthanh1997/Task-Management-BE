@@ -10,4 +10,4 @@
             <column name="estimate_start_date" type="timestamp"/>
         </addColumn>
     </changeSet>
-</databaseChangeLog>
+</databaseChangeLog>    
