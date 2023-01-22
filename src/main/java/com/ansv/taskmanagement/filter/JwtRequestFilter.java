@@ -44,36 +44,36 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwtToken = null;
         String username = null;
 
-        if (DataUtils.notNullOrEmpty(requestToken)) {
-            if (requestToken.startsWith("Bearer")) {
-                jwtToken = requestToken.substring(7);
-                username = jwtTokenProvider.getUsernameFromToken(jwtToken);
-            } else {
-                logger.warn("JWT token does not begin with Bearer string");
-            }
-
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-            if (DataUtils.notNull(authentication)) {
-                Object principal = authentication.getPrincipal();
-                if (principal instanceof UserDetails) {
-                    logger.info("------SecurityContextHolder getPrincipal UserDetails:" + ((UserDetails) principal).getUsername());
-                } else {
-                    logger.info("------SecurityContextHolder getPrincipal:" + principal);
-                }
-            }
-
-//        get the token valid it
-            if (DataUtils.notNullOrEmpty(username)) {
-                // call from service in message bus
-            }
-
-
-        }
-        else {
-            throw new JwtTokenNotValidException("JWT token not valid");
-
-        }
+//        if (DataUtils.notNullOrEmpty(requestToken)) {
+//            if (requestToken.startsWith("Bearer")) {
+//                jwtToken = requestToken.substring(7);
+//                username = jwtTokenProvider.getUsernameFromToken(jwtToken);
+//            } else {
+//                logger.warn("JWT token does not begin with Bearer string");
+//            }
+//
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//            if (DataUtils.notNull(authentication)) {
+//                Object principal = authentication.getPrincipal();
+//                if (principal instanceof UserDetails) {
+//                    logger.info("------SecurityContextHolder getPrincipal UserDetails:" + ((UserDetails) principal).getUsername());
+//                } else {
+//                    logger.info("------SecurityContextHolder getPrincipal:" + principal);
+//                }
+//            }
+//
+////        get the token valid it
+//            if (DataUtils.notNullOrEmpty(username)) {
+//                // call from service in message bus
+//            }
+//
+//
+//        }
+//        else {
+//            throw new JwtTokenNotValidException("JWT token not valid");
+//
+//        }
 
 
         ContentCachingResponseWrapper responseCachingWrapper = new ContentCachingResponseWrapper((HttpServletResponse) response);

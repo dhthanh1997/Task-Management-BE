@@ -43,7 +43,7 @@ public class RoleOfApplicationController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<RoleOfApplicationDTO>> update(@RequestBody @Valid RoleOfApplicationDTO item) {
+    public ResponseEntity<ResponseDataObject<RoleOfApplicationDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid RoleOfApplicationDTO item) {
         ResponseDataObject<RoleOfApplicationDTO> response = new ResponseDataObject<>();
         RoleOfApplicationDTO dto = roleOfApplicationService.save(item);
         response.initData(dto);

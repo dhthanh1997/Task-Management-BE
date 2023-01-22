@@ -4,6 +4,7 @@ import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
 import com.ansv.taskmanagement.dto.response.WorkLogDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
+import com.ansv.taskmanagement.model.Task;
 import com.ansv.taskmanagement.model.WorkLog;
 import com.ansv.taskmanagement.repository.WorkLogRepository;
 import com.ansv.taskmanagement.service.WorkLogService;
@@ -88,6 +89,7 @@ public class WorkLogServiceImpl implements WorkLogService {
             }
         }
         // specification
+        builder.setClazz(WorkLog.class);
         Specification<WorkLog> spec = builder.build();
         Page<WorkLogDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             WorkLogDTO dto = mapper.toDtoBean(entity);

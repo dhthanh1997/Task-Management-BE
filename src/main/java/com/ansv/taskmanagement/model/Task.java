@@ -52,22 +52,40 @@ public class Task extends Auditable<String> implements Serializable {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime endDate;
 
+    @Column(name = "estimate_start_date")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime estimateStartDate;
+
+    @Column(name = "estimate_end_date")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime estimateEndDate;
+
     @Column(name = "real_start_date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime readStartDate;
+    private LocalDateTime realStartDate;
 
     @Column(name = "real_end_date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime readEndDate;
+    private LocalDateTime realEndDate;
 
     @Column(name = "description", columnDefinition = "nvarchar(500)")
     private String description;
 
+    @Column(name = "problem", columnDefinition = "nvarchar(500)")
+    private String problem;
+
+    @Column(name = "solution", columnDefinition = "nvarchar(500)")
+    private String solution;
+
+    @Column(name = "note", columnDefinition = "nvarchar(500)")
+    private String note;
+
     @Column(name = "attach_file", columnDefinition = "varchar(2000)")
     private String attachFile;
-
 
     @Column(name = "parent_id")
     private Long parentId;

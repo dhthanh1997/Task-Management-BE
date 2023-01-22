@@ -10,6 +10,7 @@ public class SearchCriteria {
     private String key;
     private String operation;
     private Object value;
+    private Object dataType;
 
     public SearchCriteria(String key, String operation, Object value) {
         super();
@@ -17,6 +18,7 @@ public class SearchCriteria {
         this.operation = operation;
         this.value = value;
     }
+
 
 //    public Object getValue() {
 //        return value;
