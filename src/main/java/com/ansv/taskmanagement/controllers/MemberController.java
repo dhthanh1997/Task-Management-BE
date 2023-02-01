@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("taskManagement/api/member")
+@RequestMapping("/api/member")
 public class MemberController extends BaseController {
 
     @Autowired

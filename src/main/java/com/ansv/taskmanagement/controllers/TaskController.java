@@ -80,7 +80,7 @@ public class TaskController extends BaseController {
     public ResponseEntity<ResponseDataObject<String>> uploadFileExcel(@RequestParam(name = "file") MultipartFile file) throws Exception {
         ResponseDataObject<String> response = new ResponseDataObject<>();
         
-        response.initData("success");
+        response.initData("Successfull");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

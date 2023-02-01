@@ -51,7 +51,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDTO save(TaskDTO item) {
 //        try {
-        Task entity = null;
+        Task entity = new Task();
 
         TaskDTO dto = findById(item.getId());
         if (DataUtils.notNull(dto)) {
