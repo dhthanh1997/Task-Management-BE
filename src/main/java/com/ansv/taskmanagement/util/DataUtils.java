@@ -7,12 +7,17 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
 import com.thoughtworks.xstream.core.util.Fields;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 
@@ -280,6 +285,14 @@ public class DataUtils {
         return String.format("84%s", isdn);
     }
 
+    public static boolean safeEqual(Object obj1, Object obj2) {
+        return ((obj1 != null) && (obj2 != null) && obj2.toString().equals(obj1.toString()));
+    }
+
+    public static boolean safeEqualIgnoreCase(Object obj1, Object obj2) {
+        return ((obj1 != null) && (obj2 != null) && obj2.toString().equalsIgnoreCase(obj1.toString()));
+    }
+
     public static boolean isInteger(Object obj) {
         return obj == parseToInteger(obj);
     }
@@ -290,6 +303,38 @@ public class DataUtils {
             randomNumber = randomNumber.replaceFirst("0", "9");
         }
         return randomNumber;
+    }
+
+    // template\import\File_mau_import_template.xlsx
+    public static InputStream readInputStreamResource(String path) throws IOException {
+        ClassPathResource classPathResource = new ClassPathResource(path);
+        return classPathResource.getInputStream();
+    }
+
+    public static byte[] readFileResource(String path) throws IOException {
+        ClassPathResource classPathResource = new ClassPathResource(path);
+        return classPathResource.getInputStream().readAllBytes();
+
+        // return
+        // DataUtils.class.getClassLoader().getResourceAsStream(path).readAllBytes();
+    }
+
+    public static <T> T base64ToObject(String encodedString, Class<T> classOutput)
+            throws IOException {
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+        String decodedString = new String(decodedBytes, StandardCharsets.UTF_8.name());
+
+        return jsonToObject(decodedString, classOutput);
+    }
+
+    public static <T> T byteToObject(byte[] input, Class<T> classOutput) {
+        String jsonData = new String(input, StandardCharsets.UTF_8);
+        try {
+            return DataUtils.jsonToObject(jsonData, classOutput);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+        }
+        return null;
     }
 
 
@@ -366,6 +411,7 @@ public class DataUtils {
 
         throw new IllegalArgumentException("Don't know how to instantiate " + className);
     }
+
 
 
 }

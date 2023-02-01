@@ -54,7 +54,7 @@ public class PermissionServiceImpl implements PermissionService {
 
         PermissionDTO dto = findById(item.getId());
         if (DataUtils.notNull(dto)) {
-            entity.setLastModifiedDate(LocalDateTime.now());
+            item.setLastModifiedDate(LocalDateTime.now());
         }
         entity = mapper.toPersistenceBean(item);
         return mapper.toDtoBean(repository.save(entity));

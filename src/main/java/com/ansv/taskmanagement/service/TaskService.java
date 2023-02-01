@@ -1,5 +1,6 @@
 package com.ansv.taskmanagement.service;
 
+import com.ansv.taskmanagement.dto.request.TaskImportDTO;
 import com.ansv.taskmanagement.dto.response.TaskDTO;
 import com.ansv.taskmanagement.model.Task;
 import org.springframework.data.domain.Page;
@@ -25,5 +26,7 @@ public interface TaskService {
     void deleteById(Long id);
 
     Integer deleteByListId(List<Long> id);
+
+    void importTask(List<TaskImportDTO> dtos);
 
 }
