@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("taskManagement/api/member")
+@RequestMapping("/api/member")
 public class MemberController extends BaseController {
 
     @Autowired
@@ -52,7 +52,7 @@ public class MemberController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<MemberDTO>> update(@PathVariable(value = "id") Long id,@RequestBody @Valid MemberDTO item) {
+    public ResponseEntity<ResponseDataObject<MemberDTO>> update(@RequestBody @Valid MemberDTO item) {
         ResponseDataObject<MemberDTO> response = new ResponseDataObject<>();
         MemberDTO dto = memberService.save(item);
         response.initData(dto);
