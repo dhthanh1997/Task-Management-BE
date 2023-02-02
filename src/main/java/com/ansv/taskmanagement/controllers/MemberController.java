@@ -52,8 +52,9 @@ public class MemberController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<MemberDTO>> update(@RequestBody @Valid MemberDTO item) {
+    public ResponseEntity<ResponseDataObject<MemberDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid MemberDTO item) {
         ResponseDataObject<MemberDTO> response = new ResponseDataObject<>();
+        item.setId(id);
         MemberDTO dto = memberService.save(item);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
