@@ -76,4 +76,7 @@ public class Project extends Auditable<String> implements Serializable {
     @OneToOne(mappedBy = "project")
     private Team team;
 
+    @Column(name = "state")
+    private Byte state;
+
 }

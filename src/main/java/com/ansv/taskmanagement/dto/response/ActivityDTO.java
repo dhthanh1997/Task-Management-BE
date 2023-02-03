@@ -42,4 +42,5 @@ public class ActivityDTO extends BaseDTO<String> {
 
     private Long parentId;
 
+    private Byte state;
 }

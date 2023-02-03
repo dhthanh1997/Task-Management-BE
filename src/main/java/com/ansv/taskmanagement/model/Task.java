@@ -90,4 +90,7 @@ public class Task extends Auditable<String> implements Serializable {
     @Column(name = "parent_id")
     private Long parentId;
 
+    @Column(name = "state")
+    private Byte state;
+
 }
