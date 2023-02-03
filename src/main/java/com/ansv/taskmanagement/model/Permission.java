@@ -28,6 +28,9 @@ public class Permission extends Auditable<String> implements Serializable {
     @Column(name = "code", columnDefinition = "varchar(20)")
     private String code;
 
+    @Column(name = "parent_code", columnDefinition = "varchar(500)")
+    private String parentCode;
+
     @Column(name = "description", columnDefinition = "nvarchar(500)")
     private String description;
 
