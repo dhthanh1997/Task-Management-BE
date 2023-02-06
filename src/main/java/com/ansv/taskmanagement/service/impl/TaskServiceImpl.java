@@ -78,6 +78,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskDTO> findByParentId(Long id) {
+        List<Task> listData = repository.findByParentId(id);
+        List<TaskDTO> listDTOs = mapper.toDtoBean(listData);
+        return listDTOs;
+    }
+
+    @Override
     public Page<TaskDTO> findBySearchCriteria(Optional<String> search, Pageable page) {
 //        try {
         GenericSpecificationBuilder<Task> builder = new GenericSpecificationBuilder<>();

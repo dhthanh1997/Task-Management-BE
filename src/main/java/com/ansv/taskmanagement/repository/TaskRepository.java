@@ -19,4 +19,8 @@ public interface TaskRepository extends JpaRepository<Task, Long>, TaskRepositor
     @Query(value = "DELETE FROM task WHERE id IN :listId", nativeQuery = true)
     Integer deleteByListId(@Param("listId") List<Long> listId);
 
+    @Transactional
+    @Modifying
+    List<Task> findByParentId(Long id);
+
 }

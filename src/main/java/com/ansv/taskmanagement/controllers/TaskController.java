@@ -60,6 +60,14 @@ public class TaskController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/withParent/{id}")
+    public ResponseEntity<ResponseDataObject<List<TaskDTO>>> getByParentId(@PathVariable(value = "id") Long id) {
+        ResponseDataObject<List<TaskDTO>> response = new ResponseDataObject<>();
+        List<TaskDTO> listData = TaskService.findByParentId(id);
+        response.initData(listData);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDataObject<Integer>> deleteById(@PathVariable(value = "id") Long id) {
         ResponseDataObject<Integer> response = new ResponseDataObject<>();
