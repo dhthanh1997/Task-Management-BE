@@ -21,6 +21,8 @@ public interface TaskService {
 
     List<TaskDTO> search(Map<String, Object> mapParam);
 
+    List<TaskDTO> findByParentId(Long id);
+
     Page<TaskDTO> findBySearchCriteria(Optional<String> search, Pageable page);
 
     void deleteById(Long id);
