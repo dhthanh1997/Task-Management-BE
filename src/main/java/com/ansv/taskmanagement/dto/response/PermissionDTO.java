@@ -20,4 +20,6 @@ public class PermissionDTO extends BaseDTO<String>   {
 
     private String description;
 
+    private String parentCode;
+
 }
