@@ -43,11 +43,35 @@ public class TaskController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/listTask")
+    public ResponseEntity<ResponseDataObject<List<TaskDTO>>> addListTask(@RequestBody @Valid List<TaskDTO> item) {
+        ResponseDataObject<List<TaskDTO>> response = new ResponseDataObject<>();
+        List<TaskDTO> listDTO = TaskService.saveListTask(item);
+        response.initData(listDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDataObject<TaskDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid TaskDTO item) {
         ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
         item.setId(id);
         TaskDTO dto = TaskService.save(item);
+        response.initData(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/updateListTask")
+    public ResponseEntity<ResponseDataObject<List<TaskDTO>>> updateListTask(@RequestBody @Valid List<TaskDTO> item) {
+        ResponseDataObject<List<TaskDTO>> response = new ResponseDataObject<>();
+        List<TaskDTO> listDTO = TaskService.saveListTask(item);
+        response.initData(listDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/markCompleteTask/{id}")
+    public ResponseEntity<ResponseDataObject<TaskDTO>> markCompleteTask(@PathVariable(value = "id") Long id) {
+        ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
+        TaskDTO dto = TaskService.markCompleteTask(id);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

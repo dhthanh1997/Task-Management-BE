@@ -17,6 +17,10 @@ public interface TaskService {
 
     TaskDTO save(TaskDTO item);
 
+    TaskDTO markCompleteTask(Long id);
+
+    List<TaskDTO> saveListTask(List<TaskDTO> listData);
+
     List<TaskDTO> findAll();
 
     List<TaskDTO> search(Map<String, Object> mapParam);

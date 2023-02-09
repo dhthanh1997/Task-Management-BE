@@ -1,5 +1,6 @@
 package com.ansv.taskmanagement.service.impl;
 
+import com.ansv.taskmanagement.constants.StateEnum;
 import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
 import com.ansv.taskmanagement.dto.request.TaskImportDTO;
 import com.ansv.taskmanagement.dto.response.TaskDTO;
@@ -19,10 +20,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.plaf.nimbus.State;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,6 +65,37 @@ public class TaskServiceImpl implements TaskService {
 //            return null;
 //        }
     }
+
+    @Override
+    public TaskDTO markCompleteTask(Long id) {
+        TaskDTO dto = findById(id);
+        switch (dto.getState()) {
+            // Chưa hoàn thành -> hoàn thành
+            case 0:
+                dto.setState((byte)Arrays.asList(StateEnum.values()).indexOf(StateEnum.DONE));
+                break;
+            // Hoàn thành -> chưa hoàn thành
+            case 1:
+                dto.setState((byte)Arrays.asList(StateEnum.values()).indexOf(StateEnum.NOT_DONE));
+                break;
+            default:
+                dto.setState((byte)Arrays.asList(StateEnum.values()).indexOf(StateEnum.DONE));
+                break;
+        }
+        dto = save(dto);
+        return dto;
+    }
+
+    @Override
+    public List<TaskDTO> saveListTask(List<TaskDTO> listData) {
+        List<TaskDTO> listDTO = new ArrayList<>();
+        for(TaskDTO task: listData) {
+            TaskDTO dto = save(task);
+            listDTO.add(dto);
+        }
+        return listDTO;
+    }
+
 
     @Override
     public List<TaskDTO> findAll() {
