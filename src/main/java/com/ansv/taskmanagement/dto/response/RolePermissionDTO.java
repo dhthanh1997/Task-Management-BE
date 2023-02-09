@@ -14,13 +14,13 @@ import lombok.Setter;
 public class RolePermissionDTO   {
     private Long id;
 
-    private String name;
+//    private String name;
+//
+//    private String code;
+//
+//    private String parentCode;
 
-    private String code;
-
-    private String parentCode;
-
-    private String description;
+//    private String description;
 
     private Long roleId;
 
