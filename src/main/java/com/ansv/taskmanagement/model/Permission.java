@@ -37,7 +37,7 @@ public class Permission extends Auditable<String> implements Serializable {
     @Column(name = "type")
     private Byte type;
 
-    @OneToMany(mappedBy = "permission")
-    private Set<RolePermission> rolePermission;
+//    @OneToMany(mappedBy = "permission")
+//    private Set<RolePermission> rolePermission;
 
 }

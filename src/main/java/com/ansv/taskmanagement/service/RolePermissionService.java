@@ -1,5 +1,6 @@
 package com.ansv.taskmanagement.service;
 
+import com.ansv.taskmanagement.dto.response.PermissionDTO;
 import com.ansv.taskmanagement.dto.response.RolePermissionDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,8 @@ public interface RolePermissionService {
     RolePermissionDTO findById(Long id);
 
     RolePermissionDTO save(RolePermissionDTO item);
+
+    List<RolePermissionDTO> saveRolePermission(List<RolePermissionDTO> listData);
 
     List<RolePermissionDTO> findAll();
 
