@@ -23,4 +23,10 @@ public interface TaskRepository extends JpaRepository<Task, Long>, TaskRepositor
     @Modifying
     List<Task> findByParentId(Long id);
 
+//    @Transactional
+//    @Modifying
+////    @Query(value = "SELECT COUNT(*) FROM task WHERE parent_id = :id", nativeQuery = true)
+////    Long countByParentId(@Param("id") Long id);
+//    Long countByParentId(Long id);
+
 }

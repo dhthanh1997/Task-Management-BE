@@ -132,7 +132,6 @@ public class GenericSpecification<T> implements Specification<T> {
             case LESS_THAN:
                 return cb.lessThan(root.<String>get(searchCriteria.getKey()), searchCriteria.getValue().toString());
             case LESS_THAN_EQUAL:
-
                 return cb.lessThanOrEqualTo(root.<String>get(searchCriteria.getKey()), searchCriteria.getValue().toString());
         }
         return null;

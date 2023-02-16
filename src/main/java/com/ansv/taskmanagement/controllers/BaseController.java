@@ -27,10 +27,10 @@ public class BaseController {
         }
 
         List<Sort.Order> orderList = new ArrayList<>();
-        if (sort.get(0).contains(",")) {
+        if (sort.get(0).contains(".")) {
             String[] strArray;
             for (String str : sort) {
-                strArray = str.split(",");
+                strArray = str.split(".");
                 if (strArray.length > 1) {
                     if ("asc".equalsIgnoreCase(strArray[0])) {
                         orderList.add(Sort.Order.asc(camelToSnake(strArray[0])));

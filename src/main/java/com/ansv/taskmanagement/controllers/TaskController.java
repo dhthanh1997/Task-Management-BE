@@ -1,9 +1,11 @@
 package com.ansv.taskmanagement.controllers;
 
 
+import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
 import com.ansv.taskmanagement.dto.response.TaskDTO;
 import com.ansv.taskmanagement.dto.response.ResponseDataObject;
 import com.ansv.taskmanagement.service.TaskService;
+import com.ansv.taskmanagement.util.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,8 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api/task")
@@ -25,9 +29,17 @@ public class TaskController extends BaseController {
     private TaskService TaskService;
 
     @GetMapping("")
-    public ResponseEntity<ResponseDataObject<TaskDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search) {
+    public ResponseEntity<ResponseDataObject<TaskDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search, @RequestParam(name = "sort") Optional<String> sort) {
         ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
-        Pageable page = pageRequest(new ArrayList<>(), pageNumber - 1, pageSize);
+        List<String> sorts = new ArrayList<>();
+        if (DataUtils.notNull(sort)) {
+            Pattern pattern = Pattern.compile("(,|\n)", Pattern.UNICODE_CHARACTER_CLASS);
+            Matcher matcher = pattern.matcher(sort.get());
+            while (matcher.find()) {
+                sorts.add(matcher.group(0));
+            }
+        }
+        Pageable page = pageRequest(sorts, pageNumber - 1, pageSize);
         Page<TaskDTO> listDTO = TaskService.findBySearchCriteria(search, page);
         // response
         response.pagingData = listDTO;
@@ -112,7 +124,14 @@ public class TaskController extends BaseController {
     @PostMapping("/uploadFileExcel")
     public ResponseEntity<ResponseDataObject<String>> uploadFileExcel(@RequestParam(name = "file") MultipartFile file) throws Exception {
         ResponseDataObject<String> response = new ResponseDataObject<>();
-        
+
+        response.initData("Successfull");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/exportExcel")
+    public ResponseEntity<ResponseDataObject<String>> exportExcell(@RequestParam(name = "id") Long id) {
+        ResponseDataObject<String> response = new ResponseDataObject<>();
         response.initData("Successfull");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
