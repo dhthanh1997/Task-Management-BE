@@ -55,6 +55,7 @@ public enum SearchOperation implements Serializable {
             case "nc": return DOES_NOT_CONTAIN;
             case "eq":
             case ":" :
+            case "=":
                 return EQUAL;
             case "ne": return NOT_EQUAL;
             case "bw": return BEGINS_WITH;

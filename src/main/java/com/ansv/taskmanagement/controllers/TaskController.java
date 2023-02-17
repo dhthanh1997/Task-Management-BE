@@ -32,7 +32,7 @@ public class TaskController extends BaseController {
     public ResponseEntity<ResponseDataObject<TaskDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search, @RequestParam(name = "sort") Optional<String> sort) {
         ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
         List<String> sorts = new ArrayList<>();
-        if (DataUtils.notNull(sort)) {
+        if (sort.isPresent()) {
             Pattern pattern = Pattern.compile("(,|\n)", Pattern.UNICODE_CHARACTER_CLASS);
             Matcher matcher = pattern.matcher(sort.get());
             while (matcher.find()) {

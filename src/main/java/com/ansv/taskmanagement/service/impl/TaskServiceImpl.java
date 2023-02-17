@@ -135,7 +135,7 @@ public class TaskServiceImpl implements TaskService {
         GenericSpecificationBuilder<Task> builder = new GenericSpecificationBuilder<>();
 
         // check chuỗi để tách các param search
-        if (DataUtils.notNull(search)) {
+        if (search.isPresent()) {
             Pattern pattern = Pattern.compile("(\\w+?)(\\.)(:|<|>|(\\w+?))(\\.)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
             Matcher matcher = pattern.matcher(search + ",");
             while (matcher.find()) {

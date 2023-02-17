@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ansv.taskmanagement.dto.criteria.SearchOperation.*;
+
 public class GenericSpecificationBuilder<T> {
     private final List<SearchCriteria> params;
 
@@ -53,9 +55,19 @@ public class GenericSpecificationBuilder<T> {
         for(int id = 1; id < params.size(); id ++) {
             SearchCriteria searchCriteria = params.get(id);
 
-            result = SearchOperation.getDataOption(searchCriteria.getOperation()) == SearchOperation.ALL
-                    ? Specification.where(result).and(new GenericSpecification<T>(searchCriteria, clazz))
-                    : Specification.where(result).or(new GenericSpecification<T>(searchCriteria, clazz));
+            switch (getDataOption(searchCriteria.getOperation())) {
+                case ANY:
+                    Specification.where(result).or(new GenericSpecification<T>(searchCriteria, clazz));
+                    break;
+                case ALL:
+                default:
+                    Specification.where(result).and(new GenericSpecification<T>(searchCriteria, clazz));
+                    break;
+            }
+
+//            result = getDataOption(searchCriteria.getOperation()) == ALL
+//                    ? Specification.where(result).and(new GenericSpecification<T>(searchCriteria, clazz))
+//                    : Specification.where(result).or(new GenericSpecification<T>(searchCriteria, clazz));
         }
 
         return result;

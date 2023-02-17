@@ -44,6 +44,11 @@ public class GenericSpecification<T> implements Specification<T> {
             searchCriteria.setDataType(Float.class);
 
         }
+        if (dataType.equals("Byte")) {
+            searchCriteria.setValue(DataUtils.convertToDataType(Byte.class, searchCriteria.getValue().toString()));
+            searchCriteria.setDataType(Byte.class);
+
+        }
         this.searchCriteria = searchCriteria;
     }
 
