@@ -33,7 +33,7 @@ public class TaskController extends BaseController {
         ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
         List<String> sorts = new ArrayList<>();
 //        sort pattern: (\w+?)(,)
-        if (sort.isPresent()) {-
+        if (sort.isPresent()) {
             Pattern pattern = Pattern.compile("(\\w+?)(,)", Pattern.UNICODE_CHARACTER_CLASS);
             Matcher matcher = pattern.matcher(sort.get());
             while (matcher.find()) {
