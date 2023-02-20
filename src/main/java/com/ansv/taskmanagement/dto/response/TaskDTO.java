@@ -44,5 +44,7 @@ public class TaskDTO extends BaseDTO<String> {
     private Long parentId;
 
     private Byte state;
+    private Long numberOfSubTask;
+
 
 }
