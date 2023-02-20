@@ -11,6 +11,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -22,33 +25,46 @@ public class GenericSpecification<T> implements Specification<T> {
     public GenericSpecification(final SearchCriteria searchCriteria, Class<T> clazz) {
         super();
         String dataType = findDataType(searchCriteria.getKey(), clazz);
+        List<String> arrayIgnore = Arrays.asList(SearchOperation.IGNORE_OPERATION_SET);
         if (dataType.equals("Integer")) {
-            searchCriteria.setValue(DataUtils.convertToDataType(Integer.class, searchCriteria.getValue().toString()));
-            searchCriteria.setDataType(Integer.class);
+            if(!arrayIgnore.contains(searchCriteria.getOperation())) {
+                searchCriteria.setValue(DataUtils.convertToDataType(Integer.class, searchCriteria.getValue().toString()));
+                searchCriteria.setDataType(Integer.class);
+            }
         }
         if (dataType.equals("Long")) {
-            searchCriteria.setValue(DataUtils.convertToDataType(Long.class, searchCriteria.getValue().toString()));
-            searchCriteria.setDataType(Long.class);
+            if(!arrayIgnore.contains(searchCriteria.getOperation())) {
+                searchCriteria.setValue(DataUtils.convertToDataType(Long.class, searchCriteria.getValue().toString()));
+                searchCriteria.setDataType(Long.class);
+            }
 
         }
         if (dataType.equals("Double")) {
-            searchCriteria.setValue(DataUtils.convertToDataType(Double.class, searchCriteria.getValue().toString()));
-            searchCriteria.setDataType(Double.class);
+            if(!arrayIgnore.contains(searchCriteria.getOperation())) {
+                searchCriteria.setValue(DataUtils.convertToDataType(Double.class, searchCriteria.getValue().toString()));
+                searchCriteria.setDataType(Double.class);
+            }
+
 
         }
         if (dataType.equals("String")) {
 //            searchCriteria.setValue(DataUtils.convertToDataType(String.class, searchCriteria.getValue().toString()));
         }
         if (dataType.equals("Float")) {
-            searchCriteria.setValue(DataUtils.convertToDataType(Float.class, searchCriteria.getValue().toString()));
-            searchCriteria.setDataType(Float.class);
+            if(!arrayIgnore.contains(searchCriteria.getOperation())) {
+                searchCriteria.setValue(DataUtils.convertToDataType(Float.class, searchCriteria.getValue().toString()));
+                searchCriteria.setDataType(Float.class);
+            }
 
         }
+
         if (dataType.equals("Byte")) {
-            searchCriteria.setValue(DataUtils.convertToDataType(Byte.class, searchCriteria.getValue().toString()));
-            searchCriteria.setDataType(Byte.class);
-
+            if(!arrayIgnore.contains(searchCriteria.getOperation())) {
+                searchCriteria.setValue(DataUtils.convertToDataType(Byte.class, searchCriteria.getValue().toString()));
+                searchCriteria.setDataType(Byte.class);
+            }
         }
+
         this.searchCriteria = searchCriteria;
     }
 
@@ -116,9 +132,9 @@ public class GenericSpecification<T> implements Specification<T> {
                     return cb.notEqual(root.<Object>get(searchCriteria.getKey()), strToSearch);
                 }
             case NUL:
-                return cb.isNull(cb.lower(root.get(searchCriteria.getKey())));
+                return cb.isNull((root.get(searchCriteria.getKey())));
             case NOT_NULL:
-                return cb.isNotNull(cb.lower(root.get(searchCriteria.getKey())));
+                return cb.isNotNull((root.get(searchCriteria.getKey())));
             case GREATER_THAN:
 //                if (strToSearch instanceof String) {
 //                }

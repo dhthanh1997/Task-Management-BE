@@ -136,10 +136,12 @@ public class TaskServiceImpl implements TaskService {
 
         // check chuỗi để tách các param search
         if (search.isPresent()) {
-            Pattern pattern = Pattern.compile("(\\w+?)(\\.)(:|<|>|(\\w+?))(\\.)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
-            Matcher matcher = pattern.matcher(search + ",");
+//            (\w+?)(.)(:|<|>|\w+?)(.)(\w+?)(,) = a.b.c,
+//            (\w+?)(.)(:|<|>|\w+?)(,) = a.b,
+            Pattern pattern = Pattern.compile("(\\w+?)(.)(:|<|>|\\w+?)(.)(\\w+?)(,)", Pattern.UNICODE_CHARACTER_CLASS);
+            Matcher matcher = pattern.matcher(search.get());
             while (matcher.find()) {
-                builder.with(new SearchCriteria(matcher.group(1), matcher.group(3), matcher.group(6)));
+                builder.with(new SearchCriteria(matcher.group(1), matcher.group(3), matcher.group(5)));
             }
         }
         // specification
@@ -147,7 +149,6 @@ public class TaskServiceImpl implements TaskService {
         Specification<Task> spec = builder.build();
         Page<TaskDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             TaskDTO dto = mapper.toDtoBean(entity);
-//            Long count = DataUtils.isNullOrEmpty(repository.countByParentId(entity.getId())) ? 0 : repository.countByParentId(entity.getId());
             Long count = DataUtils.parseToLong(findByParentId(entity.getId()).size());
             dto.setNumberOfSubTask(count);
             return dto;

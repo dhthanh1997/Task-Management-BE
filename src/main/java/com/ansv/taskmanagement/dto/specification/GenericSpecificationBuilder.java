@@ -57,11 +57,11 @@ public class GenericSpecificationBuilder<T> {
 
             switch (getDataOption(searchCriteria.getOperation())) {
                 case ANY:
-                    Specification.where(result).or(new GenericSpecification<T>(searchCriteria, clazz));
+                    result = Specification.where(result).or(new GenericSpecification<T>(searchCriteria, clazz));
                     break;
                 case ALL:
                 default:
-                    Specification.where(result).and(new GenericSpecification<T>(searchCriteria, clazz));
+                  result =  Specification.where(result).and(new GenericSpecification<T>(searchCriteria, clazz));
                     break;
             }
 

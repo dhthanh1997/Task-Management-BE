@@ -32,7 +32,7 @@ public class BaseController {
             for (String str : sort) {
                 strArray = str.split("_");
                 if (strArray.length > 1) {
-                    if ("asc".equalsIgnoreCase(strArray[0])) {
+                    if ("asc".equalsIgnoreCase(strArray[1])) {
                         orderList.add(Sort.Order.asc(camelToSnake(strArray[0])));
                     } else {
                         orderList.add(Sort.Order.desc(camelToSnake(strArray[0])));
