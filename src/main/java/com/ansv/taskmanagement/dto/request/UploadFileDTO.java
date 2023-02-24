@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +17,6 @@ public class UploadFileDTO implements Serializable {
     public Long taskId;
     public Long projectId;
     public String name;
-    public MultipartFile[] files;
+    public List<String> deleteNames;
     public String note;
 }
