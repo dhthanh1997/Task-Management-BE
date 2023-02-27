@@ -66,29 +66,21 @@ public class TaskServiceImpl implements TaskService {
         List<TaskDTO> subTaskDTO = findByParentId(id);
 
         switch (dto.getState()) {
-            // Chưa hoàn thành -> hoàn thành
-            case 0:
-                dto.setState((byte)Arrays.asList(StateEnum.values()).indexOf(StateEnum.DONE));
-                if(DataUtils.isNullOrEmpty(subTaskDTO)) {
-                        for(TaskDTO sub: subTaskDTO) {
-                            sub.setState((byte)Arrays.asList(StateEnum.values()).indexOf(StateEnum.DONE));
-                        }
-                        saveListTask(subTaskDTO);
-                }
-                break;
             // Hoàn thành -> chưa hoàn thành
             case 1:
                 dto.setState((byte)Arrays.asList(StateEnum.values()).indexOf(StateEnum.NOT_DONE));
-                if(DataUtils.isNullOrEmpty(subTaskDTO)) {
+                if(DataUtils.isNullOrEmpty(subTaskDTO) && subTaskDTO.size() > 0) {
                     for(TaskDTO sub: subTaskDTO) {
                         sub.setState((byte)Arrays.asList(StateEnum.values()).indexOf(StateEnum.NOT_DONE));
                     }
                     saveListTask(subTaskDTO);
                 }
                 break;
+            // Chưa hoàn thành -> hoàn thành
+            case 0:
             default:
                 dto.setState((byte)Arrays.asList(StateEnum.values()).indexOf(StateEnum.DONE));
-                if(DataUtils.isNullOrEmpty(subTaskDTO)) {
+                if(DataUtils.isNullOrEmpty(subTaskDTO) && subTaskDTO.size() > 0) {
                     for(TaskDTO sub: subTaskDTO) {
                         sub.setState((byte)Arrays.asList(StateEnum.values()).indexOf(StateEnum.DONE));
                     }
