@@ -5,6 +5,7 @@ import com.ansv.taskmanagement.dto.response.ActivityDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
 import com.ansv.taskmanagement.model.Activity;
+import com.ansv.taskmanagement.model.Comment;
 import com.ansv.taskmanagement.model.Task;
 import com.ansv.taskmanagement.repository.ActivityRepository;
 import com.ansv.taskmanagement.service.ActivityService;
@@ -54,7 +55,7 @@ public class ActivityServiceImpl implements ActivityService {
 
         ActivityDTO dto = findById(item.getId());
         if (DataUtils.notNull(dto)) {
-            entity.setLastModifiedDate(LocalDateTime.now());
+            item.setLastModifiedDate(LocalDateTime.now());
         }
         entity = mapper.toPersistenceBean(item);
         return mapper.toDtoBean(repository.save(entity));
@@ -89,6 +90,7 @@ public class ActivityServiceImpl implements ActivityService {
             }
         }
         // specification
+        builder.setClazz(Activity.class);
         Specification<Activity> spec = builder.build();
         Page<ActivityDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             ActivityDTO dto = mapper.toDtoBean(entity);

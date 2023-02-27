@@ -1,0 +1,18 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet author="PC (generated)" id="1672127810176-1">
+        <addColumn tableName="task">
+            <column name="note" type="nvarchar(500)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1672127810176-2">
+        <addColumn tableName="task">
+            <column name="problem" type="nvarchar(500)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1672127810176-3">
+        <addColumn tableName="task">
+            <column name="solution" type="nvarchar(500)"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

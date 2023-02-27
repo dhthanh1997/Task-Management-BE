@@ -40,4 +40,6 @@ public class ProjectDTO extends BaseDTO<String>   {
 
     private String attachFile;
 
+    private Byte state;
+
 }

@@ -5,6 +5,7 @@ import com.ansv.taskmanagement.dto.response.ProjectDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
 import com.ansv.taskmanagement.model.Project;
+import com.ansv.taskmanagement.model.RoleOfApplication;
 import com.ansv.taskmanagement.repository.ProjectRepository;
 import com.ansv.taskmanagement.service.ProjectService;
 import com.ansv.taskmanagement.util.DataUtils;
@@ -88,6 +89,7 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
         // specification
+        builder.setClazz(Project.class);
         Specification<Project> spec = builder.build();
         Page<ProjectDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             ProjectDTO dto = mapper.toDtoBean(entity);

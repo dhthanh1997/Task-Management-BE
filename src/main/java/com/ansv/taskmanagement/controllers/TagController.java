@@ -53,7 +53,7 @@ public class TagController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<TagDTO>> update(@RequestBody @Valid TagDTO item) {
+    public ResponseEntity<ResponseDataObject<TagDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid TagDTO item) {
         ResponseDataObject<TagDTO> response = new ResponseDataObject<>();
         TagDTO dto = tagService.save(item);
         response.initData(dto);

@@ -5,6 +5,7 @@ import com.ansv.taskmanagement.dto.response.RoleOfApplicationDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
 import com.ansv.taskmanagement.model.RoleOfApplication;
+import com.ansv.taskmanagement.model.RoleOfProject;
 import com.ansv.taskmanagement.repository.RoleOfApplicationRepository;
 import com.ansv.taskmanagement.service.RoleOfApplicationService;
 import com.ansv.taskmanagement.util.DataUtils;
@@ -53,7 +54,7 @@ public class RoleOfApplicationServiceImpl implements RoleOfApplicationService {
 
         RoleOfApplicationDTO dto = findById(item.getId());
         if (DataUtils.notNull(dto)) {
-            entity.setLastModifiedDate(LocalDateTime.now());
+            item.setLastModifiedDate(LocalDateTime.now());
         }
         entity = mapper.toPersistenceBean(item);
         return mapper.toDtoBean(repository.save(entity));
@@ -88,6 +89,7 @@ public class RoleOfApplicationServiceImpl implements RoleOfApplicationService {
             }
         }
         // specification
+        builder.setClazz(RoleOfApplication.class);
         Specification<RoleOfApplication> spec = builder.build();
         Page<RoleOfApplicationDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             RoleOfApplicationDTO dto = mapper.toDtoBean(entity);

@@ -31,7 +31,7 @@ public class RoleOfApplication extends Auditable<String> implements Serializable
     @Column(name = "description", columnDefinition = "nvarchar(500)")
     private String description;
 
-    @OneToMany(mappedBy = "roleOfApplication")
-    private Set<RolePermission> rolePermission;
+//    @OneToMany(mappedBy = "roleOfApplication")
+//    private Set<RolePermission> rolePermission;
 
 }

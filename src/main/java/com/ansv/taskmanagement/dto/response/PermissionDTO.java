@@ -12,12 +12,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PermissionDTO extends BaseDTO<String>   {
-    private Long id;
+    public Long id;
 
-    private String name;
+    public String name;
 
-    private String code;
+    public String code;
 
-    private String description;
+    public String description;
+
+    public String parentCode;
+
+    public Byte type;
 
 }

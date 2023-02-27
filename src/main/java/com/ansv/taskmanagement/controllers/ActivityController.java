@@ -48,7 +48,7 @@ public class ActivityController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<ActivityDTO>> update(@RequestBody @Valid ActivityDTO item) {
+    public ResponseEntity<ResponseDataObject<ActivityDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid ActivityDTO item) {
         ResponseDataObject<ActivityDTO> response = new ResponseDataObject<>();
         ActivityDTO dto = ActivityService.save(item);
         response.initData(dto);

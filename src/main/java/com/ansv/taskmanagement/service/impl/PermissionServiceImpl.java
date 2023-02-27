@@ -5,6 +5,7 @@ import com.ansv.taskmanagement.dto.response.PermissionDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
 import com.ansv.taskmanagement.model.Permission;
+import com.ansv.taskmanagement.model.Project;
 import com.ansv.taskmanagement.repository.PermissionRepository;
 import com.ansv.taskmanagement.service.PermissionService;
 import com.ansv.taskmanagement.util.DataUtils;
@@ -53,7 +54,7 @@ public class PermissionServiceImpl implements PermissionService {
 
         PermissionDTO dto = findById(item.getId());
         if (DataUtils.notNull(dto)) {
-            entity.setLastModifiedDate(LocalDateTime.now());
+            item.setLastModifiedDate(LocalDateTime.now());
         }
         entity = mapper.toPersistenceBean(item);
         return mapper.toDtoBean(repository.save(entity));
@@ -88,6 +89,7 @@ public class PermissionServiceImpl implements PermissionService {
             }
         }
         // specification
+        builder.setClazz(Permission.class);
         Specification<Permission> spec = builder.build();
         Page<PermissionDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             PermissionDTO dto = mapper.toDtoBean(entity);

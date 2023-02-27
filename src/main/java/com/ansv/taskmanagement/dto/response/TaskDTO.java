@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskDTO extends BaseDTO<String>   {
+public class TaskDTO extends BaseDTO<String> {
     private Long id;
 
     private String name;
@@ -30,14 +30,21 @@ public class TaskDTO extends BaseDTO<String>   {
 
     private LocalDateTime endDate;
 
-    private LocalDateTime readStartDate;
+    private LocalDateTime realStartDate;
 
-    private LocalDateTime readEndDate;
+    private LocalDateTime realEndDate;
 
     private String description;
+    private String problem;
+    private String solution;
+    private String note;
 
     private String attachFile;
 
     private Long parentId;
+
+    private Byte state;
+    private Long numberOfSubTask;
+    private Long sectionId;
 
 }

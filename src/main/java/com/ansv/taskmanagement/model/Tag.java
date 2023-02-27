@@ -30,4 +30,7 @@ public class Tag extends Auditable<String> implements Serializable {
     @Column(name = "icon", columnDefinition = "varchar(500)")
     private String icon;
 
+    @Column(name = "color", columnDefinition = "varchar(50)")
+    private String color;
+
 }

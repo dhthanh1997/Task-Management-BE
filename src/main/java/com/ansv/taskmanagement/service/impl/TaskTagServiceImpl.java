@@ -5,6 +5,7 @@ import com.ansv.taskmanagement.dto.response.TaskTagDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
 import com.ansv.taskmanagement.model.TaskTag;
+import com.ansv.taskmanagement.model.WorkLog;
 import com.ansv.taskmanagement.repository.TaskTagRepository;
 import com.ansv.taskmanagement.service.TaskTagService;
 import com.ansv.taskmanagement.util.DataUtils;
@@ -88,6 +89,7 @@ public class TaskTagServiceImpl implements TaskTagService {
             }
         }
         // specification
+        builder.setClazz(TaskTag.class);
         Specification<TaskTag> spec = builder.build();
         Page<TaskTagDTO> listDTO = repository.findAll(spec, page).map(entity -> {
             TaskTagDTO dto = mapper.toDtoBean(entity);

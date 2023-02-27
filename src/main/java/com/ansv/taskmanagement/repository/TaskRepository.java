@@ -19,4 +19,14 @@ public interface TaskRepository extends JpaRepository<Task, Long>, TaskRepositor
     @Query(value = "DELETE FROM task WHERE id IN :listId", nativeQuery = true)
     Integer deleteByListId(@Param("listId") List<Long> listId);
 
+    @Transactional
+    @Modifying
+    List<Task> findByParentId(Long id);
+
+//    @Transactional
+//    @Modifying
+////    @Query(value = "SELECT COUNT(*) FROM task WHERE parent_id = :id", nativeQuery = true)
+////    Long countByParentId(@Param("id") Long id);
+//    Long countByParentId(Long id);
+
 }

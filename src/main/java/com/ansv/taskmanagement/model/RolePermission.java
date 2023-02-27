@@ -18,27 +18,22 @@ import java.io.Serializable;
 public class RolePermission implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", columnDefinition = "nvarchar(500)")
-    private String name;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "role_id", referencedColumnName = "id")
+//    private RoleOfApplication roleOfApplication;
+//
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "permission_id", referencedColumnName = "id")
+//    private Permission permission;
 
-    @Column(name = "code", columnDefinition = "varchar(20)")
-    private String code;
+    @Column(name = "role_id")
+    private Long roleId;
 
-    @Column(name = "parent_code", columnDefinition = "varchar(500)")
-    private String parentCode;
+    @Column(name = "permission_id")
+    private Long permissionId;
 
-    @Column(name = "description", columnDefinition = "nvarchar(500)")
-    private String description;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private RoleOfApplication roleOfApplication;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "permission_id", referencedColumnName = "id")
-    private Permission permission;
 
 }

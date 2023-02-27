@@ -42,8 +42,16 @@ public class RolePermisisonController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/rolePermission")
+    public ResponseEntity<ResponseDataObject<List<RolePermissionDTO>>> createRolePermission(@RequestBody List<RolePermissionDTO> item) {
+        ResponseDataObject<List<RolePermissionDTO>> response = new ResponseDataObject<>();
+        List<RolePermissionDTO>  dto = rolePermissionService.saveRolePermission(item);
+        response.initData(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<RolePermissionDTO>> update(@RequestBody @Valid RolePermissionDTO item) {
+    public ResponseEntity<ResponseDataObject<RolePermissionDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid RolePermissionDTO item) {
         ResponseDataObject<RolePermissionDTO> response = new ResponseDataObject<>();
         RolePermissionDTO dto = rolePermissionService.save(item);
         response.initData(dto);
