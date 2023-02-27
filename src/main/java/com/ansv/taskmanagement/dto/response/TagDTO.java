@@ -20,4 +20,6 @@ public class TagDTO extends BaseDTO<String> {
 
     private String icon;
 
+    private String color;
+
 }
