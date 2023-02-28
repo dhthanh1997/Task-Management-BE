@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -74,21 +75,18 @@ public class StorageServiceImpl implements StorageService {
     public Boolean deleteFile(UploadFileDTO item) throws IOException {
         if (!DataUtils.isNullOrEmpty(item.taskId)) {
             if (!DataUtils.isNullOrEmpty(pathTaskStorage)) {
-                String pathTask = pathTaskStorage + "/" + item.taskId.toString() + "/";
-//                for (MultipartFile multipartFile : item.getFiles()) {
-//                    pathTask += multipartFile.getOriginalFilename();
-//                    Files.delete(Paths.get(pathTask));
-//                }
+                String pathTask = pathTaskStorage + "/" + item.taskId.toString();
+                Path path = Paths.get(pathTask).resolve(item.getName());
+                Files.deleteIfExists(path);
             }
             return true;
+
         }
         if (!DataUtils.isNullOrEmpty(item.projectId)) {
             if (!DataUtils.isNullOrEmpty(pathProjectStorage)) {
-                String pathProject = pathProjectStorage + "/" + item.projectId.toString() + "/";
-//                for (MultipartFile multipartFile : item.getFiles()) {
-//                    pathProject += multipartFile.getOriginalFilename();
-//                    Files.delete(Paths.get(pathProject));
-//                }
+                String pathProject = pathProjectStorage + "/" + item.projectId.toString();
+                Path path = Paths.get(pathProject).resolve(item.getName());
+                Files.deleteIfExists(path);
             }
             return true;
         }
@@ -122,33 +120,57 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public File getFileById(UploadFileDTO item) throws IOException {
+    public Resource getFileById(UploadFileDTO item) throws IOException {
         if (!DataUtils.isNullOrEmpty(item.taskId)) {
-            String path = this.pathTaskStorage + item.getTaskId() + '/' + item.getName();
-            File file = new File(path);
-            return file;
+            Path rawPath = Paths.get(this.pathTaskStorage + item.getTaskId()).resolve(item.getName());
+            Resource resource = new UrlResource(rawPath.toUri());
+            return resource;
         }
         if (!DataUtils.isNullOrEmpty(item.projectId)) {
-            String path = this.pathProjectStorage + item.getTaskId() + '/' + item.getName();
-            File file = new File(path);
-            return file;
+            Path rawPath = Paths.get(this.pathProjectStorage + item.getTaskId()).resolve(item.getName());
+            Resource resource = new UrlResource(rawPath.toUri());
+            return resource;
         }
-
         return null;
     }
 
     @Override
-    public List<String> getName(UploadFileDTO item) throws IOException {
-        List<String> listName = new ArrayList<>();
-        if (!DataUtils.isNullOrEmpty(item.taskId)) {
-            String path = this.pathTaskStorage + item.getTaskId();
-
-
+    public List<UploadFileDTO> getNameFileOfTask(Long id) {
+        String path = this.pathTaskStorage + id;
+        List<UploadFileDTO> names = new ArrayList<>();
+        if(Files.isDirectory(Paths.get(path))) {
+            File folder = new File(path);
+            File[] files = folder.listFiles();
+            for(File file: files) {
+                UploadFileDTO item = new UploadFileDTO();
+                item.taskId = id;
+                item.name = file.getName();
+                item.size = file.length();
+                item.path = file.getPath();
+                names.add(item);
+            }
         }
-        if (!DataUtils.isNullOrEmpty(item.projectId)) {
-            String path = this.pathProjectStorage + item.getTaskId();
-        }
-
-        return listName;
+        return names;
     }
+
+    @Override
+    public List<UploadFileDTO> getNameFileOfProject(Long id) {
+        String path = this.pathProjectStorage + id;
+        List<UploadFileDTO> names = new ArrayList<>();
+        if(Files.isDirectory(Paths.get(path))) {
+            File folder = new File(path);
+            File[] files = folder.listFiles();
+            for(File file: files) {
+                UploadFileDTO item = new UploadFileDTO();
+                item.taskId = id;
+                item.name = file.getName();
+                item.size = file.length();
+                item.path = file.getPath();
+                names.add(item);
+            }
+        }
+        return names;
+    }
+
+
 }

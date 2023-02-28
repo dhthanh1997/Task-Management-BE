@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -18,8 +19,12 @@ public interface StorageService {
 
    List<Resource> loadFile(UploadFileDTO item) throws IOException;
 
-   File getFileById(UploadFileDTO item) throws IOException;
+   Resource getFileById(UploadFileDTO item) throws IOException;
 
-   List<String> getName(UploadFileDTO item) throws IOException;
+   List<UploadFileDTO> getNameFileOfTask(Long id);
+
+   List<UploadFileDTO> getNameFileOfProject(Long id);
+
+
 
 }
