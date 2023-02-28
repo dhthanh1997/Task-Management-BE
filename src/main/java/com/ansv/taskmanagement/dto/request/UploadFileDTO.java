@@ -19,4 +19,6 @@ public class UploadFileDTO implements Serializable {
     public String name;
     public List<String> deleteNames;
     public String note;
+    public Long size;
+    public String path;
 }
