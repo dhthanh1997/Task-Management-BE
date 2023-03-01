@@ -46,5 +46,6 @@ public class TaskDTO extends BaseDTO<String> {
     private Byte state;
     private Long numberOfSubTask;
     private Long sectionId;
+    private Long tagId;
 
 }

@@ -96,4 +96,7 @@ public class Task extends Auditable<String> implements Serializable {
     @Column(name = "section_id")
     private Long sectionId;
 
+    @Column(name = "tag_id")
+    private Long tagId;
+
 }
