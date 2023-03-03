@@ -14,21 +14,17 @@ public class RabbitMqReceiver implements RabbitListenerConfigurer {
 
     private static final Logger logger = LoggerFactory.getLogger(RabbitMqReceiver.class);
 
+    public UserDTO userDTO = new UserDTO();
 
     @RabbitListener(queues = "${spring.rabbitmq.queue}")
     public void receivedMessage(UserDTO user){
-
         logger.info("User Details Received is.. " + user.getUsername());
+        userDTO = user;
     }
-
-//    @RabbitListener(queues = "${spring.rabbitmq.queue}")
-//    public UserDTO receivedMessage(UserDTO user) {
-//        logger.info("User Details Received is.. " + user);
-//        return user;
-//    }
 
     @Override
     public void configureRabbitListeners(RabbitListenerEndpointRegistrar rabbitListenerEndpointRegistrar) {
 
     }
+
 }
