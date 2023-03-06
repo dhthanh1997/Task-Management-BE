@@ -4,7 +4,6 @@ package com.ansv.taskmanagement.controllers;
 import com.ansv.taskmanagement.dto.response.ProjectDTO;
 import com.ansv.taskmanagement.dto.response.ResponseDataObject;
 import com.ansv.taskmanagement.service.ProjectService;
-import com.ansv.taskmanagement.util.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,17 +15,28 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("/taskManagement/api/project")
+@RequestMapping("/api/project")
 public class ProjectController extends BaseController {
 
     @Autowired
     private ProjectService projectService;
 
     @GetMapping("")
-    public ResponseEntity<ResponseDataObject<ProjectDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search) {
+    public ResponseEntity<ResponseDataObject<ProjectDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search, @RequestParam(name = "sort") Optional<String> sort) {
         ResponseDataObject<ProjectDTO> response = new ResponseDataObject<>();
+        List<String> sorts = new ArrayList<>();
+//        sort pattern: (\w+?)(,)
+        if (sort.isPresent()) {
+            Pattern pattern = Pattern.compile("(\\w+?)(,)", Pattern.UNICODE_CHARACTER_CLASS);
+            Matcher matcher = pattern.matcher(sort.get());
+            while (matcher.find()) {
+                sorts.add(matcher.group(1));
+            }
+        }
         Pageable page = pageRequest(new ArrayList<>(), pageNumber - 1, pageSize);
         Page<ProjectDTO> listDTO = projectService.findBySearchCriteria(search, page);
         // response
