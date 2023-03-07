@@ -37,7 +37,7 @@ public class ProjectController extends BaseController {
                 sorts.add(matcher.group(1));
             }
         }
-        Pageable page = pageRequest(new ArrayList<>(), pageNumber - 1, pageSize);
+        Pageable page = pageRequest(sorts, pageNumber - 1, pageSize);
         Page<ProjectDTO> listDTO = projectService.findBySearchCriteria(search, page);
         // response
         response.pagingData = listDTO;
