@@ -37,8 +37,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
     private static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
 
-    private RabbitMqSender rabbitMqSender;
-    private RabbitMqReceiver rabbitMqReceiver;
+    private final RabbitMqSender rabbitMqSender;
+    private final RabbitMqReceiver rabbitMqReceiver;
 
     @SneakyThrows
     @Override
@@ -48,7 +48,29 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwtToken = null;
         String username = null;
         UserDTO userDTO = new UserDTO();
-//        if (DataUtils.notNullOrEmpty(requestToken)) {
+        if (DataUtils.notNullOrEmpty(requestToken)) {
+            if (requestToken.startsWith("Bearer")) {
+                jwtToken = requestToken.substring(7);
+                username = jwtTokenProvider.getUsernameFromToken(jwtToken);
+            } else {
+                logger.warn("JWT token does not begin with Bearer string");
+            }
+
+            if (DataUtils.notNullOrEmpty(username)) {
+                // call from service in message bus
+//                rabbitMqSender.sender(username);
+//                userDTO = rabbitMqReceiver.userDTO;
+//                Authentication authentication = jwtTokenProvider.get
+
+
+            }
+
+        }
+        else {
+            throw new JwtTokenNotValidException("JWT token not valid");
+        }
+
+        //        if (DataUtils.notNullOrEmpty(requestToken)) {
 //            if (requestToken.startsWith("Bearer")) {
 //                jwtToken = requestToken.substring(7);
 //                username = jwtTokenProvider.getUsernameFromToken(jwtToken);
@@ -56,16 +78,27 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 //                logger.warn("JWT token does not begin with Bearer string");
 //            }
 //
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//            if (DataUtils.notNull(authentication)) {
+//                Object principal = authentication.getPrincipal();
+//                if (principal instanceof UserDetails) {
+//                    logger.info("------SecurityContextHolder getPrincipal UserDetails:" + ((UserDetails) principal).getUsername());
+//                } else {
+//                    logger.info("------SecurityContextHolder getPrincipal:" + principal);
+//                }
+//            }
+//
+////        get the token valid it
 //            if (DataUtils.notNullOrEmpty(username)) {
 //                // call from service in message bus
-//                rabbitMqSender.sender(username);
-//                userDTO = rabbitMqReceiver.userDTO;
-//
 //            }
+//
 //
 //        }
 //        else {
 //            throw new JwtTokenNotValidException("JWT token not valid");
+//
 //        }
 
 
