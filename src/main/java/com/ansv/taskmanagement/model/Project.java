@@ -5,10 +5,7 @@ import com.ansv.taskmanagement.util.formatdate.LocalDateTimeDeserializer;
 import com.ansv.taskmanagement.util.formatdate.LocalDateTimeSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -23,6 +20,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "project")
 public class Project extends Auditable<String> implements Serializable {
     @Id
@@ -59,12 +57,12 @@ public class Project extends Auditable<String> implements Serializable {
     @Column(name = "real_start_date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime readStartDate;
+    private LocalDateTime realStartDate;
 
     @Column(name = "real_end_date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime readEndDate;
+    private LocalDateTime realEndDate;
 
     @Column(name = "parent_id")
     private Long parentId;

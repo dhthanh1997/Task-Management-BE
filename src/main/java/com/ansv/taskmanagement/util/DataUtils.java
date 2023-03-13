@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import com.thoughtworks.xstream.core.util.Fields;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Sort;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,9 +19,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 public class DataUtils {
@@ -412,6 +412,43 @@ public class DataUtils {
         throw new IllegalArgumentException("Don't know how to instantiate " + className);
     }
 
+    // sort utils
+    public static Sort sort(List<String> sort) {
+        if (CollectionUtils.isEmpty(sort)) {
+            return null;
+        }
+
+        List<Sort.Order> orderList = new ArrayList<>();
+        if (sort.get(0).contains("_")) {
+            String[] strArray;
+            for (String str : sort) {
+                strArray = str.split("_");
+                if (strArray.length > 1) {
+                    if ("asc".equalsIgnoreCase(strArray[1])) {
+                        orderList.add(Sort.Order.asc(camelToSnake(strArray[0])));
+                    } else {
+                        orderList.add(Sort.Order.desc(camelToSnake(strArray[0])));
+                    }
+                } else {
+                    orderList.add(Sort.Order.asc(camelToSnake(strArray[0])));
+                }
+            }
+        } else {
+            for(String s: sort) {
+                orderList.add(Sort.Order.asc(camelToSnake(s)));
+            }
+        }
+        return Sort.by(orderList);
+    }
+
+    public static List<String> getSortParam(String sort) {
+        if (DataUtils.isNullOrEmpty(sort)) {
+            return new ArrayList<>();
+        }
+        return Arrays.asList(sort.split(";"));
+    }
+
+//    end sort utils
 
 
 }
