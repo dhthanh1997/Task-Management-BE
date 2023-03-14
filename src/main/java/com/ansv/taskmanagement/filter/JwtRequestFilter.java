@@ -57,9 +57,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 //            }
 //
 //            if (DataUtils.notNullOrEmpty(username)) {
-//                // call from service in message bus
-//                rabbitMqSender.sender(username);
-//                userDTO = rabbitMqReceiver.userDTO;
+////                // call from service in message bus
+//
 //
 //            }
 //
