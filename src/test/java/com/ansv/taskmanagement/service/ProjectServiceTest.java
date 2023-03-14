@@ -2,9 +2,11 @@ package com.ansv.taskmanagement.service;
 
 import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
 import com.ansv.taskmanagement.dto.criteria.SearchOperation;
+import com.ansv.taskmanagement.dto.response.CommentDTO;
 import com.ansv.taskmanagement.dto.response.ProjectDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
+import com.ansv.taskmanagement.model.Comment;
 import com.ansv.taskmanagement.model.Project;
 import com.ansv.taskmanagement.repository.ProjectRepository;
 import com.ansv.taskmanagement.repository.ProjectRepositoryTest;
@@ -23,10 +25,7 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 
 
@@ -34,28 +33,24 @@ import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.BDDAssumptions.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ProjectServiceTest {
 
     private Logger logger = LoggerFactory.getLogger(ProjectServiceTest.class);
 
-//    @Mock
-//    private BaseMapper<Project, ProjectDTO> mapper = new BaseMapper<>(Project.class, ProjectDTO.class);
-
     @Mock
-    private DataSource dataSource;
+    private BaseMapper<Project, ProjectDTO> mapper = new BaseMapper<>(Project.class, ProjectDTO.class);
 
     @Mock
     private ProjectRepository projectRepository;
@@ -63,8 +58,10 @@ public class ProjectServiceTest {
     @InjectMocks
     private ProjectServiceImpl projectServiceImpl;
 
+    @Mock
     private Project project;
 
+    @Mock
     private List<Project> projects;
 
     private void dataSource() {
@@ -93,80 +90,120 @@ public class ProjectServiceTest {
                 .revenue(BigDecimal.valueOf(11111.000))
                 .build();
 
-
+        this.dataSource();
     }
+
 
     @DisplayName("JUnit for findById")
     @Nested
-    class WhenFindById {
+    public class WhenFindById {
+
+        private Project item;
 
         @Test
-        void findById() {
-            given(projectRepository.findById(1L));
+        public void findById() {
+            given(projectRepository.findById(1L)).willReturn(Optional.of(project));
+
+            item = projectRepository.findById(1L).get();
+
+            assertThat(item).isEqualTo(project);
+
+
             logger.info("test - project find by id done");
+            logger.info("item=" + item.getId() + " - " + "project=" + project.getId());
 
         }
     }
 
+    @DisplayName("JUnit for saving")
     @Nested
-    class WhenSaving {
+    public class WhenSaving {
         @Mock
-        private ProjectDTO item;
+        private Project item;
 
         @BeforeEach
-        void setup() {
-            this.item = ProjectDTO.builder().id(null)
-                    .name("project 1")
-                    .startDate(LocalDateTime.now())
-                    .endDate(LocalDateTime.now().plusDays(6))
-                    .revenue(BigDecimal.valueOf(11111.000))
-                    .build();
-            ;
+        public void setup() {
 
         }
 
         @Test
-        void save() {
-            given(projectRepository.findById(project.getId()));
-            projectRepository.save(project);
-//            assertThrows(ResourceNotFoundException.class, () -> {
-//
-//            });
-//            ProjectDTO dto = projectServiceImpl.save(this.item);
-//            assertThat(dto).isNotNull();
+        public void save() {
+            when(projectRepository.save(project)).thenReturn(project);
+            Project item = projectRepository.save(project);
+            assertThat(item).isNotNull();
             logger.info("test - project done");
+            logger.info(Long.toString(item.getId()));
         }
     }
 
     @DisplayName("Junit for delete by id")
     @Nested
-    class WhenDeleteById {
+    public class WhenDeleteById {
 
         @Test
-        void deleteById() {
-            given(projectRepository.findById(project.getId()));
+        public void deleteById() {
+            willDoNothing().given(projectRepository).deleteById(project.getId());
+
             projectRepository.deleteById(project.getId());
+
+            verify(projectRepository, times(1)).deleteById(project.getId());
+
             logger.info("test - project service delete by id");
         }
 
 
     }
 
+    @DisplayName("Junit for delete by list id")
+    @Nested
+    public class WhenDeleteByListId {
+
+        private List<Long> listId;
+
+        private List<Project> projectList;
+
+        @BeforeEach
+        public void setup() {
+            listId = Arrays.asList(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L);
+            // 1. create mock data
+            projectList = projects;
+        }
+
+        @Test
+        public void deleteByListId() {
+//            given => for init context but init context in setup so that don't using it in here
+//            given(projectRepository.findAll()).willReturn(projects);
+
+            // 2. define behavior of repository for testing;
+            when(projectRepository.deleteByListId(listId)).thenReturn(1);
+
+//             3. call service method
+            int deleteTest = projectRepository.deleteByListId(listId);
+//            projectRepository.deleteByListId(listId);
+
+            // 4. assert the result -> Xác nhận/khẳng định lại kết quả
+            assertThat(deleteTest).isEqualTo(1);
+
+            // 4.1. ensure repository is called -> verify the output
+            verify(projectRepository).deleteByListId(listId);
+        }
+    }
+
     @DisplayName("JUnit for search")
     @Nested
-    class WhenSearchByCriteria {
+    public class WhenSearchByCriteria {
 
         @InjectMocks
         private GenericSpecificationBuilder<Project> builder = new GenericSpecificationBuilder<>();
 
         private Optional<String> search;
 
-        @Mock
         private Pageable pageable;
 
+        private Page<Project> projectPage;
 
         @BeforeEach
-        void setUp() {
+        public void setUp() {
             String field = "name";
             String operation = "cn";
             String value = "p";
@@ -175,14 +212,19 @@ public class ProjectServiceTest {
             sorts.add(sort);
             this.search = Optional.of(field + "." + operation + "." + value + ",");
 
+            //init context
             this.pageable = PageRequest.of(0, 10, DataUtils.sort(sorts));
-
-            logger.info("before test - project service");
-            logger.info(this.search.toString());
+            int lowerBound = pageable.getPageNumber() * pageable.getPageSize();
+            int upperBound = Math.min(lowerBound + pageable.getPageSize() - 1, projects.size());
+            List<Project> subList = projects.subList(lowerBound, upperBound);
+            this.projectPage = new PageImpl<>(subList, pageable, subList.size());
+//            logger.info("before test - project service");
+//            logger.info(this.search.toString());
         }
 
         @Test
         public void searchBycriteria() throws Exception {
+
             // specification
             builder.setClazz(Project.class);
             if (search.isPresent()) {
@@ -193,9 +235,16 @@ public class ProjectServiceTest {
                 }
             }
             Specification<Project> spec = builder.build();
+
+            when(projectRepository.findAll(spec, this.pageable)).thenReturn(projectPage);
+
             Page<Project> listDTO = projectRepository.findAll(spec, this.pageable);
+
 //            assertThat(listDTO).isNotNull();
+            assertEquals(listDTO, projectPage);
             logger.info("test - project done");
+            logger.info(Integer.toString(listDTO.getSize()));
+            logger.info(Integer.toString(projectPage.getSize()));
         }
 
 
