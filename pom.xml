@@ -230,6 +230,27 @@
         </dependency>
         <!--        end apache poi-->
 
+        <!--        redis and libs-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>2.7.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.9.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.redis.om</groupId>
+            <artifactId>redis-om-spring</artifactId>
+            <version>0.6.3</version>
+        </dependency>
+
+        <!--        end redis and libs-->
+
 
     </dependencies>
 
@@ -273,7 +294,6 @@
             </plugin>
 
 
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-help-plugin</artifactId>
@@ -292,7 +312,6 @@
             <!--maven unit test-->
 
 
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -307,22 +326,22 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M7</version>
-<!--                <configuration>-->
-<!--                    <argLine>-->
-<!--                        &#45;&#45;illegal-access=permit-->
-<!--                    </argLine>-->
-<!--                </configuration>-->
+                <!--                <configuration>-->
+                <!--                    <argLine>-->
+                <!--                        &#45;&#45;illegal-access=permit-->
+                <!--                    </argLine>-->
+                <!--                </configuration>-->
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-failsafe-plugin</artifactId>-->
-<!--                <version>3.0.0-M7</version>-->
-<!--                <configuration>-->
-<!--                    <argLine>-->
-<!--                        &#45;&#45;illegal-access=permit-->
-<!--                    </argLine>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-failsafe-plugin</artifactId>-->
+            <!--                <version>3.0.0-M7</version>-->
+            <!--                <configuration>-->
+            <!--                    <argLine>-->
+            <!--                        &#45;&#45;illegal-access=permit-->
+            <!--                    </argLine>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
             <!--end maven unit test-->
 
         </plugins>
@@ -372,6 +391,15 @@
             </activation>
             <properties>
                 <spring.profiles.active>staging-microservice</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev-test</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>dev-test</spring.profiles.active>
             </properties>
         </profile>
     </profiles>

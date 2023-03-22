@@ -1,12 +1,11 @@
 package com.ansv.taskmanagement;
 
-import com.ansv.taskmanagement.dto.criteria.SearchOperation;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest()
+@TestPropertySource(locations = "classpath:application-dev-test.properties")
 class TaskManagementApplicationTests {
 
 
