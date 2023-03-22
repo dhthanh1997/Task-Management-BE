@@ -1,17 +1,15 @@
 package com.ansv.taskmanagement.filter;
 
-import com.ansv.taskmanagement.dto.response.UserDTO;
-import com.ansv.taskmanagement.handler.ApiError;
-import com.ansv.taskmanagement.handler.GlobalRestExceptionHandler;
+import com.ansv.taskmanagement.dto.redis.AccessToken;
 import com.ansv.taskmanagement.handler.authentication.JwtTokenNotValidException;
-import com.ansv.taskmanagement.service.rabbitmq.RabbitMqReceiver;
-import com.ansv.taskmanagement.service.rabbitmq.RabbitMqSender;
+import com.ansv.taskmanagement.service.RedisService;
 import com.ansv.taskmanagement.util.DataUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -31,6 +29,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
     private static final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
 
+    @Autowired
+    private RedisService redisService;
+
     @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, AuthenticationException {
@@ -41,6 +42,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (requestToken.startsWith("Bearer")) {
                 jwtToken = requestToken.substring(7);
                 username = jwtTokenProvider.getUsernameFromToken(jwtToken);
+                String uuid = jwtTokenProvider.getUUID(jwtToken);
+                redisService.getToken("01GVYE6ESKRCKFWAFH1J94N9EQ");
+//                AccessToken token = redisService.getTokenToRedis(uuid).get();
             } else {
                 logger.warn("JWT token does not begin with Bearer string");
             }

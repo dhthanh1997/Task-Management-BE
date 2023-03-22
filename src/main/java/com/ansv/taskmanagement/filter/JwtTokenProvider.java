@@ -23,6 +23,17 @@ public class JwtTokenProvider {
     private String JWT_TOKEN_VALIDITY;
 
 
+    public Date getJwtTokenValidity() {
+        Date now = new Date();
+        return new Date(now.getTime() + JWT_TOKEN_VALIDITY);
+    }
+
+    public String getUUID(String token) {
+        Claims claims = Jwts.parser().setSigningKey((JWT_SECRET)).parseClaimsJws(token).getBody();
+//        Claims claims = Jwts.parser().parseClaimsJws(token).getBody();
+        return claims.get("uuid").toString();
+    }
+
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parser().setSigningKey((JWT_SECRET)).parseClaimsJws(token).getBody();
 //        Claims claims = Jwts.parser().parseClaimsJws(token).getBody();

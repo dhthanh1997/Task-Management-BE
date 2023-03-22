@@ -1,19 +1,13 @@
 package com.ansv.taskmanagement.service;
 
 import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
-import com.ansv.taskmanagement.dto.criteria.SearchOperation;
-import com.ansv.taskmanagement.dto.response.CommentDTO;
 import com.ansv.taskmanagement.dto.response.ProjectDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
-import com.ansv.taskmanagement.model.Comment;
 import com.ansv.taskmanagement.model.Project;
 import com.ansv.taskmanagement.repository.ProjectRepository;
-import com.ansv.taskmanagement.repository.ProjectRepositoryTest;
 import com.ansv.taskmanagement.service.impl.ProjectServiceImpl;
 import com.ansv.taskmanagement.util.DataUtils;
-import org.apache.velocity.exception.ResourceNotFoundException;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -21,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +22,6 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 
 
-import javax.persistence.EntityManager;
-import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;

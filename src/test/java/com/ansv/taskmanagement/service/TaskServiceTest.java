@@ -2,13 +2,9 @@ package com.ansv.taskmanagement.service;
 
 import com.ansv.taskmanagement.constants.StateEnum;
 import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
-import com.ansv.taskmanagement.dto.response.ProjectDTO;
-import com.ansv.taskmanagement.dto.response.TagDTO;
 import com.ansv.taskmanagement.dto.response.TaskDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
-import com.ansv.taskmanagement.model.Project;
-import com.ansv.taskmanagement.model.Tag;
 import com.ansv.taskmanagement.model.Task;
 import com.ansv.taskmanagement.repository.TaskRepository;
 import com.ansv.taskmanagement.service.impl.TaskServiceImpl;
@@ -34,7 +30,6 @@ import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
