@@ -237,17 +237,17 @@
 <!--            <version>2.7.5</version>-->
 <!--        </dependency>-->
 
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>3.9.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>redis.clients</groupId>-->
+<!--            <artifactId>jedis</artifactId>-->
+<!--            <version>3.9.0</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>com.redis.om</groupId>
-            <artifactId>redis-om-spring</artifactId>
-            <version>0.6.3</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.redis.om</groupId>-->
+<!--            <artifactId>redis-om-spring</artifactId>-->
+<!--            <version>0.6.3</version>-->
+<!--        </dependency>-->
 
         <!--        end redis and libs-->
 
