@@ -1,16 +1,19 @@
 package com.ansv.taskmanagement.service;
 
 import com.ansv.taskmanagement.dto.redis.AccessToken;
+import com.ansv.taskmanagement.dto.redis.RefreshToken;
 
 import java.util.Optional;
 
 public interface RedisService {
-     void saveTokenToRedis(AccessToken token);
-     void updateTokenToRedis(AccessToken token);
-     Optional<AccessToken> getTokenToRedis(String uuid);
-     void deleteTokenToRedis(String uuid);
-     Optional<AccessToken> getToken(String id);
-     Optional<AccessToken> getTokenRedis(String uuid);
+     void saveAccessToken(AccessToken token);
+     void updateAccessToken(AccessToken token);
+     Optional<AccessToken> getAccessToken(String uuid);
+     void deleteAccessToken(String uuid);
+     void saveRefreshToken(RefreshToken token);
+     void updateRefreshToken(RefreshToken token);
+     Optional<RefreshToken> getRefreshToken(String uuid);
+     void deleteRefreshToken(String uuid);
      String generateUUIDVersion1();
 
 }

@@ -1,6 +1,8 @@
 package com.ansv.taskmanagement.filter;
 
+import com.ansv.taskmanagement.constants.JwtExceptionEnum;
 import com.ansv.taskmanagement.dto.redis.AccessToken;
+import com.ansv.taskmanagement.dto.redis.RefreshToken;
 import com.ansv.taskmanagement.handler.authentication.JwtTokenNotValidException;
 import com.ansv.taskmanagement.service.RedisService;
 import com.ansv.taskmanagement.util.DataUtils;
@@ -10,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -20,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -38,13 +42,24 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String requestToken = request.getHeader("Authorization");
         String jwtToken = null;
         String username = null;
+        Optional<AccessToken> token;
         if (DataUtils.notNullOrEmpty(requestToken)) {
             if (requestToken.startsWith("Bearer")) {
                 jwtToken = requestToken.substring(7);
                 username = jwtTokenProvider.getUsernameFromToken(jwtToken);
                 String uuid = jwtTokenProvider.getUUID(jwtToken);
-                redisService.getToken("01GVYE6ESKRCKFWAFH1J94N9EQ");
-//                AccessToken token = redisService.getTokenToRedis(uuid).get();
+                token = redisService.getAccessToken(uuid);
+                if (token.isPresent()) {
+                    boolean isValidated = jwtTokenProvider.validateToken(token.get().getAccessToken());
+                    if(!isValidated) {
+                        if(jwtTokenProvider.validateError.equals(JwtExceptionEnum.EXPIRED_JWT_TOKEN)) {
+                            throw new JwtTokenNotValidException("JWT token is expired ");
+                        }
+                    }
+
+                } else {
+                    throw new JwtTokenNotValidException("JWT token not valid");
+                }
             } else {
                 logger.warn("JWT token does not begin with Bearer string");
             }
@@ -54,13 +69,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             }
 
-        }
-        else {
+        } else {
             throw new JwtTokenNotValidException("JWT token not valid");
         }
 
         ContentCachingResponseWrapper responseCachingWrapper = new ContentCachingResponseWrapper((HttpServletResponse) response);
         filterChain.doFilter(request, response);
+
         // copy body to response
         responseCachingWrapper.copyBodyToResponse();
 

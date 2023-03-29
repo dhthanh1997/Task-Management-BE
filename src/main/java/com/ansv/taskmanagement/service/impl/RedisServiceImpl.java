@@ -1,10 +1,14 @@
 package com.ansv.taskmanagement.service.impl;
 
 import com.ansv.taskmanagement.dto.redis.AccessToken;
+import com.ansv.taskmanagement.dto.redis.RefreshToken;
 import com.ansv.taskmanagement.repository.RedisRepository;
 import com.ansv.taskmanagement.repository.RedisTokenRepository;
 import com.ansv.taskmanagement.util.DataUtils;
 import com.ansv.taskmanagement.service.RedisService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -20,48 +24,34 @@ import java.util.Random;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class RedisServiceImpl implements RedisService {
+
 
     private static final Logger logger = LoggerFactory.getLogger(RedisServiceImpl.class);
 
     private static final String BEARER_PREFIX = "Bearer ";
 
-//    private final RedisTemplate<String, String> redisTemplate;
+    private static final String ACCESSTOKEN = "accessToken";
+    private static final String REFRESHTOKEN = "refreshToken";
 
-//    public Optional<Authentication> authenticate(HttpServletRequest request) {
-//        return extractBearTokenHeader(request).flatMap(this::lookup);
-//    }
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-//    @Autowired
-//    private RedisRepository redisRepository;
+    public RedisServiceImpl() {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    }
 
     @Autowired
-    private RedisTokenRepository redisTokenRepository;
-
-//
-//    protected Optional<String> lookUpToken(String token) {
-//        try {
-//            String userId = this.redisTemplate.opsForValue().get(token);
-//            if(DataUtils.notNull(userId)) {
-//                return Optional.of(userId);
-//            }
-//            return Optional.empty();
-//        } catch (Exception e) {
-//            logger.error(e.getMessage());
-//            return Optional.empty();
-//        }
-//    }
-
+    private RedisRepository redisRepository;
 
     // using for extract token
     private static Optional<String> extractBearTokenHeader(@NonNull HttpServletRequest request) {
         try {
             String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-            if(DataUtils.notNull(authorization)) {
-                if(authorization.startsWith(BEARER_PREFIX)) {
+            if (DataUtils.notNull(authorization)) {
+                if (authorization.startsWith(BEARER_PREFIX)) {
                     String token = authorization.substring(BEARER_PREFIX.length()).trim();
-                    if(!token.isBlank()) {
+                    if (!token.isBlank()) {
                         return Optional.of(token);
                     }
                 }
@@ -75,78 +65,92 @@ public class RedisServiceImpl implements RedisService {
 
 
     @Override
-    public void saveTokenToRedis(AccessToken token) {
+    public void saveAccessToken(AccessToken token) {
         try {
-            redisTokenRepository.save(token);
-        } catch(Exception e) {
-            logger.error("An error when save token into redis db", e);
+            String jsonToken = objectMapper.writeValueAsString(token);
+            redisRepository.saveToken(jsonToken, ACCESSTOKEN.trim(), token.getUuid());
+        } catch (Exception e) {
+            logger.error("An error when save ACCESS token into redis db", e);
         }
     }
 
     @Override
-    public void updateTokenToRedis(AccessToken token) {
+    public void updateAccessToken(AccessToken token) {
         try {
-            redisTokenRepository.save(token);
-        } catch(Exception e) {
-            logger.error("An error when update token into redis db", e);
+            String jsonToken = objectMapper.writeValueAsString(token);
+            redisRepository.updateToken(jsonToken, ACCESSTOKEN.trim(), token.getUuid());
+        } catch (Exception e) {
+            logger.error("An error when update ACCESS token into redis db", e);
         }
     }
 
     @Override
-    public Optional<AccessToken> getTokenToRedis(String uuid) {
+    public Optional<AccessToken> getAccessToken(String uuid) {
         try {
-            Optional<AccessToken> token = redisTokenRepository.findOneById(uuid);
-            Iterable<AccessToken> tokenList = redisTokenRepository.findByUsername("trantuanvu8594");
-            if(token.isPresent()) {
-                return token;
+            Object token = redisRepository.getToken(uuid, ACCESSTOKEN.trim());
+            String jsonObject = objectMapper.writeValueAsString(token);
+            AccessToken accessToken = objectMapper.readValue(token.toString(), AccessToken.class);
+
+//            AccessToken accesToken = objectMapper.writeValueAsString(token)) ;
+            if (DataUtils.notNull(accessToken)) {
+                return Optional.of(accessToken);
             }
             return Optional.empty();
-        } catch(Exception e) {
-            logger.error("An error when get token into redis db", e);
+        } catch (Exception e) {
+            logger.error("An error when get ACCESS token into redis db", e);
             return Optional.empty();
         }
     }
 
     @Override
-    public void deleteTokenToRedis(String uuid) {
+    public void deleteAccessToken(String uuid) {
         try {
-            redisTokenRepository.deleteById(uuid);
-        } catch(Exception e) {
+            redisRepository.deleteToken(uuid, ACCESSTOKEN.trim());
+        } catch (Exception e) {
+            logger.error("An error when DELETE ACCESS token into redis db", e);
+        }
+    }
+
+    @Override
+    public void saveRefreshToken(RefreshToken token) {
+        try {
+            String jsonToken = objectMapper.writeValueAsString(token);
+            redisRepository.saveToken(jsonToken, REFRESHTOKEN.trim(), token.getUuid());
+        } catch (Exception e) {
+            logger.error("An error when SAVE REFRESH token into redis db", e);
+        }
+    }
+
+    @Override
+    public void updateRefreshToken(RefreshToken token) {
+        try {
+            String jsonToken = objectMapper.writeValueAsString(token);
+            redisRepository.updateToken(jsonToken, REFRESHTOKEN.trim(), token.getUuid());
+        } catch (Exception e) {
             logger.error("An error when get token into redis db", e);
         }
     }
 
     @Override
-    public Optional<AccessToken> getToken(String id) {
+    public Optional<RefreshToken> getRefreshToken(String uuid) {
         try {
-            Optional<AccessToken> token = redisTokenRepository.findById("73308aec-7049-4a89-aebf-7dc1d5835b4b");
-            Iterable<AccessToken> tokenList = redisTokenRepository.findByUsername("trantuanvu8594");
-//            Iterable<String> ids = redisTokenRepository.getIds();
-
-
-//            Optional<AccessToken> token = ;
-            if(token.isPresent()) {
-                return token;
+            Object token = redisRepository.getTokenByObject(uuid, REFRESHTOKEN.trim());
+            if (DataUtils.notNull(token)) {
+                return Optional.of((RefreshToken) token);
             }
             return Optional.empty();
-        } catch(Exception e) {
-            logger.error("An error when get token into redis db", e);
+        } catch (Exception e) {
+            logger.error("An error when get REFRESH token into redis db", e);
             return Optional.empty();
         }
     }
 
     @Override
-    public Optional<AccessToken> getTokenRedis(String uuid) {
+    public void deleteRefreshToken(String uuid) {
         try {
-            Optional<AccessToken> token = redisTokenRepository.findOneById(uuid);
-            if(token.isPresent()) {
-                return token;
-            }
-            return Optional.empty();
-        } catch(Exception e) {
-            logger.error("An error when get token into redis db", e);
-            return Optional.empty();
-
+            redisRepository.deleteToken(uuid, REFRESHTOKEN.trim());
+        } catch (Exception e) {
+            logger.error("An error when DELETE REFRESH token into redis db", e);
         }
     }
 
