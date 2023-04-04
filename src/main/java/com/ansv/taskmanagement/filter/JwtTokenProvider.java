@@ -1,9 +1,11 @@
 package com.ansv.taskmanagement.filter;
 
+import com.ansv.taskmanagement.constants.JwtExceptionEnum;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.rest.webmvc.support.ExceptionMessage;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,8 @@ import java.util.List;
 public class JwtTokenProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+
+    public String validateError = new String();
 
     @Value("${app.jwtSecret}")
     private String JWT_SECRET;
@@ -62,20 +66,30 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
             logger.error("Invalid JWT signature", e);
+            this.validateError = JwtExceptionEnum.INVALID_JWT_SIGNATURE.getName();
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT Token ");
+            this.validateError = JwtExceptionEnum.INVALID_JWT_TOKEN.getName();
+
         } catch (ExpiredJwtException e) {
             logger.error("Expired JWT Token");
+            this.validateError = JwtExceptionEnum.EXPIRED_JWT_TOKEN.getName();
+
         } catch (UnsupportedJwtException e) {
             logger.error("Unsupported JWT Token");
+            this.validateError = JwtExceptionEnum.UNSUPPORT_JWT_TOKEN.getName();
+
         } catch (IllegalArgumentException e) {
             logger.error("JWT claims string is empty");
+            this.validateError = JwtExceptionEnum.JWT_CLAIMS_EMPTY.getName();
+
         }
         return false;
     }
