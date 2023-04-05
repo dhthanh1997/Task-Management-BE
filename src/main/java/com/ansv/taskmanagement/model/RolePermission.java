@@ -21,14 +21,6 @@ public class RolePermission implements Serializable {
     @Column(name = "id")
     private Long id;
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "role_id", referencedColumnName = "id")
-//    private RoleOfApplication roleOfApplication;
-//
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "permission_id", referencedColumnName = "id")
-//    private Permission permission;
-
     @Column(name = "role_id")
     private Long roleId;
 
