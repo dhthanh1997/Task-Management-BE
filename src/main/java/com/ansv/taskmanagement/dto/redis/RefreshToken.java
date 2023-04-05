@@ -2,8 +2,8 @@ package com.ansv.taskmanagement.dto.redis;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.TimeToLive;
+//import org.springframework.data.redis.core.RedisHash;
+//import org.springframework.data.redis.core.TimeToLive;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 @NoArgsConstructor
 @Getter
 @Setter
-@RedisHash(value = "refreshToken")
+//@RedisHash(value = "refreshToken")
 public class RefreshToken {
 
 //    @Id
@@ -33,9 +33,9 @@ public class RefreshToken {
     @NonNull
     private String uuid;
 
-    @TimeToLive(unit = TimeUnit.SECONDS)
-    @NonNull
-    private Date expiredTime;
+//    @TimeToLive(unit = TimeUnit.SECONDS)
+//    @NonNull
+//    private Date expiredTime;
 
     @NonNull
     private String serviceName;
