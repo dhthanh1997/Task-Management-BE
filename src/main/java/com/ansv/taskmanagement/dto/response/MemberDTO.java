@@ -1,11 +1,13 @@
 package com.ansv.taskmanagement.dto.response;
 
 
+import com.ansv.taskmanagement.model.Team;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
 
 
 @Getter
@@ -25,5 +27,6 @@ public class MemberDTO extends BaseDTO<String>   {
 
     private Long roleId;
 
+    private Set<TeamDTO> teams;
 
 }
