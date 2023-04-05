@@ -39,19 +39,19 @@ public class Member extends Auditable<String> implements Serializable {
     @Column(name = "role_id")
     private Long roleId;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "team_member", joinColumns = {
             @JoinColumn(name = "member_id", referencedColumnName = "id")
     },
             inverseJoinColumns = {
-            @JoinColumn(name = "team_id", referencedColumnName = "id")
+                    @JoinColumn(name = "team_id", referencedColumnName = "id")
             }
     )
     @JsonIgnore
     private Set<Team> teams = new HashSet<>();
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "member_role_project", joinColumns = {
             @JoinColumn(name = "member_id", referencedColumnName = "id")
     }, inverseJoinColumns = {

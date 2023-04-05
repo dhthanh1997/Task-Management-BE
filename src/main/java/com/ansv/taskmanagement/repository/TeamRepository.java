@@ -19,4 +19,8 @@ public interface TeamRepository extends JpaRepository<Team, Long>, TeamRepositor
     @Query(value = "DELETE FROM team WHERE id IN :listId", nativeQuery = true)
     Integer deleteByListId(@Param("listId") List<Long> listId);
 
+    @Transactional
+    @Modifying
+    void deleteById(Long id);
+
 }

@@ -19,4 +19,8 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     @Query(value = "DELETE FROM member WHERE id IN :listId", nativeQuery = true)
     Integer deleteByListId(@Param("listId") List<Long> listId);
 
+    @Transactional
+    @Modifying
+    void deleteById(Long id);
+
 }
