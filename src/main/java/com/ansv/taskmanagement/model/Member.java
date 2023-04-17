@@ -58,6 +58,11 @@ public class Member extends Auditable<String> implements Serializable {
             @JoinColumn(name = "role_project_id", referencedColumnName = "id")
     }
     )
+    @JsonIgnore
     private Set<RoleOfApplication> roleOfProject;
+
+
+    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
+    private Set<Task>  tasks = new HashSet<>();
 
 }

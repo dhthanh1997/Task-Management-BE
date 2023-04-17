@@ -19,4 +19,10 @@ public interface PermissionRepository extends JpaRepository<Permission, Long>, P
     @Query(value = "DELETE FROM permission WHERE id IN :listId", nativeQuery = true)
     Integer deleteByListId(@Param("listId") List<Long> listId);
 
+    @Transactional
+    @Modifying
+    @Query(value = "SELECT p.* FROM permission as p LEFT JOIN role_permission as rp ON p.id = rp.permission_id" +
+            "WHERE 1=1 AND rp.role_id = :roleId", nativeQuery = true)
+    List<Permission> findAllByRoleId(@Param("roleId") Long roleId);
+
 }
