@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -47,13 +48,20 @@ public class UserInfoServiceImpl implements UserInfoService {
     public UserInfoDTO getUserInfo(String username) {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         Optional<Member> member = memberRepository.findByUsername(username);
-        List<Permission> permissions;
+        List<Permission> permissions = new ArrayList<>();
+        List<PermissionDTO> permissionsDTO = new ArrayList<>();
+        List<String> menu = new ArrayList<>();
         if(member.isPresent()) {
-            permissions = permissionRepository.findAllByRoleId(member.get().getRoleId());
+            permissions = permissionRepository.getAllByRoleId(member.get().getRoleId());
             userInfoDTO.setPermissions(mapperSub.toDtoBean(permissions));
             for(Permission permission: permissions) {
-                userInfoDTO.getMenu().add(permission.getParentCode());
+                if(DataUtils.notNullOrEmpty(permission.getParentCode())) {
+                    menu.add(permission.getParentCode());
+                }
             }
+            menu = menu.stream().distinct().collect(Collectors.toList());
+            userInfoDTO.setMenu(menu);
+            userInfoDTO.setUsername(username);
         }
         return userInfoDTO;
     }

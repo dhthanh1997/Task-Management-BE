@@ -24,8 +24,6 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     @Modifying
     void deleteById(Long id);
 
-    @Transactional
-    @Modifying
     Optional<Member> findByUsername(String username);
 
 

@@ -1,6 +1,5 @@
 package com.ansv.taskmanagement.repository;
 
-import com.ansv.taskmanagement.model.Activity;
 import com.ansv.taskmanagement.model.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,10 +18,9 @@ public interface PermissionRepository extends JpaRepository<Permission, Long>, P
     @Query(value = "DELETE FROM permission WHERE id IN :listId", nativeQuery = true)
     Integer deleteByListId(@Param("listId") List<Long> listId);
 
-    @Transactional
-    @Modifying
-    @Query(value = "SELECT p.* FROM permission as p LEFT JOIN role_permission as rp ON p.id = rp.permission_id" +
+
+    @Query(value = "SELECT p.* FROM permission as p LEFT JOIN role_permission as rp ON p.id = rp.permission_id \n" +
             "WHERE 1=1 AND rp.role_id = :roleId", nativeQuery = true)
-    List<Permission> findAllByRoleId(@Param("roleId") Long roleId);
+    List<Permission> getAllByRoleId(@Param("roleId") Long roleId);
 
 }

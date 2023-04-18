@@ -28,7 +28,7 @@ public class UserController extends BaseController {
     private UserInfoService userInfoService;
 
     @GetMapping("/{username}")
-    public ResponseEntity<ResponseDataObject<UserInfoDTO>> getById(@PathVariable(value = "username") String username) {
+    public ResponseEntity<ResponseDataObject<UserInfoDTO>> getByUserInfo(@PathVariable(value = "username") String username) {
         ResponseDataObject<UserInfoDTO> response = new ResponseDataObject<>();
         UserInfoDTO dto = userInfoService.getUserInfo(username);
         response.initData(dto);
