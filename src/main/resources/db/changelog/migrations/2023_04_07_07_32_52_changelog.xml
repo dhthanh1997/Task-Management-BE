@@ -1,0 +1,19 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet author="PC (generated)" id="1680852798628-1">
+        <createTable tableName="task_member">
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="task_memberPK"/>
+            </column>
+            <column name="member_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="task_memberPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1680852798628-2">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="task_member" constraintName="FK4xdfrh0hn0ong3o92by0xyu07" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="member" validate="true"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1680852798628-3">
+        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="task_member" constraintName="FKectrmxew8ivqi15ssbsniwmac" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

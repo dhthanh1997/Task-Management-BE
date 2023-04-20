@@ -90,8 +90,11 @@ public class MemberController extends BaseController {
     @PostMapping("/deleteByListId")
     public ResponseEntity<ResponseDataObject<Integer>> deleteByListId(@RequestBody List<Long> listId) {
         ResponseDataObject<Integer> response = new ResponseDataObject<>();
-        Integer delete = memberService.deleteByListId(listId);
-        response.initData(delete);
+        for(Long id: listId) {
+            memberService.deleteById(id);
+        }
+//        Integer delete = memberService.deleteByListId(listId);
+        response.initData(1);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }

@@ -2,10 +2,7 @@ package com.ansv.taskmanagement.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,6 +14,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "member")
 public class Member extends Auditable<String> implements Serializable {
     @Id
@@ -58,6 +56,11 @@ public class Member extends Auditable<String> implements Serializable {
             @JoinColumn(name = "role_project_id", referencedColumnName = "id")
     }
     )
+    @JsonIgnore
     private Set<RoleOfApplication> roleOfProject;
+
+
+    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
+    private Set<Task>  tasks = new HashSet<>();
 
 }

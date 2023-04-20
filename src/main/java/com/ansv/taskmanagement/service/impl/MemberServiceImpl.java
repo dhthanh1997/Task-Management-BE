@@ -48,6 +48,17 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public MemberDTO findByUsername(String username) {
+        if (DataUtils.notNull(username)) {
+            Optional<Member> entity = repository.findByUsername(username);
+            if (entity.isPresent()) {
+                return mapper.toDtoBean(entity.get());
+            }
+        }
+        return null;
+    }
+
+    @Override
     public MemberDTO save(MemberDTO item) {
 //        try {
         Member entity = null;

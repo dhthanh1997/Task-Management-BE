@@ -12,6 +12,8 @@ public interface MemberService {
 
     MemberDTO findById(Long id);
 
+    MemberDTO findByUsername(String username);
+
     MemberDTO save(MemberDTO item);
 
     List<MemberDTO> findAll();
@@ -23,5 +25,6 @@ public interface MemberService {
     void deleteById(Long id);
 
     Integer deleteByListId(List<Long> id);
+
 
 }

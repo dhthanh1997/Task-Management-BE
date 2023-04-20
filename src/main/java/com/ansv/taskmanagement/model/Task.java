@@ -3,6 +3,7 @@ package com.ansv.taskmanagement.model;
 
 import com.ansv.taskmanagement.util.formatdate.LocalDateTimeDeserializer;
 import com.ansv.taskmanagement.util.formatdate.LocalDateTimeSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
@@ -11,6 +12,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -96,5 +99,16 @@ public class Task extends Auditable<String> implements Serializable {
 
     @Column(name = "tag_id")
     private Long tagId;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "task_member", joinColumns = {
+            @JoinColumn(name = "task_id", referencedColumnName = "id")
+    },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "member_id", referencedColumnName = "id")
+            }
+    )
+    @JsonIgnore
+    private Set<Member> members = new HashSet<>();
 
 }

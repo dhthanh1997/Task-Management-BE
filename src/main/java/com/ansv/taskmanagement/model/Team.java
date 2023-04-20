@@ -35,7 +35,7 @@ public class Team extends Auditable<String> implements Serializable {
     @ManyToMany(mappedBy = "teams", fetch = FetchType.LAZY)
     private Set<Member> members = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "project_id", referencedColumnName = "id")
     private Project project;
 
