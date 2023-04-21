@@ -3,6 +3,7 @@ package com.ansv.taskmanagement.dto.response;
 
 import lombok.*;
 
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -11,39 +12,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ReportDTO extends BaseDTO<String> {
-    private Long id;
-
-    private String name;
+public class ReportDTO {
+//    private Long id;
 
     private Long projectId;
 
-    private BigDecimal totalCost;
+    private Long taskId;
 
-    private BigDecimal revenue;
 
-    private Float totalHour;
+    private String username;
 
-    private LocalDateTime startDate;
-
-    private LocalDateTime endDate;
-
-    private LocalDateTime realStartDate;
-
-    private LocalDateTime realEndDate;
-
-    private String description;
-    private String problem;
-    private String solution;
-    private String note;
-
-    private String attachFile;
-
-    private Long parentId;
-
-    private Byte state;
-    private Long numberOfSubTask;
-    private Long sectionId;
-    private Long tagId;
+    private Long teamId;
 
 }

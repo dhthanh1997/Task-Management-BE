@@ -3,12 +3,17 @@ package com.ansv.taskmanagement.service.impl;
 import com.ansv.taskmanagement.constants.StateEnum;
 import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
 import com.ansv.taskmanagement.dto.request.TaskImportDTO;
+import com.ansv.taskmanagement.dto.response.MemberDTO;
 import com.ansv.taskmanagement.dto.response.ReportDTO;
 import com.ansv.taskmanagement.dto.response.TaskDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
+import com.ansv.taskmanagement.model.Member;
+import com.ansv.taskmanagement.model.ReportView;
 import com.ansv.taskmanagement.model.Task;
 import com.ansv.taskmanagement.repository.TaskRepository;
+import com.ansv.taskmanagement.repository.impl.ReportViewRepositoryImpl;
+import com.ansv.taskmanagement.repository.view.ReportViewRepository;
 import com.ansv.taskmanagement.service.ReportService;
 import com.ansv.taskmanagement.service.TaskService;
 import com.ansv.taskmanagement.util.DataUtils;
@@ -33,8 +38,10 @@ public class ReportServiceImpl implements ReportService {
 
     private static final Logger logger = LoggerFactory.getLogger(ReportServiceImpl.class);
 
-    private static final BaseMapper<Task, TaskDTO> mapper = new BaseMapper<>(Task.class, TaskDTO.class);
+    private static final BaseMapper<ReportView, ReportDTO> mapper = new BaseMapper<>(ReportView.class, ReportDTO.class);
 
+    @Autowired
+    private ReportViewRepositoryImpl reportViewRepository;
 
     @Override
     public List<ReportDTO> findAll() {
@@ -47,9 +54,23 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Page<ReportDTO> findBySearchCriteria(Optional<String> search, Pageable page) {
-        Page<ReportDTO> listDTO = null;
+    public List<ReportDTO> findBySearchCriteria(Optional<String> search, Pageable page) {
+        Map<String, Object> params = new HashMap<>();
+        GenericSpecificationBuilder<ReportView> builder = new GenericSpecificationBuilder<>();
+        // check chuỗi để tách các param search
+        if (DataUtils.notNull(search)) {
+            Pattern pattern = Pattern.compile("(\\w+?)(\\.)(:|<|>|(\\w+?))(\\.)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
+            Matcher matcher = pattern.matcher(search + ",");
+            while (matcher.find()) {
+                builder.with(new SearchCriteria(matcher.group(1), matcher.group(3), matcher.group(6)));
+                params.put(matcher.group(1), matcher.group(6));
+            }
+        }
+        // specification
+//        builder.setClazz(ReportView.class);
+//        Specification<ReportView> spec = builder.build();
 
+        List<ReportDTO> listDTO = mapper.toDtoBean(reportViewRepository.findDataWithParams(params));
         return listDTO;
 
     }

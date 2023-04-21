@@ -58,6 +58,14 @@ public class RoleOfApplicationController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/rolePermission/{id}")
+    public ResponseEntity<ResponseDataObject<RoleOfApplicationDTO>> getRolePermission(@PathVariable(value = "id") Long id) {
+        ResponseDataObject<RoleOfApplicationDTO> response = new ResponseDataObject<>();
+        RoleOfApplicationDTO dto = roleOfApplicationService.findById(id);
+        response.initData(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDataObject<Integer>> deleteById(@PathVariable(value = "id") Long id) {
         ResponseDataObject<Integer> response = new ResponseDataObject<>();

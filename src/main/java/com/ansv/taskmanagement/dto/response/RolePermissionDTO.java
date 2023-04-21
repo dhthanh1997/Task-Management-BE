@@ -11,18 +11,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RolePermissionDTO   {
+public class RolePermissionDTO extends BaseDTO<String>   {
     private Long id;
 
-//    private String name;
-//
-//    private String code;
-//
-//    private String parentCode;
+    private String name;
 
-//    private String description;
+    private String code;
 
-    private Long roleId;
+    private String description;
 
-    private Long permissionId;
+
 }
