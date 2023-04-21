@@ -41,9 +41,9 @@ public class ReportController extends BaseController {
             }
         }
         Pageable page = pageRequest(sorts, 0, 999);
-        Page<ReportDTO> listDTO = reportService.findBySearchCriteria(search, page);
+        List<ReportDTO> listDTO = reportService.findBySearchCriteria(search, page);
         // response
-        response.pagingData = listDTO;
+        response.listData = listDTO;
         response.success();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

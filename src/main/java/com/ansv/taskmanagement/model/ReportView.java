@@ -23,32 +23,31 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Immutable
+//@IdClass(ReportViewId.class)
 public class ReportView implements Serializable {
 
-
     @Id
+    private Long id;
+
+//    @Id
+    @Column(name = "project_id")
     private Long projectId;
 
+//    @Id
+    @Column(name = "task_id")
+    private Long taskId;
+
+    @Column(name = "username")
     private String username;
 
+    @Column(name = "team_id")
     private Long teamId;
-
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime fromDate;
-
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime toDate;
-
-//    private Long numberOfTaskCompleted;
-//
-//    private Long numberOfTaskNotCompleted;
-//
-//
-//    private Long numberOfTask;
-
-
 
 
 }
+
+//// create class for using multiple id in entity
+//class ReportViewId implements Serializable{
+//    Long projectId;
+//    Long taskId;
+//}

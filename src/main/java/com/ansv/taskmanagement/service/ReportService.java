@@ -17,7 +17,7 @@ public interface ReportService {
 
     List<ReportDTO> search(Map<String, Object> mapParam);
 
-    Page<ReportDTO> findBySearchCriteria(Optional<String> search, Pageable page);
+    List<ReportDTO> findBySearchCriteria(Optional<String> search, Pageable page);
 
 
 
