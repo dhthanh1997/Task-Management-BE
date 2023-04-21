@@ -1,0 +1,30 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet author="admin (generated)" id="1681954301565-1">
+        <createTable tableName="report_view">
+            <column name="project_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="report_viewPK"/>
+            </column>
+            <column name="from_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="team_id" type="BIGINT"/>
+            <column name="to_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="username" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1681954301565-2">
+        <createTable tableName="task_member">
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="task_memberPK"/>
+            </column>
+            <column name="member_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="task_memberPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1681954301565-3">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="task_member" constraintName="FK4xdfrh0hn0ong3o92by0xyu07" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="member" validate="true"/>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1681954301565-4">
+        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="task_member" constraintName="FKectrmxew8ivqi15ssbsniwmac" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
