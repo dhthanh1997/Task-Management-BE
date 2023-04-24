@@ -8,13 +8,11 @@ import lombok.Setter;
 
 import java.util.List;
 
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RolePermissionDTO  {
-
+public class TreeDTO {
     private Long id;
 
     private String name;
@@ -25,7 +23,5 @@ public class RolePermissionDTO  {
 
     private String description;
 
-    private List<RolePermissionDTO> children;
-
-
+    private List<TreeDTO> children;
 }

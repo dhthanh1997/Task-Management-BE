@@ -128,6 +128,11 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     }
 
     @Override
+    public void deleteByRoleId(Long id) {
+        repository.deleteByRoleId(id);
+    }
+
+    @Override
     public Integer deleteByListId(List<Long> listId) {
 //        try {
         return repository.deleteByListId(listId);

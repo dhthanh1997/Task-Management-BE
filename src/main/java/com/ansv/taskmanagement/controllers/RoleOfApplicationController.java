@@ -3,7 +3,9 @@ package com.ansv.taskmanagement.controllers;
 
 import com.ansv.taskmanagement.dto.response.RoleOfApplicationDTO;
 import com.ansv.taskmanagement.dto.response.ResponseDataObject;
+import com.ansv.taskmanagement.dto.response.RolePermissionDTO;
 import com.ansv.taskmanagement.service.RoleOfApplicationService;
+import com.ansv.taskmanagement.util.TreeComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,11 +60,11 @@ public class RoleOfApplicationController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/rolePermission/{id}")
-    public ResponseEntity<ResponseDataObject<RoleOfApplicationDTO>> getRolePermission(@PathVariable(value = "id") Long id) {
-        ResponseDataObject<RoleOfApplicationDTO> response = new ResponseDataObject<>();
-        RoleOfApplicationDTO dto = roleOfApplicationService.findById(id);
-        response.initData(dto);
+    @GetMapping("/rolePermission")
+    public ResponseEntity<ResponseDataObject<TreeComponent>> getRolePermission(@RequestParam(name = "roleId") Optional<Long> roleId) {
+        ResponseDataObject<TreeComponent> response = new ResponseDataObject<>();
+        List<TreeComponent> dto = roleOfApplicationService.getRolePermission(roleId);
+        response.initListData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

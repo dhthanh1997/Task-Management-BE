@@ -51,11 +51,15 @@ public class RolePermisisonController extends BaseController {
     }
 
 
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<RolePermissionDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid RolePermissionDTO item) {
-        ResponseDataObject<RolePermissionDTO> response = new ResponseDataObject<>();
-        RolePermissionDTO dto = rolePermissionService.save(item);
+    /*
+    * id = roleId
+    *
+    * */
+    @PutMapping("/{roleId}")
+    public ResponseEntity<ResponseDataObject<List<RolePermissionDTO>>> update(@PathVariable(value = "roleId") Long roleId, @RequestBody List<RolePermissionDTO> item) {
+        ResponseDataObject<List<RolePermissionDTO>> response = new ResponseDataObject<>();
+        rolePermissionService.deleteByRoleId(roleId);
+        List<RolePermissionDTO> dto = rolePermissionService.saveRolePermission(item);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

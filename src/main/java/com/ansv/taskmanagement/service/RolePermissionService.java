@@ -25,6 +25,8 @@ public interface RolePermissionService {
 
     void deleteById(Long id);
 
+    void deleteByRoleId(Long id);
+
     Integer deleteByListId(List<Long> id);
 
 }

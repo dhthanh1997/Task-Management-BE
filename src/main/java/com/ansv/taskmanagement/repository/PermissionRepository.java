@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission, Long>, PermissionRepositoryCustom {
@@ -22,5 +23,8 @@ public interface PermissionRepository extends JpaRepository<Permission, Long>, P
     @Query(value = "SELECT p.* FROM permission as p LEFT JOIN role_permission as rp ON p.id = rp.permission_id \n" +
             "WHERE 1=1 AND rp.role_id = :roleId", nativeQuery = true)
     List<Permission> getAllByRoleId(@Param("roleId") Long roleId);
+
+    Optional<Permission> findByCode(String code);
+
 
 }

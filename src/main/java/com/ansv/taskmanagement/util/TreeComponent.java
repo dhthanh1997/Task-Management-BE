@@ -1,4 +1,4 @@
-package com.ansv.taskmanagement.dto.response;
+package com.ansv.taskmanagement.util;
 
 
 import lombok.AllArgsConstructor;
@@ -8,13 +8,11 @@ import lombok.Setter;
 
 import java.util.List;
 
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RolePermissionDTO  {
-
+public class TreeComponent {
     private Long id;
 
     private String name;
@@ -25,7 +23,9 @@ public class RolePermissionDTO  {
 
     private String description;
 
-    private List<RolePermissionDTO> children;
+    private Integer type;
 
+    private Integer depth;
 
+    private List<TreeComponent> children;
 }

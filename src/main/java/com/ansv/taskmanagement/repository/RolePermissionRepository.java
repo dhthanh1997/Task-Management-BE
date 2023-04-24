@@ -19,4 +19,11 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
     @Query(value = "DELETE FROM role_permission WHERE id IN :listId", nativeQuery = true)
     Integer deleteByListId(@Param("listId") List<Long> listId);
 
+    @Query(value = "SELECT permission_id FROM role_permission WHERE role_id = :roleId", nativeQuery = true)
+    List<Long> getPermissionIdByRoleId(@Param("roleId") Long  roleId);
+
+    @Transactional
+    @Modifying
+    Integer deleteByRoleId(Long roleId);
+
 }
