@@ -3,6 +3,7 @@ package com.ansv.taskmanagement.repository;
 import com.ansv.taskmanagement.model.Activity;
 import com.ansv.taskmanagement.model.Assignment;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +13,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public interface AssigmentRepository extends JpaRepository<Assignment, Long>, AssigmentRepositoryCustom {
+public interface AssigmentRepository extends JpaRepository<Assignment, Long>, JpaSpecificationExecutor<Assignment>,AssigmentRepositoryCustom {
 
     @Transactional
     @Modifying
