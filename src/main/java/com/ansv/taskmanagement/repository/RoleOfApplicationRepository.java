@@ -18,4 +18,6 @@ public interface RoleOfApplicationRepository extends JpaRepository<RoleOfApplica
     @Query(value = "DELETE FROM role_of_application WHERE id IN :listId", nativeQuery = true)
     Integer deleteByListId(@Param("listId") List<Long> listId);
 
+
+
 }

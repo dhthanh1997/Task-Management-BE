@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
-import com.thoughtworks.xstream.core.util.Fields;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Sort;
@@ -14,7 +13,6 @@ import org.springframework.util.CollectionUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.time.*;
@@ -434,7 +432,7 @@ public class DataUtils {
                 }
             }
         } else {
-            for(String s: sort) {
+            for (String s : sort) {
                 orderList.add(Sort.Order.asc(camelToSnake(s)));
             }
         }
@@ -450,5 +448,32 @@ public class DataUtils {
 
 //    end sort utils
 
+    public static boolean isCollection(Object object) {
+        return object instanceof Collection || object instanceof Map;
+    }
+
+
+    /*
+    originalList : list ban đầu
+    targetList: list cấp 1
+    property: array
+     */
+    public static List<TreeComponent> recursiveObjectList(List<TreeComponent> originalList, List<TreeComponent> targetList) {
+
+        for (TreeComponent item : targetList) {
+            item.setChildren(new ArrayList<>());
+            for (TreeComponent sub : originalList) {
+                String parentCode = sub.getParentCode();
+                if (!DataUtils.isNullOrEmpty(parentCode)) {
+                    if (item.getCode().equals(parentCode)) {
+                        item.getChildren().add(sub);
+                    }
+                }
+
+            }
+            recursiveObjectList(originalList, item.getChildren());
+        }
+        return targetList;
+    }
 
 }
