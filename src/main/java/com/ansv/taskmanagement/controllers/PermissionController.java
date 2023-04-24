@@ -15,6 +15,8 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api/permission")
@@ -24,9 +26,18 @@ public class PermissionController extends BaseController {
     private PermissionService permissionService;
 
     @GetMapping("")
-    public ResponseEntity<ResponseDataObject<PermissionDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search) {
+    public ResponseEntity<ResponseDataObject<PermissionDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search, @RequestParam(name = "sort") Optional<String> sort) {
         ResponseDataObject<PermissionDTO> response = new ResponseDataObject<>();
-        Pageable page = pageRequest(new ArrayList<>(), pageNumber - 1, pageSize);
+        List<String> sorts = new ArrayList<>();
+//        sort pattern: (\w+?)(,)
+        if (sort.isPresent()) {
+            Pattern pattern = Pattern.compile("(\\w+?)(,)", Pattern.UNICODE_CHARACTER_CLASS);
+            Matcher matcher = pattern.matcher(sort.get());
+            while (matcher.find()) {
+                sorts.add(matcher.group(1));
+            }
+        }
+        Pageable page = pageRequest(sorts, pageNumber - 1, pageSize);
         Page<PermissionDTO> listDTO = permissionService.findBySearchCriteria(search, page);
         // response
         response.pagingData = listDTO;

@@ -38,33 +38,5 @@ public class PermissionRepositoryCustomImpl extends BaseCustomRepository<Permiss
         return null;
     }
 
-    @Override
-    public Optional<Permission> findOne(Specification<Permission> spec) {
-        return Optional.empty();
-    }
 
-    @Override
-    public List<Permission> findAll(Specification<Permission> spec) {
-        return null;
-    }
-
-    @Override
-    public Page<Permission> findAll(Specification<Permission> spec, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public List<Permission> findAll(Specification<Permission> spec, Sort sort) {
-        return null;
-    }
-
-    @Override
-    public long count(Specification<Permission> spec) {
-        return 0;
-    }
-
-    @Override
-    public boolean exists(Specification<Permission> spec) {
-        return false;
-    }
 }
