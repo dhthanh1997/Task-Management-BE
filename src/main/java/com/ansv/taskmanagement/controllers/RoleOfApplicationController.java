@@ -4,8 +4,11 @@ package com.ansv.taskmanagement.controllers;
 import com.ansv.taskmanagement.dto.response.RoleOfApplicationDTO;
 import com.ansv.taskmanagement.dto.response.ResponseDataObject;
 import com.ansv.taskmanagement.dto.response.RolePermissionDTO;
+import com.ansv.taskmanagement.service.PermissionService;
 import com.ansv.taskmanagement.service.RoleOfApplicationService;
+import com.ansv.taskmanagement.service.RolePermissionService;
 import com.ansv.taskmanagement.util.TreeComponent;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +27,9 @@ public class RoleOfApplicationController extends BaseController {
 
     @Autowired
     private RoleOfApplicationService roleOfApplicationService;
+
+    @Autowired
+    private RolePermissionService rolePermissionService;
 
     @GetMapping("")
     public ResponseEntity<ResponseDataObject<RoleOfApplicationDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search) {
@@ -72,6 +78,7 @@ public class RoleOfApplicationController extends BaseController {
     public ResponseEntity<ResponseDataObject<Integer>> deleteById(@PathVariable(value = "id") Long id) {
         ResponseDataObject<Integer> response = new ResponseDataObject<>();
         roleOfApplicationService.deleteById(id);
+        rolePermissionService.deleteByRoleId(id);
         response.initData(1);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -80,6 +87,9 @@ public class RoleOfApplicationController extends BaseController {
     public ResponseEntity<ResponseDataObject<Integer>> deleteByListId(@RequestBody List<Long> listId) {
         ResponseDataObject<Integer> response = new ResponseDataObject<>();
         Integer delete = roleOfApplicationService.deleteByListId(listId);
+        for(Long id: listId) {
+            rolePermissionService.deleteByRoleId(id);
+        }
         response.initData(delete);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
