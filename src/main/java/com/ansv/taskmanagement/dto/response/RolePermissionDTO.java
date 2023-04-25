@@ -17,15 +17,11 @@ public class RolePermissionDTO  {
 
     private Long id;
 
-    private String name;
+    private Long roleId;
 
-    private String code;
+    private Long permissionId;
 
-    private String parentCode;
-
-    private String description;
-
-    private List<RolePermissionDTO> children;
+//    private List<PermissionDTO> children;
 
 
 }
