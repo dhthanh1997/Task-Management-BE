@@ -35,18 +35,18 @@ public class RolePermisisonController extends BaseController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseDataObject<RolePermissionDTO>> create(@RequestBody @Valid RolePermissionDTO item) {
+    public ResponseEntity<ResponseDataObject<RolePermissionDTO>> create(@RequestBody List<RolePermissionDTO> item) {
         ResponseDataObject<RolePermissionDTO> response = new ResponseDataObject<>();
-        RolePermissionDTO dto = rolePermissionService.save(item);
-        response.initData(dto);
+        rolePermissionService.saveRolePermission(item);
+        response.success();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/rolePermission")
-    public ResponseEntity<ResponseDataObject<List<RolePermissionDTO>>> createRolePermission(@RequestBody List<RolePermissionDTO> item) {
-        ResponseDataObject<List<RolePermissionDTO>> response = new ResponseDataObject<>();
-        List<RolePermissionDTO>  dto = rolePermissionService.saveRolePermission(item);
-        response.initData(dto);
+    public ResponseEntity<ResponseDataObject<RolePermissionDTO>> createRolePermission(@RequestBody List<RolePermissionDTO> item) {
+        ResponseDataObject<RolePermissionDTO> response = new ResponseDataObject<>();
+        rolePermissionService.saveRolePermission(item);
+        response.success();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -56,21 +56,15 @@ public class RolePermisisonController extends BaseController {
     *
     * */
     @PutMapping("/{roleId}")
-    public ResponseEntity<ResponseDataObject<List<RolePermissionDTO>>> update(@PathVariable(value = "roleId") Long roleId, @RequestBody List<RolePermissionDTO> item) {
-        ResponseDataObject<List<RolePermissionDTO>> response = new ResponseDataObject<>();
+    public ResponseEntity<ResponseDataObject<RolePermissionDTO>> update(@PathVariable(value = "roleId") Long roleId, @RequestBody List<RolePermissionDTO> item) {
+        ResponseDataObject<RolePermissionDTO> response = new ResponseDataObject<>();
         rolePermissionService.deleteByRoleId(roleId);
-        List<RolePermissionDTO> dto = rolePermissionService.saveRolePermission(item);
-        response.initData(dto);
+        rolePermissionService.saveRolePermission(item);
+        response.success();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseDataObject<RolePermissionDTO>> getById(@PathVariable(value = "id") Long id) {
-        ResponseDataObject<RolePermissionDTO> response = new ResponseDataObject<>();
-        RolePermissionDTO dto = rolePermissionService.findById(id);
-        response.initData(dto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDataObject<Integer>> deleteById(@PathVariable(value = "id") Long id) {
