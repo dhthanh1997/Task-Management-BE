@@ -464,10 +464,10 @@ public class DataUtils {
             item.setChildren(new ArrayList<>());
             for (TreeComponent sub : originalList) {
                 String parentCode = sub.getParentCode();
-                if (!DataUtils.isNullOrEmpty(parentCode)) {
+//                if (!DataUtils.isNullOrEmpty(parentCode)) {
                     if (item.getCode().equals(parentCode)) {
                         item.getChildren().add(sub);
-                    }
+//                    }
                 }
 
             }

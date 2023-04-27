@@ -6,6 +6,7 @@ import com.ansv.taskmanagement.dto.response.ResponseDataObject;
 import com.ansv.taskmanagement.dto.response.UserDTO;
 import com.ansv.taskmanagement.dto.response.UserInfoDTO;
 import com.ansv.taskmanagement.service.MemberService;
+import com.ansv.taskmanagement.service.RoleOfApplicationService;
 import com.ansv.taskmanagement.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,8 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+
 
     @GetMapping("/{username}")
     public ResponseEntity<ResponseDataObject<UserInfoDTO>> getByUserInfo(@PathVariable(value = "username") String username) {

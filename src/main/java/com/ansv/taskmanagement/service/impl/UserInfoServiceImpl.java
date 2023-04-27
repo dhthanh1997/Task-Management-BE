@@ -11,8 +11,10 @@ import com.ansv.taskmanagement.model.Permission;
 import com.ansv.taskmanagement.repository.MemberRepository;
 import com.ansv.taskmanagement.repository.PermissionRepository;
 import com.ansv.taskmanagement.service.MemberService;
+import com.ansv.taskmanagement.service.RoleOfApplicationService;
 import com.ansv.taskmanagement.service.UserInfoService;
 import com.ansv.taskmanagement.util.DataUtils;
+import com.ansv.taskmanagement.util.TreeComponent;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +46,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     private PermissionRepository permissionRepository;
 
+    @Autowired
+    private RoleOfApplicationService roleOfApplicationService;
+
     @Override
     public UserInfoDTO getUserInfo(String username) {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
@@ -60,6 +65,8 @@ public class UserInfoServiceImpl implements UserInfoService {
                 }
             }
             menu = menu.stream().distinct().collect(Collectors.toList());
+            List<TreeComponent> children = roleOfApplicationService.getRolePermission(Optional.of(member.get().getRoleId()));
+            userInfoDTO.setChildren(children);
             userInfoDTO.setMenu(menu);
             userInfoDTO.setUsername(username);
         }
