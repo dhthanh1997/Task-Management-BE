@@ -29,8 +29,11 @@ public class WorkLog extends Auditable<String> implements Serializable {
     @Column(name = "name", columnDefinition = "nvarchar(500)")
     private String name;
 
-    @Column(name = "assignment_id")
-    private Long assignmentId;
+    @Column(name = "task_id")
+    private Long taskId;
+
+    @Column(name = "activity_id")
+    private Long activityId;
 
     @Column(name = "content", columnDefinition = "nvarchar(1000)")
     private String content;
