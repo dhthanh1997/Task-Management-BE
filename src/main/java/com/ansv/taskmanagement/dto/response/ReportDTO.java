@@ -19,6 +19,7 @@ public class ReportDTO {
 
     private Long taskId;
 
+    private Byte state; 
 
     private String username;
 

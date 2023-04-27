@@ -1,6 +1,7 @@
 package com.ansv.taskmanagement.dto.response;
 
 
+import com.ansv.taskmanagement.util.TreeComponent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,5 +31,7 @@ public class UserInfoDTO   {
     private List<PermissionDTO> permissions;
 
     private List<String> menu;
+
+    private List<TreeComponent> children;
 
 }

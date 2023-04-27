@@ -24,7 +24,7 @@ public class ReportViewRepositoryImpl extends BaseCustomRepository<ReportView> {
     public List<ReportView> findDataWithParams(Map<String, Object> parameters) {
         Map<String, Object> params = new HashMap<>();
         StringBuilder result = new StringBuilder();
-        String query = "SELECT row_number() OVER () AS id, t.project_id AS project_id, t.id AS task_id, mem.username AS username, team_mem.team_id AS team_id \n";
+        String query = "SELECT row_number() OVER () AS id, t.project_id AS project_id, t.id AS task_id, mem.username AS username, t.state AS state, team_mem.team_id AS team_id \n";
         String from = "FROM task AS t \n";
 //        String join_project = "LEFT JOIN project AS p ON p.id = t.project_id \n";
         String join_task_member = "LEFT JOIN assignment AS ass ON ass.task_id = t.id \n";
