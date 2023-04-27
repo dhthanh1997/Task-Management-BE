@@ -40,6 +40,9 @@ public class ReportView implements Serializable {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "state")
+    private Byte state;
+
     @Column(name = "team_id")
     private Long teamId;
 
