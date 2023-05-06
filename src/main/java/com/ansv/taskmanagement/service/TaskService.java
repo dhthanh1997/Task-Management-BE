@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,6 +34,10 @@ public interface TaskService {
 
     Integer deleteByListId(List<Long> id);
 
-    void importTask(List<TaskImportDTO> dtos);
+    void importTask(List<TaskImportDTO> dto);
+    
+    File exportReport(Long projectId);
+
+
 
 }

@@ -13,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.time.*;
@@ -474,6 +475,15 @@ public class DataUtils {
             recursiveObjectList(originalList, item.getChildren());
         }
         return targetList;
+    }
+
+    public static List<String> getFieldNameOfObject(Class<?> clazz) {
+        List<String> names = new ArrayList<>();
+        Field[] fields = clazz.getClass().getDeclaredFields();
+        for (Field item: fields) {
+            names.add(item.getName());
+        }
+        return names;
     }
 
 }

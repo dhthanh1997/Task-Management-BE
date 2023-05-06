@@ -33,9 +33,9 @@ public class ProjectDTO extends BaseDTO<String>   {
 
     private LocalDateTime endDate;
 
-    private LocalDateTime readStartDate;
+    private LocalDateTime realStartDate;
 
-    private LocalDateTime readEndDate;
+    private LocalDateTime realEndDate;
 
     private Long parentId;
 
