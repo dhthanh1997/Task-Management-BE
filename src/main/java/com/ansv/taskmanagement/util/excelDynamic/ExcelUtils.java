@@ -5,12 +5,15 @@ import com.ansv.taskmanagement.annotation.*;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.common.usermodel.HyperlinkType;
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,6 +49,18 @@ public class ExcelUtils {
         Method xlsMethod = getMethod(clazz, xlsColumnField);
         Object xlsObjValue = xlsMethod.invoke(record, (Object[]) null);
         setCellValue(newCell, xlsObjValue, currencyStyle, centerAlignedStyle, genericStyle, workbook);
+
+    }
+
+    public static void writeSingleFieldRowFromArray(Object objectValue, XlsxField xlsCompositeColumnField, Row childRow,
+                                              CellStyle currencyStyle, CellStyle centerAlignedStyle, CellStyle genericStyle,
+                                              Workbook workbook)
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
+        Method nestedCompositeXlsMethod = getMethod(objectValue.getClass(), xlsCompositeColumnField);
+        Object nestedCompositeValue = nestedCompositeXlsMethod.invoke(objectValue, (Object[]) null);
+        Cell compositeNewCell = childRow.createCell(xlsCompositeColumnField.getCellIndex());
+        setCellValue(compositeNewCell, nestedCompositeValue, currencyStyle, centerAlignedStyle, genericStyle, workbook);
 
     }
 
@@ -90,15 +105,30 @@ public class ExcelUtils {
                 } else {
                     cell.setCellValue(cellValue);
                 }
-            } else if (objValue instanceof Long) {
+            }
+            else if (objValue instanceof Long) {
                 cell.setCellValue((Long) objValue);
-            } else if (objValue instanceof Integer) {
+            }
+            else if (objValue instanceof Integer) {
                 cell.setCellValue((Integer) objValue);
-            } else if (objValue instanceof Double) {
+            }
+            else if (objValue instanceof Double) {
                 Double cellValue = (Double) objValue;
                 cell.setCellStyle(currencyStyle);
                 cell.setCellValue(cellValue);
-            } else if (objValue instanceof Boolean) {
+            }
+            else if (objValue instanceof LocalDateTime) {
+                String cellValue =   ((LocalDateTime) objValue).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ;
+                cell.setCellStyle(currencyStyle);
+                cell.setCellValue(cellValue);
+            }
+//            else if (objValue instanceof Byte) {
+//                Integer cellValue =   ((Byte) objValue).intValue() ;
+//                cell.setCellStyle(currencyStyle);
+//                cell.setCellValue(cellValue);
+//            }
+
+            else if (objValue instanceof Boolean) {
                 cell.setCellStyle(centerAlignedStyle);
                 if (objValue.equals(true)) {
                     cell.setCellValue(1);
@@ -114,41 +144,25 @@ public class ExcelUtils {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
 
-            Annotation[] annotations = field.getAnnotations();
             XlsxField xlsColumnField = new XlsxField();
             if (Collection.class.isAssignableFrom(field.getType())) {
 
                 xlsColumnField.setAnArray(true);
-//                Annotation[] annotations = field.getAnnotations();
-//                XlsxCompositeField xlsCompositeField = null;
-//                XlsxSingleField xlsField = null;
+
                 XlsxCompositeField xlsCompositeField = field.getAnnotation(XlsxCompositeField.class);
-//                for (Annotation fieldAnnotation : annotations) {
-//                    if(fieldAnnotation.annotationType().getSimpleName().equals(XlsxCompositeField.class)) {
-//                        xlsCompositeField = (XlsxCompositeField) fieldAnnotation;
-//                    }
-//                }
+
 
                 if (xlsCompositeField != null) {
                     xlsColumnField.setCellIndexFrom(xlsCompositeField.from());
                     xlsColumnField.setCellIndexTo(xlsCompositeField.to());
                     xlsColumnField.setComposite(true);
                 } else {
-//                    for (Annotation fieldAnnotation : annotations) {
-//                        if(fieldAnnotation.annotationType().getSimpleName().equals(XlsxSingleField.class)) {
-//                            xlsField = (XlsxSingleField) fieldAnnotation;
-//                        }
-//                    }
+
                     XlsxSingleField xlsField = field.getAnnotation(XlsxSingleField.class);
                     xlsColumnField.setCellIndex(xlsField.columnIndex());
                 }
             } else {
-//                XlsxSingleField xlsField = null;
-//                for (Annotation fieldAnnotation : annotations) {
-//                    if(fieldAnnotation.annotationType().getSimpleName().equals(XlsxSingleField.class)) {
-//                        xlsField = (XlsxSingleField) fieldAnnotation;
-//                    }
-//                }
+
                 XlsxSingleField xlsField = field.getAnnotation(XlsxSingleField.class);
                 xlsColumnField.setAnArray(false);
                 if (xlsField != null) {
@@ -271,5 +285,11 @@ public class ExcelUtils {
         cellStyle.setBorderRight(BorderStyle.NONE);
         return cellStyle;
     }
+
+
+    private static <T> void recursiveObject () {
+        return;
+    }
+
 
 }

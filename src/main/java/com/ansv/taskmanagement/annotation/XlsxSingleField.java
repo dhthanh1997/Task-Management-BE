@@ -8,4 +8,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XlsxSingleField {
     int columnIndex();
+    String name();
 }

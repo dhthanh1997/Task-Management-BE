@@ -1,5 +1,6 @@
 package com.ansv.taskmanagement.util;
 
+import com.ansv.taskmanagement.annotation.XlsxSingleField;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -10,6 +11,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.CollectionUtils;
 
+import javax.persistence.Column;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -477,11 +479,14 @@ public class DataUtils {
         return targetList;
     }
 
-    public static List<String> getFieldNameOfObject(Class<?> clazz) {
+    public static List<String> getFieldNameOfObject(Object entity) {
         List<String> names = new ArrayList<>();
-        Field[] fields = clazz.getClass().getDeclaredFields();
+        Field[] fields = entity.getClass().getDeclaredFields();
         for (Field item: fields) {
-            names.add(item.getName());
+            XlsxSingleField col = item.getAnnotation(XlsxSingleField.class);
+            if (col != null) {
+                names.add(col.name());
+            }
         }
         return names;
     }

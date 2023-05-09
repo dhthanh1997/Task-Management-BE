@@ -24,8 +24,8 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
     @Modifying
     List<Task> findByParentId(Long id);
 
-    @Query(value = "SELECT * FROM task WHERE section_id = :sectionId", nativeQuery = true)
-    List<Task> findBySectionId(@Param("sectionId") Long sectionId);
+    @Query(value = "SELECT * FROM task WHERE section_id = :sectionId AND project_id = :projectId", nativeQuery = true)
+    List<Task> findBySectionIdAndProjectId(@Param("sectionId") Long sectionId, @Param("projectId") Long projectId);
 
 //    @Transactional
 //    @Modifying

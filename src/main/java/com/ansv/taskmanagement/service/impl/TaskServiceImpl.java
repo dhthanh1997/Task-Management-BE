@@ -20,6 +20,11 @@ import com.ansv.taskmanagement.service.TaskService;
 import com.ansv.taskmanagement.service.XlsxWriterService;
 import com.ansv.taskmanagement.util.DataUtils;
 import lombok.extern.slf4j.Slf4j;
+import ma.glasnost.orika.BoundMapperFacade;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ma.glasnost.orika.impl.MapperFacadeImpl;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -199,6 +204,7 @@ public class TaskServiceImpl implements TaskService {
         ProjectDTO project = projectService.findById(projectId);
         List<SectionDTO> sectionsDTO = sectionService.findByProjectId(projectId);
 
+
 //        List<XlsxSection> xlsxSections = new ArrayList<>();
         if (!DataUtils.isNullOrEmpty(project)) {
 
@@ -207,19 +213,20 @@ public class TaskServiceImpl implements TaskService {
                 List<Task> tasks = new ArrayList<>();
                 section.setNo(sectionDTO.getId());
                 section.setSectionName(sectionDTO.getName());
-                tasks.addAll(repository.findBySectionId(sectionDTO.getId()));
+                tasks.addAll(repository.findBySectionIdAndProjectId(sectionDTO.getId(), projectId));
                 section.setTasks(mapperXlsx.toDtoBean(tasks));
                 report.add(section);
             }
 
         }
 
-        List<String> columns = DataUtils.getFieldNameOfObject(Task.class);
+        List<String> columns = DataUtils.getFieldNameOfObject(new XlsxTask());
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        String title = "BÁO CÁO CÔNG VIỆC";
 
         try (Workbook workbook= new XSSFWorkbook()) {
-            xlsxWriterService.write(report, byteArrayOutputStream, columns, workbook);
+            xlsxWriterService.writeFile(report, byteArrayOutputStream, columns, workbook, title);
             FileOutputStream outpuStream = new FileOutputStream(outputFile);
             byteArrayOutputStream.writeTo(outpuStream);
             outpuStream.close();

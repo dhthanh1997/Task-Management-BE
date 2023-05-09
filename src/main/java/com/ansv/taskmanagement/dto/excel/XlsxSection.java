@@ -11,9 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class XlsxSection {
-    @XlsxSingleField(columnIndex = 0)
+    @XlsxSingleField(columnIndex = 0, name = "no")
     private Long no;
 
-    @XlsxSingleField(columnIndex = 1)
+    @XlsxSingleField(columnIndex = 1, name = "sectionName")
     private String sectionName;
 }

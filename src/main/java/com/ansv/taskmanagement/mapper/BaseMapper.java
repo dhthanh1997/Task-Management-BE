@@ -7,6 +7,8 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 public class BaseMapper<Model, DTO> {
@@ -21,6 +23,14 @@ public class BaseMapper<Model, DTO> {
         mapperFacade = mapperFactory.getMapperFacade();
         this.dto = dto;
         this.model  = model;
+    }
+
+    public BaseMapper(Class<Model> model, Class<DTO> dto, Map<String, String> customFields) {
+        for (Map.Entry<String, String> entry : customFields.entrySet()) {
+            mapperFactory.classMap(model, dto).field(entry.getKey().trim(), entry.getValue().trim()).byDefault().register();
+        }
+
+        mapperFacade = mapperFactory.getMapperFacade();
     }
 
     public BaseMapper() {
