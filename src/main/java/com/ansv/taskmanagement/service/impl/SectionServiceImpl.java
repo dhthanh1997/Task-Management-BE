@@ -2,10 +2,15 @@ package com.ansv.taskmanagement.service.impl;
 
 import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
 import com.ansv.taskmanagement.dto.response.SectionDTO;
+import com.ansv.taskmanagement.dto.response.TaskDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
+import com.ansv.taskmanagement.model.ProjectSection;
 import com.ansv.taskmanagement.model.Section;
+import com.ansv.taskmanagement.model.Task;
+import com.ansv.taskmanagement.repository.ProjectSectionRepository;
 import com.ansv.taskmanagement.repository.SectionRepository;
+import com.ansv.taskmanagement.repository.TaskRepository;
 import com.ansv.taskmanagement.service.SectionService;
 import com.ansv.taskmanagement.util.DataUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +23,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,6 +38,9 @@ public class SectionServiceImpl implements SectionService {
     @Autowired
     private SectionRepository repository;
 
+    @Autowired
+    private TaskRepository taskRepository;
+
     @Override
     public SectionDTO findById(Long id) {
         if (DataUtils.notNull(id)) {
@@ -48,7 +54,7 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public SectionDTO save(SectionDTO item) {
-//        try {
+
         Section entity = null;
 
         SectionDTO dto = findById(item.getId());
@@ -57,11 +63,7 @@ public class SectionServiceImpl implements SectionService {
         }
         entity = mapper.toPersistenceBean(item);
         return mapper.toDtoBean(repository.save(entity));
-//
-//        } catch (Exception e) {
-//            logger.error(e.getMessage());
-//            return null;
-//        }
+
     }
 
     @Override
@@ -77,7 +79,7 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public Page<SectionDTO> findBySearchCriteria(Optional<String> search, Pageable page) {
-//        try {
+
         GenericSpecificationBuilder<Section> builder = new GenericSpecificationBuilder<>();
 
         // check chuỗi để tách các param search
@@ -106,5 +108,15 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public Integer deleteByListId(List<Long> listId) {
         return repository.deleteByListId(listId);
+    }
+
+    @Override
+    public List<SectionDTO> findByProjectId(Long projectId) {
+        List<Section> sections = repository.findBySectionId(projectId);
+        if(!DataUtils.isNullOrEmpty(sections)) {
+            List<SectionDTO> sectionsDTO = mapper.toDtoBean(sections);
+            return sectionsDTO;
+        }
+        return null;
     }
 }

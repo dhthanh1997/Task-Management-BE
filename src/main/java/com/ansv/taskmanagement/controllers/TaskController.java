@@ -1,20 +1,24 @@
 package com.ansv.taskmanagement.controllers;
 
 
-import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
 import com.ansv.taskmanagement.dto.response.TaskDTO;
 import com.ansv.taskmanagement.dto.response.ResponseDataObject;
 import com.ansv.taskmanagement.service.TaskService;
-import com.ansv.taskmanagement.util.DataUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +30,9 @@ import java.util.regex.Pattern;
 public class TaskController extends BaseController {
 
     @Autowired
-    private TaskService TaskService;
+    private TaskService taskService;
+
+
 
     @GetMapping("")
     public ResponseEntity<ResponseDataObject<TaskDTO>> searchByCriteria(@RequestParam(name = "pageNumber") int pageNumber, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name = "search") Optional<String> search, @RequestParam(name = "sort") Optional<String> sort) {
@@ -41,7 +47,7 @@ public class TaskController extends BaseController {
             }
         }
         Pageable page = pageRequest(sorts, pageNumber - 1, pageSize);
-        Page<TaskDTO> listDTO = TaskService.findBySearchCriteria(search, page);
+        Page<TaskDTO> listDTO = taskService.findBySearchCriteria(search, page);
         // response
         response.pagingData = listDTO;
         response.success();
@@ -51,7 +57,7 @@ public class TaskController extends BaseController {
     @PostMapping("")
     public ResponseEntity<ResponseDataObject<TaskDTO>> create(@RequestBody @Valid TaskDTO item) {
         ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
-        TaskDTO dto = TaskService.save(item);
+        TaskDTO dto = taskService.save(item);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -59,7 +65,7 @@ public class TaskController extends BaseController {
     @PostMapping("/listTask")
     public ResponseEntity<ResponseDataObject<List<TaskDTO>>> addListTask(@RequestBody @Valid List<TaskDTO> item) {
         ResponseDataObject<List<TaskDTO>> response = new ResponseDataObject<>();
-        List<TaskDTO> listDTO = TaskService.saveListTask(item);
+        List<TaskDTO> listDTO = taskService.saveListTask(item);
         response.initData(listDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -68,7 +74,7 @@ public class TaskController extends BaseController {
     public ResponseEntity<ResponseDataObject<TaskDTO>> update(@PathVariable(value = "id") Long id, @RequestBody @Valid TaskDTO item) {
         ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
         item.setId(id);
-        TaskDTO dto = TaskService.save(item);
+        TaskDTO dto = taskService.save(item);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -76,7 +82,7 @@ public class TaskController extends BaseController {
     @PostMapping("/updateListTask")
     public ResponseEntity<ResponseDataObject<List<TaskDTO>>> updateListTask(@RequestBody @Valid List<TaskDTO> item) {
         ResponseDataObject<List<TaskDTO>> response = new ResponseDataObject<>();
-        List<TaskDTO> listDTO = TaskService.saveListTask(item);
+        List<TaskDTO> listDTO = taskService.saveListTask(item);
         response.initData(listDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -84,7 +90,7 @@ public class TaskController extends BaseController {
     @PutMapping("/markCompleteTask/{id}")
     public ResponseEntity<ResponseDataObject<TaskDTO>> markCompleteTask(@PathVariable(value = "id") Long id) {
         ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
-        TaskDTO dto = TaskService.markCompleteTask(id);
+        TaskDTO dto = taskService.markCompleteTask(id);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -92,7 +98,7 @@ public class TaskController extends BaseController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDataObject<TaskDTO>> getById(@PathVariable(value = "id") Long id) {
         ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
-        TaskDTO dto = TaskService.findById(id);
+        TaskDTO dto = taskService.findById(id);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -100,7 +106,7 @@ public class TaskController extends BaseController {
     @GetMapping("/withParent/{id}")
     public ResponseEntity<ResponseDataObject<List<TaskDTO>>> getByParentId(@PathVariable(value = "id") Long id) {
         ResponseDataObject<List<TaskDTO>> response = new ResponseDataObject<>();
-        List<TaskDTO> listData = TaskService.findByParentId(id);
+        List<TaskDTO> listData = taskService.findByParentId(id);
         response.initData(listData);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -108,7 +114,7 @@ public class TaskController extends BaseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDataObject<Integer>> deleteById(@PathVariable(value = "id") Long id) {
         ResponseDataObject<Integer> response = new ResponseDataObject<>();
-        TaskService.deleteById(id);
+        taskService.deleteById(id);
         response.initData(1);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -116,7 +122,7 @@ public class TaskController extends BaseController {
     @PostMapping("/deleteByListId")
     public ResponseEntity<ResponseDataObject<Integer>> deleteByListId(@RequestBody List<Long> listId) {
         ResponseDataObject<Integer> response = new ResponseDataObject<>();
-        Integer delete = TaskService.deleteByListId(listId);
+        Integer delete = taskService.deleteByListId(listId);
         response.initData(delete);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
@@ -130,11 +136,6 @@ public class TaskController extends BaseController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/exportExcel")
-    public ResponseEntity<ResponseDataObject<String>> exportExcell(@RequestParam(name = "id") Long id) {
-        ResponseDataObject<String> response = new ResponseDataObject<>();
-        response.initData("Successfull");
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+
 
 }

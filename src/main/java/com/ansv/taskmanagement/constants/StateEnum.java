@@ -3,6 +3,7 @@ package com.ansv.taskmanagement.constants;
 import lombok.Getter;
 
 import javax.swing.plaf.nimbus.State;
+import java.util.stream.Stream;
 
 public enum StateEnum {
 
@@ -28,8 +29,18 @@ public enum StateEnum {
         return StateEnum.valueOf(name).ordinal();
     }
 
+
     @Override
     public String toString() {
         return name();
     }
+
+    public static StateEnum of(int state) {
+        return Stream.of(StateEnum.values()).filter(s -> state == s.ordinal()).findFirst().orElseThrow(IllegalArgumentException::new);
+    }
+
+    public static int ordinalOf(String name) {
+        return Stream.of(StateEnum.values()).filter(s -> s.name().equals(name)).findFirst().orElseThrow(IllegalArgumentException::new).ordinal();
+    }
+
 }

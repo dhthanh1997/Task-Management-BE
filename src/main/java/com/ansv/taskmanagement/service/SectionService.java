@@ -24,4 +24,6 @@ public interface SectionService {
 
     Integer deleteByListId(List<Long> id);
 
+    List<SectionDTO> findByProjectId(Long projectId);
+
 }
