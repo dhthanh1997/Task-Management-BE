@@ -1,0 +1,65 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet author="PC (generated)" id="1684206562314-1">
+        <createTable tableName="project_and_task_report_view">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="project_and_task_report_viewPK"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="no" type="INTEGER"/>
+            <column name="note" type="VARCHAR(255)"/>
+            <column name="number_of_sub_task" type="BIGINT"/>
+            <column name="parent_id" type="BIGINT"/>
+            <column name="problem" type="VARCHAR(255)"/>
+            <column name="project_id" type="BIGINT"/>
+            <column name="real_end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="real_start_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="revenue" type="numeric(19, 2)"/>
+            <column name="section_id" type="BIGINT"/>
+            <column name="section_name" type="VARCHAR(255)"/>
+            <column name="solution" type="VARCHAR(255)"/>
+            <column name="start_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="state" type="SMALLINT"/>
+            <column name="state_num" type="VARCHAR(255)"/>
+            <column name="tag_id" type="BIGINT"/>
+            <column name="total_cost" type="numeric(19, 2)"/>
+            <column name="total_hour" type="FLOAT4"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1684206562314-2">
+        <createTable tableName="report_view">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="report_viewPK"/>
+            </column>
+            <column name="project_id" type="BIGINT"/>
+            <column name="state" type="SMALLINT"/>
+            <column name="task_id" type="BIGINT"/>
+            <column name="team_id" type="BIGINT"/>
+            <column name="username" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1684206562314-3">
+        <createTable tableName="tree">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="treePK"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="depth" type="INTEGER"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="parent_code" type="VARCHAR(255)"/>
+            <column name="type" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1684206562314-4">
+        <dropForeignKeyConstraint baseTableName="task_member" constraintName="FK4xdfrh0hn0ong3o92by0xyu07"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1684206562314-5">
+        <dropForeignKeyConstraint baseTableName="task_member" constraintName="FKectrmxew8ivqi15ssbsniwmac"/>
+    </changeSet>
+    <changeSet author="PC (generated)" id="1684206562314-6">
+        <dropTable tableName="task_member"/>
+    </changeSet>
+</databaseChangeLog>

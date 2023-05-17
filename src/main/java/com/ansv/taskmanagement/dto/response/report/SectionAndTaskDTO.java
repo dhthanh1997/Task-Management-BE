@@ -1,28 +1,22 @@
-package com.ansv.taskmanagement.model;
+package com.ansv.taskmanagement.dto.response.report;
 
+import com.ansv.taskmanagement.dto.response.TaskDTO;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.repository.NoRepositoryBean;
 
-import com.ansv.taskmanagement.dto.response.report.SectionAndTaskDTO;
-import lombok.*;
-import org.hibernate.annotations.Immutable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Immutable
-public class ProjectAndTaskReportView implements Serializable {
+@AllArgsConstructor
+public class SectionAndTaskDTO {
 
-    @Id
     private Long id;
     private Integer no;
     private String name;
@@ -45,7 +39,5 @@ public class ProjectAndTaskReportView implements Serializable {
     private Long numberOfSubTask;
     private Long sectionId;
     private Long tagId;
-
-
+    private List<SectionAndTaskDTO> children;
 }
-

@@ -1,6 +1,5 @@
 package com.ansv.taskmanagement.repository;
 
-import com.ansv.taskmanagement.model.Activity;
 import com.ansv.taskmanagement.model.Assignment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -13,11 +12,20 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public interface AssigmentRepository extends JpaRepository<Assignment, Long>, JpaSpecificationExecutor<Assignment>,AssigmentRepositoryCustom {
+public interface AssignmentRepository extends JpaRepository<Assignment, Long>, JpaSpecificationExecutor<Assignment>, AssignmentRepositoryCustom {
 
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM assigment WHERE id IN :listId", nativeQuery = true)
     Integer deleteByListId(@Param("listId") List<Long> listId);
+
+    List<Assignment> findByTaskId(Long taskId);
+
+    @Transactional
+    @Modifying
+    void deleteByTaskId(Long taskId);
+
+    @Query(value = "SELECT member_id FROM assignment WHERE task_id = :taskId", nativeQuery = true)
+    List<Long> getMemberIdByTaskId(Long taskId);
 
 }

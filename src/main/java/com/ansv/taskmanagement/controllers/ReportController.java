@@ -1,13 +1,18 @@
 package com.ansv.taskmanagement.controllers;
 
 
+import com.ansv.taskmanagement.dto.criteria.SearchCriteria;
 import com.ansv.taskmanagement.dto.response.ReportDTO;
 import com.ansv.taskmanagement.dto.response.ResponseDataObject;
 import com.ansv.taskmanagement.dto.response.TaskDTO;
 import com.ansv.taskmanagement.dto.response.UserInfoDTO;
+import com.ansv.taskmanagement.dto.response.report.ProjectAndTaskReportDTO;
+import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
+import com.ansv.taskmanagement.model.ReportView;
 import com.ansv.taskmanagement.service.ReportService;
 import com.ansv.taskmanagement.service.TaskService;
 import com.ansv.taskmanagement.service.UserInfoService;
+import com.ansv.taskmanagement.util.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -22,9 +27,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,5 +79,25 @@ public class ReportController extends BaseController {
                 .body(inputStreamResource);
     }
 
+
+    @GetMapping("/previewReport")
+    public ResponseEntity<ResponseDataObject<ProjectAndTaskReportDTO>> previewReport(@RequestParam(name = "search") Optional<String> search) {
+        ResponseDataObject<ProjectAndTaskReportDTO> response = new ResponseDataObject<>();
+        Map<String, Object> params = new HashMap<>();
+        // check chuỗi để tách các param search
+        if (DataUtils.notNull(search)) {
+            Pattern pattern = Pattern.compile("(\\w+?)(\\.)(:|<|>|(\\w+?))(\\.)(\\w+?),", Pattern.UNICODE_CHARACTER_CLASS);
+            Matcher matcher = pattern.matcher(search + ",");
+            while (matcher.find()) {
+                params.put(matcher.group(1), matcher.group(6));
+            }
+        }
+
+        ProjectAndTaskReportDTO dto = reportService.previewReport(params);
+        // response
+        response.data = dto;
+        response.success();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 }

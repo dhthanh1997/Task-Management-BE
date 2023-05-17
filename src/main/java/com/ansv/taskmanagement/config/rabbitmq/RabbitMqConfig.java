@@ -105,7 +105,33 @@ public class RabbitMqConfig {
     public Binding bindingReceived() {
         return BindingBuilder.bind(queueReceived()).to(directExchangeReceived()).with(environment.getProperty("spring.rabbitmq.routingkey-received"));
     }
-    // receiver
+    // sender
+
+    // sender to human
+    @Bean
+    public Queue queueSenderToHuman() {
+        return new Queue(environment.getProperty("spring.rabbitmq.queue-human"));
+    }
+
+
+    @Bean
+    public Binding bindingSenderToHuman() {
+        return BindingBuilder.bind(queueReceived()).to(directExchangeReceived()).with(environment.getProperty("spring.rabbitmq.routingkey-human"));
+    }
+    // sender
+
+    // receiver from human
+    @Bean
+    public Queue queueReceiverFromHuman() {
+        return new Queue(environment.getProperty("spring.rabbitmq.queue-task-human"));
+    }
+
+
+    @Bean
+    public Binding bindingHumanSender() {
+        return BindingBuilder.bind(queueReceived()).to(directExchangeReceived()).with(environment.getProperty("spring.rabbitmq.routingkey-task-human"));
+    }
+    // and receiver
 
 
 }

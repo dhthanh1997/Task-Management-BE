@@ -1,9 +1,7 @@
 package com.ansv.taskmanagement.service;
 
-import com.ansv.taskmanagement.dto.request.TaskImportDTO;
 import com.ansv.taskmanagement.dto.response.ReportDTO;
-import com.ansv.taskmanagement.dto.response.TaskDTO;
-import org.springframework.data.domain.Page;
+import com.ansv.taskmanagement.dto.response.report.ProjectAndTaskReportDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -19,7 +17,7 @@ public interface ReportService {
 
     List<ReportDTO> findBySearchCriteria(Optional<String> search, Pageable page);
 
-
+    ProjectAndTaskReportDTO previewReport(Map<String, Object> parameters);
 
 
 }

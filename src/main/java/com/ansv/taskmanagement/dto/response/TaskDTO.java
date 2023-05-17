@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -45,5 +46,6 @@ public class TaskDTO extends BaseDTO<String> {
     private Long numberOfSubTask;
     private Long sectionId;
     private Long tagId;
+    private List<Long> assignee;
 
 }

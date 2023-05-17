@@ -276,7 +276,7 @@ public class XlsxWriterServiceImpl implements XlsxWriterService {
 //                            List<XlsxField> xlsCompositeColumnFields = getFieldNamesForClass(objectValue.getClass());
 ////
 //                            for (XlsxField xlsCompositeColumnField : xlsCompositeColumnFields) {
-//                                writeCompositeFieldRow(objectValue, xlsCompositeColumnField, childRow, currencyStyle, centerAlignedStyle, genericStyle, workbook);
+//                                writeCompositeFieldRow(objectValue, xlsCompositneColumnField, childRow, currencyStyle, centerAlignedStyle, genericStyle, workbook);
 //
 //                            }
 //                        }

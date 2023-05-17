@@ -12,7 +12,9 @@ import com.ansv.taskmanagement.dto.response.TaskDTO;
 import com.ansv.taskmanagement.dto.response.report.ProjectAndTaskReportDTO;
 import com.ansv.taskmanagement.dto.specification.GenericSpecificationBuilder;
 import com.ansv.taskmanagement.mapper.BaseMapper;
+import com.ansv.taskmanagement.model.Assignment;
 import com.ansv.taskmanagement.model.Task;
+import com.ansv.taskmanagement.repository.AssignmentRepository;
 import com.ansv.taskmanagement.repository.TaskRepository;
 import com.ansv.taskmanagement.service.ProjectService;
 import com.ansv.taskmanagement.service.SectionService;
@@ -36,6 +38,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.swing.plaf.nimbus.State;
 import java.io.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -53,11 +56,14 @@ public class TaskServiceImpl implements TaskService {
 
     private static final BaseMapper<Task, TaskDTO> mapper = new BaseMapper<>(Task.class, TaskDTO.class);
 
-    private static final BaseMapper<Task, XlsxTask> mapperXlsx = new BaseMapper<>(Task.class, XlsxTask.class);
+//    private static final BaseMapper<Task, XlsxTask> mapperXlsx = new BaseMapper<>(Task.class, XlsxTask.class);
 
 
     @Autowired
     private TaskRepository repository;
+
+    @Autowired
+    private AssignmentRepository assignmentRepository;
 
     @Autowired
     private ProjectService projectService;
@@ -74,7 +80,22 @@ public class TaskServiceImpl implements TaskService {
         if (DataUtils.notNull(id)) {
             Optional<Task> entity = repository.findById(id);
             if (entity.isPresent()) {
-                return mapper.toDtoBean(entity.get());
+                TaskDTO dto = mapper.toDtoBean(entity.get());
+                return dto;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public TaskDTO getById(Long id) {
+        if (DataUtils.notNull(id)) {
+            Optional<Task> entity = repository.findById(id);
+            List<Long> listMemberId = assignmentRepository.getMemberIdByTaskId(id);
+            if (entity.isPresent()) {
+                TaskDTO dto = mapper.toDtoBean(entity.get());
+                dto.setAssignee(listMemberId);
+                return dto;
             }
         }
         return null;
@@ -89,7 +110,23 @@ public class TaskServiceImpl implements TaskService {
             item.setLastModifiedDate(LocalDateTime.now());
         }
         entity = mapper.toPersistenceBean(item);
-        return mapper.toDtoBean(repository.save(entity));
+        // save task trước
+        dto = mapper.toDtoBean(repository.save(entity));
+        if(DataUtils.notNullOrEmpty(item.getAssignee())) {
+            // xóa nếu update assigment
+            if(DataUtils.notNull(item.getId())) {
+                assignmentRepository.deleteByTaskId(item.getId());
+            }
+            // thêm mới assigment
+            for (Long id: item.getAssignee()) {
+                Assignment assignment = new Assignment();
+                assignment.setTaskId(dto.getId());
+                assignment.setMemberId(id);
+                assignmentRepository.save(assignment);
+            }
+        }
+
+        return dto;
     }
 
     @Override
@@ -204,6 +241,7 @@ public class TaskServiceImpl implements TaskService {
         ProjectDTO project = projectService.findById(projectId);
         List<SectionDTO> sectionsDTO = sectionService.findByProjectId(projectId);
 
+        BaseMapper<Task, XlsxTask> mapperXlsx = new BaseMapper<>(Task.class, XlsxTask.class );
 
 //        List<XlsxSection> xlsxSections = new ArrayList<>();
         if (!DataUtils.isNullOrEmpty(project)) {

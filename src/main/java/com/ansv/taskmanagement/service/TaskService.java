@@ -2,6 +2,7 @@ package com.ansv.taskmanagement.service;
 
 import com.ansv.taskmanagement.dto.request.TaskImportDTO;
 import com.ansv.taskmanagement.dto.response.TaskDTO;
+import com.ansv.taskmanagement.dto.response.report.ProjectAndTaskReportDTO;
 import com.ansv.taskmanagement.model.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ import java.util.Optional;
 public interface TaskService {
 
     TaskDTO findById(Long id);
+
+    TaskDTO getById(Long id);
 
     TaskDTO save(TaskDTO item);
 

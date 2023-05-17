@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class XlsxTask {
+
+
     @XlsxSingleField(columnIndex = 0, name = "no")
     private Long id;
 
@@ -40,9 +43,7 @@ public class XlsxTask {
     @XlsxSingleField(columnIndex = 7, name = "realEndDate")
     private LocalDateTime realEndDate;
 
-
-
-    private Byte state;
+//    private Byte state;
 
     @XlsxSingleField(columnIndex = 8, name = "state")
     private String stateName;
@@ -53,23 +54,23 @@ public class XlsxTask {
 //    @Transient
 //    @XlsxSingleField(columnIndex = 8, name = "state")
 //    private String stateName;
-//
-    @PostLoad
-    void fillTransient() {
-        if (state > 0) {
-            this.stateName = StateEnum.of(state).getName();
-        }
-    }
+
+//    @PostLoad
+//    void fillStateTransient() {
+//        if (state > 0) {
+//            this.stateName = StateEnum.of(state).getName();
+//        }
+//    }
 //
 //    @PrePersist
-//    void fillPersistent() {
+//    void fillStatePersistent() {
 //        if (stateName != null) {
 //            this.state = (byte) StateEnum.ordinalOf(stateName);
 //        }
 //    }
 
     @XlsxSingleField(columnIndex = 9, name = "membersId")
-    private List<Long> membersId;
+    private String member;
 
     @XlsxSingleField(columnIndex = 10, name = "problem")
     private String problem;

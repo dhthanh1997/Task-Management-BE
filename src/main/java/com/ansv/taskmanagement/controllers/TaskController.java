@@ -98,7 +98,7 @@ public class TaskController extends BaseController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDataObject<TaskDTO>> getById(@PathVariable(value = "id") Long id) {
         ResponseDataObject<TaskDTO> response = new ResponseDataObject<>();
-        TaskDTO dto = taskService.findById(id);
+        TaskDTO dto = taskService.getById(id);
         response.initData(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

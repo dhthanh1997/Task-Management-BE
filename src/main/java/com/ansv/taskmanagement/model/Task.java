@@ -1,6 +1,7 @@
 package com.ansv.taskmanagement.model;
 
 
+import com.ansv.taskmanagement.constants.StateEnum;
 import com.ansv.taskmanagement.util.formatdate.LocalDateTimeDeserializer;
 import com.ansv.taskmanagement.util.formatdate.LocalDateTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -91,8 +92,26 @@ public class Task extends Auditable<String> implements Serializable {
     @Column(name = "parent_id")
     private Long parentId;
 
+    @Basic
     @Column(name = "state")
     private Byte state;
+
+    @Transient
+    private String stateName;
+
+    @PostLoad
+    void fillTransient() {
+        if (state >= 0) {
+            this.stateName = StateEnum.of(state).getValue();
+        }
+    }
+
+    @PrePersist
+    void fillPersistent() {
+        if (stateName != null) {
+            this.state = (byte) StateEnum.ordinalOf(stateName);
+        }
+    }
 
     @Column(name = "section_id")
     private Long sectionId;
@@ -100,15 +119,15 @@ public class Task extends Auditable<String> implements Serializable {
     @Column(name = "tag_id")
     private Long tagId;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "task_member", joinColumns = {
-            @JoinColumn(name = "task_id", referencedColumnName = "id")
-    },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "member_id", referencedColumnName = "id")
-            }
-    )
-    @JsonIgnore
-    private Set<Member> members = new HashSet<>();
+//    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+//    @JoinTable(name = "task_member", joinColumns = {
+//            @JoinColumn(name = "task_id", referencedColumnName = "id")
+//    },
+//            inverseJoinColumns = {
+//                    @JoinColumn(name = "member_id", referencedColumnName = "id")
+//            }
+//    )
+//    @JsonIgnore
+//    private Set<Member> members = new HashSet<>();
 
 }
