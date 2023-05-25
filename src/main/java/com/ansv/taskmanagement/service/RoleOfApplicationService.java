@@ -28,4 +28,6 @@ public interface RoleOfApplicationService {
 
     List<TreeComponent>  getRolePermission(Optional<Long> id);
 
+    List<TreeComponent>  getRolePermission();
+
 }

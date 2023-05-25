@@ -65,8 +65,15 @@ public class UserInfoServiceImpl implements UserInfoService {
         List<Permission> permissions = new ArrayList<>();
         List<PermissionDTO> permissionsDTO = new ArrayList<>();
         List<String> menu = new ArrayList<>();
+        List<TreeComponent> children = new ArrayList<>();
         if(member.isPresent()) {
-            permissions = permissionRepository.getAllByRoleId(member.get().getRoleId());
+            if(member.get().getUsername().equals("adminansv")){
+                permissions = permissionRepository.findAll();
+                children = roleOfApplicationService.getRolePermission(Optional.ofNullable(null));
+            } else {
+                permissions = permissionRepository.getAllByRoleId(member.get().getRoleId());
+                children = roleOfApplicationService.getRolePermission(Optional.of(member.get().getRoleId()));
+            }
             if(DataUtils.notNull(permissions) && permissions.size() > 0) {
                 userInfoDTO.setPermissions(mapperSub.toDtoBean(permissions));
                 for(Permission permission: permissions) {
@@ -75,13 +82,10 @@ public class UserInfoServiceImpl implements UserInfoService {
                     }
                 }
                 menu = menu.stream().distinct().collect(Collectors.toList());
-                List<TreeComponent> children = roleOfApplicationService.getRolePermission(Optional.of(member.get().getRoleId()));
                 userInfoDTO.setChildren(children);
                 userInfoDTO.setMenu(menu);
                 userInfoDTO.setUsername(username);
             }
-
-
         }
         return userInfoDTO;
     }

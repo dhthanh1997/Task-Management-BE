@@ -6,6 +6,7 @@ import com.ansv.taskmanagement.service.MemberService;
 import com.ansv.taskmanagement.util.DataUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
@@ -20,6 +21,12 @@ public class RabbitMqReceiver implements RabbitListenerConfigurer {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private RabbitMqSender rabbitMqSender;
+
+//    @Autowired
+//    private
 
 //    public UserDTO userDTO = new UserDTO();
 
@@ -60,6 +67,7 @@ public class RabbitMqReceiver implements RabbitListenerConfigurer {
             memberDTO.setPhone(user.getPhone_number());
             memberService.save(memberDTO);
         }
+
     }
     // end
 
