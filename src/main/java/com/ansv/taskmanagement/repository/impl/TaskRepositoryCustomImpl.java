@@ -1,18 +1,18 @@
 package com.ansv.taskmanagement.repository.impl;
 
-import com.ansv.taskmanagement.model.ReportView;
+import com.ansv.taskmanagement.dto.response.report.ProjectAndTaskReportDTO;
+import com.ansv.taskmanagement.model.Task;
+import com.ansv.taskmanagement.repository.TaskRepositoryCustom;
 import com.ansv.taskmanagement.util.DataUtils;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
-public class ReportViewRepositoryImpl extends BaseCustomRepository<ReportView> {
+public class TaskRepositoryCustomImpl extends BaseCustomRepository<Task> implements TaskRepositoryCustom {
 
-//    @Override
-    public List<ReportView> findDataWithParams(Map<String, Object> parameters) {
+    @Override
+    public List<Task> previewReport(Map<String, Object> parameters) {
         Map<String, Object> params = new HashMap<>();
         StringBuilder result = new StringBuilder();
         String query = "SELECT row_number() OVER () AS id, t.project_id AS project_id, t.id AS task_id, mem.username AS username, t.state AS state, team_mem.team_id AS team_id \n";
@@ -58,14 +58,11 @@ public class ReportViewRepositoryImpl extends BaseCustomRepository<ReportView> {
         }
 
 
-        return getResultList(result.toString(), ReportView.class, params);
+        return getResultList(result.toString(), Task.class, params);
     }
-
-
 
     @Override
     public String buildQuery(Map<String, Object> paramSearch, Map<String, Object> parameters, boolean count) {
         return null;
     }
-
 }

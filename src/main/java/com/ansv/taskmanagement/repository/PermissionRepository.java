@@ -25,6 +25,8 @@ public interface PermissionRepository extends JpaRepository<Permission, Long>, J
             "WHERE 1=1 AND rp.role_id = :roleId", nativeQuery = true)
     List<Permission> getAllByRoleId(@Param("roleId") Long roleId);
 
+    List<Permission> findAll();
+
     Optional<Permission> findByCode(String code);
 
 

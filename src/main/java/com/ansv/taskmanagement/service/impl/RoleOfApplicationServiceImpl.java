@@ -200,5 +200,10 @@ public class RoleOfApplicationServiceImpl implements RoleOfApplicationService {
         return result;
     }
 
+    @Override
+    public List<TreeComponent> getRolePermission() {
+       return null;
+    }
+
 
 }

@@ -7,6 +7,7 @@ import com.ansv.taskmanagement.dto.response.SectionDTO;
 import com.ansv.taskmanagement.dto.response.TaskDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -18,14 +19,10 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoRepositoryBean
+@NoArgsConstructor
 @AllArgsConstructor
 public class ProjectAndTaskReportDTO {
     private ProjectDTO projectDTO;
-    private List<SectionDTO> sections;
-    private List<TaskDTO> tasks;
+    private List<SectionAndTaskDTO> sections;
 
-    public ProjectAndTaskReportDTO() {
-
-    }
 }

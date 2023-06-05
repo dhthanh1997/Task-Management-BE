@@ -1,0 +1,363 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <changeSet author="ACER (generated)" id="1685335466224-1">
+        <createTable tableName="activity">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="activityPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="attach_file" type="VARCHAR(2000)"/>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="name" type="VARCHAR(500)"/>
+            <column name="parent_id" type="BIGINT"/>
+            <column name="real_end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="real_start_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="revenue" type="numeric(18, 2)"/>
+            <column name="start_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="state" type="SMALLINT"/>
+            <column name="task_id" type="BIGINT"/>
+            <column name="total_cost" type="numeric(18, 2)"/>
+            <column name="total_hour" type="FLOAT4"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-2">
+        <createTable tableName="assignment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="assignmentPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="activity_id" type="BIGINT"/>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="member_id" type="BIGINT"/>
+            <column name="task_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-3">
+        <createTable tableName="comment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="commentPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="activity_id" type="BIGINT"/>
+            <column name="attach_file" type="VARCHAR(2000)"/>
+            <column name="content" type="VARCHAR(2000)"/>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="name" type="VARCHAR(500)"/>
+            <column name="parent_id" type="BIGINT"/>
+            <column name="task_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-4">
+        <createTable tableName="member">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="memberPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="email" type="VARCHAR(100)"/>
+            <column name="name" type="VARCHAR(100)"/>
+            <column name="phone" type="VARCHAR(20)"/>
+            <column name="role_id" type="BIGINT"/>
+            <column name="username" type="VARCHAR(20)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-5">
+        <createTable tableName="member_role_project">
+            <column name="member_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="member_role_projectPK"/>
+            </column>
+            <column name="role_project_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="member_role_projectPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-6">
+        <createTable tableName="permission">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="permissionPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="code" type="VARCHAR(500)"/>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="name" type="VARCHAR(500)"/>
+            <column name="parent_code" type="VARCHAR(500)"/>
+            <column name="type" type="SMALLINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-7">
+        <createTable tableName="project">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="projectPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="attach_file" type="VARCHAR(2000)"/>
+            <column name="customer_id" type="BIGINT"/>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="name" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_id" type="BIGINT"/>
+            <column name="real_end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="real_start_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="revenue" type="numeric(18, 2)"/>
+            <column name="start_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="state" type="SMALLINT"/>
+            <column name="total_cost" type="numeric(18, 2)"/>
+            <column name="total_hour" type="FLOAT4"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-8">
+        <createTable tableName="project_and_task_report_view">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="project_and_task_report_viewPK"/>
+            </column>
+            <column name="project_id" type="BIGINT"/>
+            <column name="state" type="SMALLINT"/>
+            <column name="task_id" type="BIGINT"/>
+            <column name="team_id" type="BIGINT"/>
+            <column name="username" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-9">
+        <createTable tableName="project_section">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="project_sectionPK"/>
+            </column>
+            <column name="project_id" type="BIGINT"/>
+            <column name="section_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-10">
+        <createTable tableName="report_view">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="report_viewPK"/>
+            </column>
+            <column name="project_id" type="BIGINT"/>
+            <column name="state" type="SMALLINT"/>
+            <column name="task_id" type="BIGINT"/>
+            <column name="team_id" type="BIGINT"/>
+            <column name="username" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-11">
+        <createTable tableName="role_of_application">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="role_of_applicationPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="code" type="VARCHAR(20)"/>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="name" type="VARCHAR(500)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-12">
+        <createTable tableName="role_of_project">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="role_of_projectPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="code" type="VARCHAR(20)"/>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="name" type="VARCHAR(500)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-13">
+        <createTable tableName="role_permission">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="role_permissionPK"/>
+            </column>
+            <column name="permission_id" type="BIGINT"/>
+            <column name="role_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-14">
+        <createTable tableName="section">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="sectionPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="name" type="VARCHAR(200)"/>
+            <column name="note" type="VARCHAR(500)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-15">
+        <createTable tableName="tag">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="tagPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="color" type="VARCHAR(50)"/>
+            <column name="icon" type="VARCHAR(500)"/>
+            <column name="tag_name" type="VARCHAR(1000)"/>
+            <column name="slug" type="VARCHAR(500)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-16">
+        <createTable tableName="task">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="taskPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="attach_file" type="VARCHAR(2000)"/>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="estimate_end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="estimate_start_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="name" type="VARCHAR(500)"/>
+            <column name="note" type="VARCHAR(500)"/>
+            <column name="parent_id" type="BIGINT"/>
+            <column name="problem" type="VARCHAR(500)"/>
+            <column name="project_id" type="BIGINT"/>
+            <column name="real_end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="real_start_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="revenue" type="numeric(18, 2)"/>
+            <column name="section_id" type="BIGINT"/>
+            <column name="solution" type="VARCHAR(500)"/>
+            <column name="start_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="state" type="SMALLINT"/>
+            <column name="tag_id" type="BIGINT"/>
+            <column name="total_cost" type="numeric(18, 2)"/>
+            <column name="total_hour" type="FLOAT4"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-17">
+        <createTable tableName="task_member">
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="task_memberPK"/>
+            </column>
+            <column name="member_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="task_memberPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-18">
+        <createTable tableName="task_tag">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="task_tagPK"/>
+            </column>
+            <column name="priority" type="INTEGER"/>
+            <column name="tag_id" type="BIGINT"/>
+            <column name="task_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-19">
+        <createTable tableName="team">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="teamPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="team_name" type="VARCHAR(500)"/>
+            <column name="project_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-20">
+        <createTable tableName="team_member">
+            <column name="member_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="team_memberPK"/>
+            </column>
+            <column name="team_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="team_memberPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-21">
+        <createTable tableName="tree">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="treePK"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="depth" type="INTEGER"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="parent_code" type="VARCHAR(255)"/>
+            <column name="type" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-22">
+        <createTable tableName="work_log">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="work_logPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(255)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(20)"/>
+            <column name="activity_id" type="BIGINT"/>
+            <column name="content" type="VARCHAR(1000)"/>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="name" type="VARCHAR(500)"/>
+            <column name="task_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-23">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="task_member" constraintName="FK4xdfrh0hn0ong3o92by0xyu07" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="member" validate="true"/>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-24">
+        <addForeignKeyConstraint baseColumnNames="role_project_id" baseTableName="member_role_project" constraintName="FK6ola526bj09fn243wcmlt06je" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="role_of_application" validate="true"/>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-25">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="member_role_project" constraintName="FK85trkgb3mnd76wxlhcin8qrrd" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="member" validate="true"/>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-26">
+        <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="team_member" constraintName="FK9ubp79ei4tv4crd0r9n7u5i6e" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="team" validate="true"/>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-27">
+        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="task_member" constraintName="FKectrmxew8ivqi15ssbsniwmac" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task" validate="true"/>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-28">
+        <addForeignKeyConstraint baseColumnNames="project_id" baseTableName="team" constraintName="FKp6ovpc4soflfcjbafch33w2ky" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="project" validate="true"/>
+    </changeSet>
+    <changeSet author="ACER (generated)" id="1685335466224-29">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="team_member" constraintName="FKt5k957ydx0vngjtsljbelmu75" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="member" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

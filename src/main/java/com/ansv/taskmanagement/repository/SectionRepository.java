@@ -21,6 +21,6 @@ public interface SectionRepository extends JpaRepository<Section, Long>, JpaSpec
     Integer deleteByListId(@Param("listId") List<Long> listId);
 
     @Query(value = "SELECT sec.* FROM section AS sec INNER JOIN project_section AS ps ON sec.id = ps.section_id WHERE ps.project_id = :projectId", nativeQuery = true)
-    List<Section> findBySectionId(@Param("projectId") Long projectId);
+    List<Section> findByProjectId(@Param("projectId") Long projectId);
 
 }

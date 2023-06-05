@@ -122,12 +122,11 @@ public class ExcelUtils {
                 cell.setCellStyle(currencyStyle);
                 cell.setCellValue(cellValue);
             }
-//            else if (objValue instanceof Byte) {
-//                Integer cellValue =   ((Byte) objValue).intValue() ;
-//                cell.setCellStyle(currencyStyle);
-//                cell.setCellValue(cellValue);
-//            }
-
+            else if (objValue instanceof Byte) {
+                Integer cellValue =   ((Byte) objValue).intValue() ;
+                cell.setCellStyle(currencyStyle);
+                cell.setCellValue(cellValue);
+            }
             else if (objValue instanceof Boolean) {
                 cell.setCellStyle(centerAlignedStyle);
                 if (objValue.equals(true)) {

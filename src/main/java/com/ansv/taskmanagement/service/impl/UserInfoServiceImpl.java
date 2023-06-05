@@ -13,6 +13,8 @@ import com.ansv.taskmanagement.repository.PermissionRepository;
 import com.ansv.taskmanagement.service.MemberService;
 import com.ansv.taskmanagement.service.RoleOfApplicationService;
 import com.ansv.taskmanagement.service.UserInfoService;
+import com.ansv.taskmanagement.service.rabbitmq.RabbitMqReceiver;
+import com.ansv.taskmanagement.service.rabbitmq.RabbitMqSender;
 import com.ansv.taskmanagement.util.DataUtils;
 import com.ansv.taskmanagement.util.TreeComponent;
 import lombok.extern.slf4j.Slf4j;
@@ -49,26 +51,41 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     private RoleOfApplicationService roleOfApplicationService;
 
+    @Autowired
+    private RabbitMqSender rabbitMqSender;
+
+    @Autowired
+    private RabbitMqReceiver rabbitMqReceiver;
+
     @Override
     public UserInfoDTO getUserInfo(String username) {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         Optional<Member> member = memberRepository.findByUsername(username);
+
         List<Permission> permissions = new ArrayList<>();
         List<PermissionDTO> permissionsDTO = new ArrayList<>();
         List<String> menu = new ArrayList<>();
+        List<TreeComponent> children = new ArrayList<>();
         if(member.isPresent()) {
-            permissions = permissionRepository.getAllByRoleId(member.get().getRoleId());
-            userInfoDTO.setPermissions(mapperSub.toDtoBean(permissions));
-            for(Permission permission: permissions) {
-                if(DataUtils.notNullOrEmpty(permission.getParentCode())) {
-                    menu.add(permission.getParentCode());
-                }
+            if(member.get().getUsername().equals("adminansv")){
+                permissions = permissionRepository.findAll();
+                children = roleOfApplicationService.getRolePermission(Optional.ofNullable(null));
+            } else {
+                permissions = permissionRepository.getAllByRoleId(member.get().getRoleId());
+                children = roleOfApplicationService.getRolePermission(Optional.of(member.get().getRoleId()));
             }
-            menu = menu.stream().distinct().collect(Collectors.toList());
-            List<TreeComponent> children = roleOfApplicationService.getRolePermission(Optional.of(member.get().getRoleId()));
-            userInfoDTO.setChildren(children);
-            userInfoDTO.setMenu(menu);
-            userInfoDTO.setUsername(username);
+            if(DataUtils.notNull(permissions) && permissions.size() > 0) {
+                userInfoDTO.setPermissions(mapperSub.toDtoBean(permissions));
+                for(Permission permission: permissions) {
+                    if(DataUtils.notNullOrEmpty(permission.getParentCode())) {
+                        menu.add(permission.getParentCode());
+                    }
+                }
+                menu = menu.stream().distinct().collect(Collectors.toList());
+                userInfoDTO.setChildren(children);
+                userInfoDTO.setMenu(menu);
+                userInfoDTO.setUsername(username);
+            }
         }
         return userInfoDTO;
     }

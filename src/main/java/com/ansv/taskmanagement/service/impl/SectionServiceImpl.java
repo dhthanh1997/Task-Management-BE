@@ -112,7 +112,7 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public List<SectionDTO> findByProjectId(Long projectId) {
-        List<Section> sections = repository.findBySectionId(projectId);
+        List<Section> sections = repository.findByProjectId(projectId);
         if(!DataUtils.isNullOrEmpty(sections)) {
             List<SectionDTO> sectionsDTO = mapper.toDtoBean(sections);
             return sectionsDTO;

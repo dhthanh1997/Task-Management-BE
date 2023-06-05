@@ -60,7 +60,7 @@ public class Member extends Auditable<String> implements Serializable {
     private Set<RoleOfApplication> roleOfProject;
 
 
-    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
-    private Set<Task>  tasks = new HashSet<>();
+//    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
+//    private Set<Task>  tasks = new HashSet<>();
 
 }
