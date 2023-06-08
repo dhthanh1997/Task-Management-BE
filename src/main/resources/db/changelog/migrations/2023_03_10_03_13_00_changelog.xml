@@ -1,9 +1,0 @@
-<?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
-    <changeSet author="admin (generated)" id="1678417994214-1">
-        <dropForeignKeyConstraint baseTableName="role_permission" constraintName="FKf8yllw1ecvwqy3ehyxawqa1qp"/>
-    </changeSet>
-    <changeSet author="admin (generated)" id="1678417994214-2">
-        <dropForeignKeyConstraint baseTableName="role_permission" constraintName="FKfdghin7ohdb4js29a5pvi81hf"/>
-    </changeSet>
-</databaseChangeLog>
