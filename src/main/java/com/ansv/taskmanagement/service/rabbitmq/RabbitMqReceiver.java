@@ -4,6 +4,9 @@ import com.ansv.taskmanagement.dto.response.MemberDTO;
 import com.ansv.taskmanagement.dto.response.UserDTO;
 import com.ansv.taskmanagement.service.MemberService;
 import com.ansv.taskmanagement.util.DataUtils;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -13,7 +16,7 @@ import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
+@Slf4j
 @Component
 public class RabbitMqReceiver implements RabbitListenerConfigurer {
 
@@ -25,12 +28,19 @@ public class RabbitMqReceiver implements RabbitListenerConfigurer {
     @Autowired
     private RabbitMqSender rabbitMqSender;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    public RabbitMqReceiver() {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    }
+
 //    @Autowired
 //    private
-
+//
 //    public UserDTO userDTO = new UserDTO();
 
-    @RabbitListener(queues = "${spring.rabbitmq.queue}")
+    @RabbitListener(queues = {"${spring.rabbitmq.queue}"})
     public void receivedMessage(UserDTO user){
         logger.info("User Details Received is.. " + user.getUsername());
         MemberDTO member = memberService.findByUsername(user.getUsername());
@@ -46,7 +56,7 @@ public class RabbitMqReceiver implements RabbitListenerConfigurer {
     }
 
     // receiving from human
-    @RabbitListener(queues = "${spring.rabbitmq.queue-task-human}")
+    @RabbitListener(queues = {"${spring.rabbitmq.queue-task-human}"})
     public UserDTO receivedMessageFromHuman(UserDTO user){
         logger.info("User Details Received is from Human " + user.getUsername());
         return user;
@@ -54,9 +64,9 @@ public class RabbitMqReceiver implements RabbitListenerConfigurer {
     // end
 
     // receiving from gateway
-    @RabbitListener(queues = "${spring.rabbitmq.queue-received}")
+    @RabbitListener(queues = {"${spring.rabbitmq.queue-received}"})
     public void receivedMessageFromGateway(UserDTO user){
-        logger.info("User Details Received is from Human " + user.getUsername());
+        logger.info("User Details Received is from Gateway " + user.getUsername());
         MemberDTO member = memberService.findByUsername(user.getUsername());
         if(DataUtils.isNull(member)) {
             MemberDTO memberDTO = new MemberDTO();

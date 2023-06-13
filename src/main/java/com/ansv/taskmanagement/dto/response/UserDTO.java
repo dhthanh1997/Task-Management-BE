@@ -33,6 +33,6 @@ public class UserDTO {
 
     private String password;
 
-    private Boolean isGatewayGetUser;
+    private String typeRequest;
 
 }

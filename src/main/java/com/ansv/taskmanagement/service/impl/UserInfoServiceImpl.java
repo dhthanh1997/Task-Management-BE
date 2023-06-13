@@ -54,8 +54,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     private RabbitMqSender rabbitMqSender;
 
-    @Autowired
-    private RabbitMqReceiver rabbitMqReceiver;
+//    @Autowired
+//    private RabbitMqReceiver rabbitMqReceiver;
 
     @Override
     public UserInfoDTO getUserInfo(String username) {
