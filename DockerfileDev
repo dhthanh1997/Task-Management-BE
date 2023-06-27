@@ -22,4 +22,3 @@ WORKDIR /app
 COPY --from=builders /app/target/task-management-0.0.1.jar /app/
 ENTRYPOINT ["java","-jar", "task-management-0.0.1.jar"]
 
-
